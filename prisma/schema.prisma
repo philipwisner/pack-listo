@@ -1,0 +1,88 @@
+generator client {
+  provider      = "prisma-client-js"
+  engineType    = "client"
+  binaryTargets = ["native", "linux-musl-arm64-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         String     @id @unique
+  email      String     @unique
+  name       String?
+  categories Category[]
+  items      Item[]
+  lists      List[]
+  bagTypes   BagType[]
+}
+
+model Category {
+  id     String  @id @default(cuid()) @unique
+  name   String
+  icon   String?
+  color  String?
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items  Item[]  @relation("CategoryToItem")
+
+  @@unique([name, userId])
+}
+
+model BagType {
+  id        String     @id @default(cuid())
+  name      String
+  icon      String?
+  color     String?
+  userId    String?
+  user      User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  listItems ListItem[]
+
+  @@unique([name, userId])
+}
+
+model Item {
+  id            String     @id @default(cuid())
+  name          String
+  defaultWeight Float?
+  userId        String?
+  user          User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  listItems     ListItem[]
+  categories    Category[] @relation("CategoryToItem")
+}
+
+model List {
+  id           String     @id @default(cuid())
+  name         String
+  destination  String?
+  tripDate     DateTime?
+  lengthOfStay Int?
+  status       String     @default("PLANNING")
+  isTemplate   Boolean    @default(false)
+  userId       String?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  user         User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items        ListItem[]
+}
+
+model ListItem {
+  id          String   @id @default(cuid())
+  listId      String
+  itemId      String
+  quantity    Int      @default(1)
+  isPacked    Boolean  @default(false)
+  isEssential Boolean  @default(false)
+  notes       String?
+  bagType     String?
+  bagTypeId   String?
+  bagTypeRef  BagType? @relation(fields: [bagTypeId], references: [id])
+  bagLocation String?
+  sortOrder   Int      @default(0)
+  item        Item     @relation(fields: [itemId], references: [id])
+  list        List     @relation(fields: [listId], references: [id], onDelete: Cascade)
+
+  @@unique([listId, itemId])
+}

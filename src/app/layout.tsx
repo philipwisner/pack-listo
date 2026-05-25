@@ -43,7 +43,35 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${dmSans.variable}`}>
+    <html lang="en" suppressHydrationWarning className={`${dmSans.variable}`}>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  const stored = localStorage.getItem('darkModeConfig');
+                  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                  let shouldBeDark = false;
+
+                  if (stored === 'light') {
+                    shouldBeDark = false;
+                  } else if (stored === 'dark') {
+                    shouldBeDark = true;
+                  } else {
+                    // auto or not set
+                    shouldBeDark = prefersDark;
+                  }
+
+                  if (shouldBeDark) {
+                    document.documentElement.classList.add('dark');
+                  }
+                } catch (e) {}
+              })();
+            `,
+          }}
+        />
+      </head>
       <body>
         <RootLayoutClient>{children}</RootLayoutClient>
       </body>

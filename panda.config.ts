@@ -4,9 +4,9 @@ export default defineConfig({
   preflight: true,
   jsxFramework: "react",
   include: ["./src/**/*.{js,jsx,ts,tsx}", "./pages/**/*.{js,jsx,ts,tsx}"],
-
   exclude: [],
   theme: {
+    // 1. Raw Core System Tokens
     tokens: {
       fonts: {
         sans: {
@@ -15,16 +15,16 @@ export default defineConfig({
         },
       },
       fontSizes: {
-        xs: { value: "0.75rem" }, // 12px
-        sm: { value: "0.875rem" }, // 14px
-        base: { value: "1rem" }, // 16px
-        md: { value: "1.125rem" }, // 18px
-        lg: { value: "1.25rem" }, // 20px
-        xl: { value: "1.5rem" }, // 24px
-        "2xl": { value: "2rem" }, // 32px
-        "3xl": { value: "2.375rem" }, // 38px
-        "4xl": { value: "2.5rem" }, // 40px
-        "5xl": { value: "3rem" }, // 48px
+        xs: { value: "0.75rem" },
+        sm: { value: "0.875rem" },
+        base: { value: "1rem" },
+        md: { value: "1.125rem" },
+        lg: { value: "1.25rem" },
+        xl: { value: "1.5rem" },
+        "2xl": { value: "2rem" },
+        "3xl": { value: "2.375rem" },
+        "4xl": { value: "2.5rem" },
+        "5xl": { value: "3rem" },
       },
       fontWeights: {
         light: { value: "300" },
@@ -110,7 +110,6 @@ export default defineConfig({
           900: { value: "#1E3A8A" },
         },
         orange: {
-          // subtleBase: { value: "#F59E0B" },
           50: { value: "#FFF7ED" },
           100: { value: "#FFEDD5" },
           500: { value: "#F97316" },
@@ -118,43 +117,103 @@ export default defineConfig({
         },
       },
     },
-    extend: {
-      semanticTokens: {
-        colors: {
+
+    // 2. Responsive Light/Dark Semantic Tokens (No Extend Block Needed!)
+    semanticTokens: {
+      colors: {
+        accent: {
+          value: { base: "{colors.yellow.500}", _dark: "{colors.yellow.500}" },
+        },
+        background: {
+          value: { base: "{colors.gray.50}", _dark: "{colors.gray.950}" },
+        },
+        text: {
+          main: {
+            value: { base: "{colors.gray.950}", _dark: "{colors.gray.50}" },
+          },
+          muted: {
+            value: { base: "{colors.gray.700}", _dark: "{colors.gray.400}" },
+          },
+        },
+        logo: {
+          text: {
+            value: { base: "{colors.gray.950}", _dark: "{colors.gray.50}" },
+          },
+        },
+        button: {
+          primary: {
+            text: {
+              value: {
+                base: "{colors.gray.950}",
+                _dark: "{colors.yellow.950}",
+              },
+            },
+            bg: {
+              value: {
+                base: "{colors.yellow.500}",
+                _dark: "{colors.yellow.500}",
+              },
+            },
+          },
+          secondary: {
+            text: {
+              value: { base: "#FFFFFF", _dark: "#FFFFFF" },
+            },
+          },
+        },
+        input: {
+          label: {
+            value: { base: "{colors.gray.700}", _dark: "{colors.gray.200}" },
+          },
+          border: {
+            value: { base: "{colors.gray.300}", _dark: "{colors.gray.500}" },
+          },
+          placeholder: {
+            value: { base: "{colors.gray.600}", _dark: "{colors.gray.300}" },
+          },
           background: {
-            value: { base: "#ffffff", _dark: "#0a0a0a" },
+            value: { base: "{colors.white}", _dark: "{colors.gray.700}" },
           },
-          foreground: {
-            value: { base: "#171717", _dark: "#ededed" },
+          "background-darker": {
+            value: { base: "{colors.gray.100}", _dark: "{colors.gray.800}" },
           },
-          error: {
-            bg: { value: "{colors.red.50}" },
-            border: { value: "{colors.red.100}" },
-            main: { value: "{colors.red.500}" },
-            text: { value: "{colors.red.600}" },
-            "bg-subtle": { value: "{colors.red.500/10}" },
+          text: {
+            value: { base: "{colors.gray.950}", _dark: "{colors.gray.50}" },
           },
-          success: {
-            bg: { value: "{colors.green.50}" },
-            border: { value: "{colors.green.100}" },
-            main: { value: "{colors.green.500}" },
-            text: { value: "{colors.green.600}" },
-            "bg-subtle": { value: "{colors.green.500/10}" },
+          focus: {
+            value: {
+              base: "{colors.yellow.300}",
+              _dark: "{colors.yellow.300}",
+            },
           },
-          info: {
-            bg: { value: "{colors.blue.50}" },
-            border: { value: "{colors.blue.100}" },
-            main: { value: "{colors.blue.500}" },
-            text: { value: "{colors.blue.900}" },
-            "bg-subtle": { value: "{colors.blue.500/10}" },
-          },
-          warning: {
-            bg: { value: "{colors.orange.50}" },
-            border: { value: "{colors.orange.100}" },
-            main: { value: "{colors.orange.500}" },
-            text: { value: "{colors.orange.600}" },
-            "bg-subtle": { value: "{colors.orange.500/10}" },
-          },
+        },
+        error: {
+          bg: { value: "{colors.red.50}" },
+          border: { value: "{colors.red.100}" },
+          main: { value: "{colors.red.500}" },
+          text: { value: "{colors.red.600}" },
+          "bg-subtle": { value: "{colors.red.500/10}" },
+        },
+        success: {
+          bg: { value: "{colors.green.50}" },
+          border: { value: "{colors.green.100}" },
+          main: { value: "{colors.green.500}" },
+          text: { value: "{colors.green.600}" },
+          "bg-subtle": { value: "{colors.green.500/10}" },
+        },
+        info: {
+          bg: { value: "{colors.blue.50}" },
+          border: { value: "{colors.blue.100}" },
+          main: { value: "{colors.blue.500}" },
+          text: { value: "{colors.blue.900}" },
+          "bg-subtle": { value: "{colors.blue.500/10}" },
+        },
+        warning: {
+          bg: { value: "{colors.orange.50}" },
+          border: { value: "{colors.orange.100}" },
+          main: { value: "{colors.orange.500}" },
+          text: { value: "{colors.orange.600}" },
+          "bg-subtle": { value: "{colors.orange.500/10}" },
         },
       },
     },
@@ -172,7 +231,6 @@ export default defineConfig({
       display: "grid",
     },
   },
-  // The output directory for your css system
   outdir: "src/styled-system",
   importMap: "@/styled-system",
 });

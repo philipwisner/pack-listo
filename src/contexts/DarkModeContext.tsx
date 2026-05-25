@@ -2,9 +2,12 @@
 
 import React, { createContext, useContext, useEffect, useState } from "react";
 
+type DarkModeType = "light" | "dark" | "auto";
+
 interface DarkModeContextType {
+  mode: DarkModeType;
   isDarkMode: boolean;
-  toggleDarkMode: () => void;
+  setMode: (mode: DarkModeType) => void;
 }
 
 const DarkModeContext = createContext<DarkModeContextType | undefined>(
@@ -12,23 +15,62 @@ const DarkModeContext = createContext<DarkModeContextType | undefined>(
 );
 
 export function DarkModeProvider({ children }: { children: React.ReactNode }) {
+  const [mode, setModeState] = useState<DarkModeType>("auto");
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isClient, setIsClient] = useState(false);
+  const [systemPrefersDark, setSystemPrefersDark] = useState(false);
 
-  // Initialize dark mode from localStorage
+  // Initialize mode from localStorage and system preference
   useEffect(() => {
     setIsClient(true);
-    const stored = localStorage.getItem("darkMode");
+    const stored = localStorage.getItem(
+      "darkModeConfig",
+    ) as DarkModeType | null;
     const prefersDark = window.matchMedia(
       "(prefers-color-scheme: dark)",
     ).matches;
 
-    if (stored !== null) {
-      setIsDarkMode(stored === "true");
-    } else {
+    setSystemPrefersDark(prefersDark);
+
+    const initialMode = (stored || "auto") as DarkModeType;
+    setModeState(initialMode);
+
+    // Set initial isDarkMode based on mode and system preference
+    if (initialMode === "auto") {
       setIsDarkMode(prefersDark);
+    } else {
+      setIsDarkMode(initialMode === "dark");
     }
   }, []);
+
+  // Listen for system preference changes
+  useEffect(() => {
+    if (!isClient) return;
+
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+
+    const handleChange = (e: MediaQueryListEvent) => {
+      setSystemPrefersDark(e.matches);
+      // Only update isDarkMode if in auto mode
+      if (mode === "auto") {
+        setIsDarkMode(e.matches);
+      }
+    };
+
+    mediaQuery.addEventListener("change", handleChange);
+    return () => mediaQuery.removeEventListener("change", handleChange);
+  }, [isClient, mode]);
+
+  // Update isDarkMode when mode changes
+  useEffect(() => {
+    if (!isClient) return;
+
+    if (mode === "auto") {
+      setIsDarkMode(systemPrefersDark);
+    } else {
+      setIsDarkMode(mode === "dark");
+    }
+  }, [mode, isClient, systemPrefersDark]);
 
   // Update the DOM when dark mode changes
   useEffect(() => {
@@ -40,16 +82,15 @@ export function DarkModeProvider({ children }: { children: React.ReactNode }) {
     } else {
       htmlElement.classList.remove("dark");
     }
-
-    localStorage.setItem("darkMode", String(isDarkMode));
   }, [isDarkMode, isClient]);
 
-  const toggleDarkMode = () => {
-    setIsDarkMode((prev) => !prev);
+  const setMode = (newMode: DarkModeType) => {
+    setModeState(newMode);
+    localStorage.setItem("darkModeConfig", newMode);
   };
 
   return (
-    <DarkModeContext.Provider value={{ isDarkMode, toggleDarkMode }}>
+    <DarkModeContext.Provider value={{ mode, isDarkMode, setMode }}>
       {children}
     </DarkModeContext.Provider>
   );

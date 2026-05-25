@@ -33,6 +33,12 @@ export default defineConfig({
         semibold: { value: "600" },
         bold: { value: "700" },
       },
+      lineHeights: {
+        none: { value: "1" },
+        tight: { value: "1.25" },
+        normal: { value: "1.5" },
+        relaxed: { value: "1.625" },
+      },
       radii: {
         xs: { value: "2px" },
         sm: { value: "3px" },
@@ -184,6 +190,50 @@ export default defineConfig({
             value: {
               base: "{colors.yellow.300}",
               _dark: "{colors.yellow.300}",
+            },
+          },
+        },
+        textStyles: {
+          bodyXs: {
+            value: {
+              fontSize: "{fontSizes.xs}",
+              lineHeight: "{lineHeights.normal}",
+            },
+          },
+          bodySm: {
+            value: {
+              fontSize: "{fontSizes.sm}",
+              lineHeight: "{lineHeights.normal}",
+            },
+          },
+          bodyBase: {
+            value: {
+              fontSize: "{fontSizes.base}",
+              lineHeight: "{lineHeights.relaxed}",
+            },
+          },
+          headingMd: {
+            value: {
+              fontSize: "{fontSizes.md}",
+              lineHeight: "{lineHeights.tight}",
+            },
+          },
+          headingLg: {
+            value: {
+              fontSize: "{fontSizes.lg}",
+              lineHeight: "{lineHeights.tight}",
+            },
+          },
+          headingXl: {
+            value: {
+              fontSize: "{fontSizes.xl}",
+              lineHeight: "{lineHeights.tight}",
+            },
+          },
+          heading2xl: {
+            value: {
+              fontSize: "{fontSizes.2xl}",
+              lineHeight: "{lineHeights.none}",
             },
           },
         },

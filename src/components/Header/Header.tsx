@@ -1,4 +1,6 @@
+"use client";
 import { Button } from "../Button/Button";
+import { DarkModeToggle } from "../DarkModeToggle/DarkModeToggle";
 import "./header.css";
 
 type User = {
@@ -44,7 +46,8 @@ export const Header = ({
         </svg>
         <h1>Acme</h1>
       </div>
-      <div>
+      <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+        <DarkModeToggle />
         {user ? (
           <>
             <span className="welcome">

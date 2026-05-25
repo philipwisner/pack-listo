@@ -5,6 +5,11 @@ import { loginAction } from "@/utils/auth/actions";
 import { isMockMode } from "@/utils/auth/shared";
 import { css } from "@/styled-system/css";
 import { flex } from "@/styled-system/patterns";
+import { Input } from "@/components/TextInput/TextInput";
+import InputLabel from "@/components/InputLabel/InputLabel";
+import { styled } from "@/styled-system/jsx";
+import { DarkModeToggle } from "@/components/DarkModeToggle/DarkModeToggle";
+import Logo from "@/components/Logo/Logo";
 
 const initialState = {
   error: "",
@@ -27,227 +32,81 @@ export default function LoginPage() {
 
   const isMockActive = isMockMode();
 
+  const PageBackground = styled("div", {
+    base: {
+      transition: "all 0.2s ease",
+      minHeight: "100vh",
+      display: "flex",
+      alignContent: "center",
+      justifyContent: "center",
+      alignItems: "center",
+      px: "4",
+      py: "12",
+      bg: "background",
+    },
+  });
+
+  const FormContainer = styled("form", {
+    base: {
+      width: "100%",
+      marginTop: "8",
+    },
+  });
+
   return (
-    <div
-      className={flex({
-        minHeight: "100vh",
-        align: "center",
-        justify: "center",
-        px: "4",
-        py: "12",
-        bg: { base: "slate.50", _dark: "zinc.950" },
-        fontFamily: "sans",
-      })}
-    >
+    <PageBackground>
       <div
         className={css({
-          width: "full",
-          maxWidth: "md",
-          bg: { base: "white/80", _dark: "zinc.900/60" },
-          backdropFilter: "blur(12px)",
-          border: "1px solid",
-          borderColor: { base: "slate-200/50", _dark: "zinc-800/50" },
-          borderRadius: "2xl",
-          shadow: "2xl",
-          p: "8",
-          transition: "all 0.3s ease",
+          position: "fixed",
+          top: "0",
+          right: "0",
         })}
       >
-        <div
-          className={flex({
-            direction: "column",
-            align: "center",
-            mb: "8",
-            textAlign: "center",
-          })}
-        >
-          <div
-            className={flex({
-              width: "12",
-              height: "12",
-              align: "center",
-              justify: "center",
-              borderRadius: "xl",
-              bg: "indigo.500",
-              color: "white",
-              mb: "4",
-              shadow: "0 0 15px rgba(99, 102, 241, 0.4)",
-            })}
-          >
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
-              <polyline points="3.29 7 12 12 20.71 7" />
-              <line x1="12" y1="22" x2="12" y2="12" />
-            </svg>
-          </div>
-          <h1
-            className={css({
-              fontSize: "2xl",
-              fontWeight: "bold",
-              color: { base: "slate.900", _dark: "white" },
-              letterSpacing: "tight",
-            })}
-          >
-            Welcome Back
-          </h1>
-          <p
-            className={css({
-              fontSize: "sm",
-              color: { base: "slate.500", _dark: "zinc.400" },
-              mt: "1.5",
-            })}
-          >
-            Pack smarter, travel lighter, feel stress-free
-          </p>
-        </div>
-
-        <form action={formAction} className={css({ spaceY: "5" })}>
-          {state?.error && (
-            <div
-              className={flex({
-                align: "center",
-                gap: "3",
-                bg: "red.500/10",
-                border: "1px solid",
-                borderColor: "red.500/30",
-                color: "red.500",
-                p: "3.5",
-                borderRadius: "xl",
-                fontSize: "sm",
-                mb: "4",
-              })}
-            >
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <circle cx="12" cy="12" r="10" />
-                <line x1="12" y1="8" x2="12" y2="12" />
-                <line x1="12" y1="16" x2="12.01" y2="16" />
-              </svg>
-              <span>{state.error}</span>
-            </div>
-          )}
-
+        <DarkModeToggle />
+      </div>
+      <div
+        className={css({
+          maxWidth: "450px",
+          width: "100%",
+          height: "auto",
+        })}
+      >
+        <Logo />
+        <FormContainer action={formAction} className={css({ spaceY: "5" })}>
           <div>
-            <label
-              htmlFor="email"
-              className={css({
-                display: "block",
-                fontSize: "xs",
-                fontWeight: "semibold",
-                color: { base: "slate.700", _dark: "zinc.300" },
-                mb: "1.5",
-                textTransform: "uppercase",
-                letterSpacing: "wider",
-              })}
-            >
-              Email Address
-            </label>
-            <input
+            <InputLabel htmlFor="email" label="E-mail" />
+            <Input
               id="email"
               name="email"
               type="email"
               required
               placeholder="you@example.com"
               disabled={isPending}
-              className={css({
-                width: "full",
-                px: "4",
-                py: "3",
-                borderRadius: "xl",
-                border: "1px solid",
-                borderColor: { base: "slate-200", _dark: "zinc-800" },
-                bg: { base: "white/50", _dark: "zinc-950/50" },
-                color: { base: "slate.900", _dark: "white" },
-                outline: "none",
-                fontSize: "sm",
-                transition: "all 0.2s ease",
-                _focus: {
-                  borderColor: "indigo.500",
-                  boxShadow: "0 0 0 3px rgba(99, 102, 241, 0.15)",
-                },
-                _disabled: {
-                  opacity: 0.6,
-                  cursor: "not-allowed",
-                },
-              })}
             />
           </div>
-
           <div>
-            <label
-              htmlFor="password"
-              className={css({
-                display: "block",
-                fontSize: "xs",
-                fontWeight: "semibold",
-                color: { base: "slate.700", _dark: "zinc.300" },
-                mb: "1.5",
-                textTransform: "uppercase",
-                letterSpacing: "wider",
-              })}
-            >
-              Password
-            </label>
-            <input
+            <InputLabel htmlFor="password" label="Password" />
+            <Input
               id="password"
               name="password"
               type="password"
               required
               placeholder="••••••••"
               disabled={isPending}
-              className={css({
-                width: "full",
-                px: "4",
-                py: "3",
-                borderRadius: "xl",
-                border: "1px solid",
-                borderColor: { base: "slate-200", _dark: "zinc-800" },
-                bg: { base: "white/50", _dark: "zinc-950/50" },
-                color: { base: "slate.900", _dark: "white" },
-                outline: "none",
-                fontSize: "sm",
-                transition: "all 0.2s ease",
-                _focus: {
-                  borderColor: "indigo.500",
-                  boxShadow: "0 0 0 3px rgba(99, 102, 241, 0.15)",
-                },
-                _disabled: {
-                  opacity: 0.6,
-                  cursor: "not-allowed",
-                },
-              })}
             />
           </div>
-
           <button
             type="submit"
             disabled={isPending}
             className={css({
-              width: "full",
+              width: "100%",
               py: "3",
               px: "4",
-              borderRadius: "xl",
-              bgGradient: "to-r",
-              gradientFrom: "indigo.500",
-              gradientTo: "violet.600",
-              color: "white",
+              borderRadius: "md",
+              bg: "button.primary.bg",
+              color: "button.primary.text",
               fontWeight: "semibold",
-              fontSize: "sm",
+              fontSize: "base",
               shadow: "lg",
               cursor: "pointer",
               transition: "all 0.2s ease",
@@ -267,19 +126,36 @@ export default function LoginPage() {
           >
             {isPending ? "Signing in..." : "Sign In"}
           </button>
-        </form>
-
+        </FormContainer>
         <div
           className={flex({
             direction: "column",
             align: "center",
             gap: "4",
-            mt: "6",
-            borderTop: "1px solid",
-            borderColor: { base: "slate-100", _dark: "zinc-800/80" },
-            pt: "6",
+            mt: "8",
           })}
         >
+          <p
+            className={css({
+              fontSize: "base",
+              color: "text.muted",
+            })}
+          >
+            Don't have an account?{" "}
+            <Link
+              href="/signup"
+              className={css({
+                fontWeight: "semibold",
+                textDecoration: "underline",
+                color: "text.main",
+                _hover: {
+                  textDecorationColor: "accent",
+                },
+              })}
+            >
+              Sign Up
+            </Link>
+          </p>
           {isMockActive && (
             <button
               onClick={handleMockBypass}
@@ -293,7 +169,7 @@ export default function LoginPage() {
                 bg: { base: "indigo.50/50", _dark: "indigo.950/20" },
                 border: "1px dashed",
                 borderColor: "indigo.300/50",
-                color: "indigo.500",
+                color: "text.muted",
                 fontSize: "xs",
                 fontWeight: "semibold",
                 cursor: "pointer",
@@ -307,27 +183,8 @@ export default function LoginPage() {
               💡 Dev Shortcut: Bypass Auth (Mock Mode)
             </button>
           )}
-
-          <p
-            className={css({
-              fontSize: "xs",
-              color: { base: "slate.500", _dark: "zinc.400" },
-            })}
-          >
-            Don't have an account?{" "}
-            <Link
-              href="/signup"
-              className={css({
-                color: "indigo.500",
-                fontWeight: "semibold",
-                _hover: { textDecoration: "underline" },
-              })}
-            >
-              Sign Up
-            </Link>
-          </p>
         </div>
       </div>
-    </div>
+    </PageBackground>
   );
 }

@@ -1,7 +1,8 @@
 "use client";
+
 import { useActionState, startTransition } from "react";
 import Link from "next/link";
-import { loginAction } from "@/utils/auth/actions";
+import { signupAction } from "@/utils/auth/actions";
 import { isMockMode } from "@/utils/auth/shared";
 import { css } from "@/styled-system/css";
 import { flex } from "@/styled-system/patterns";
@@ -10,15 +11,13 @@ const initialState = {
   error: "",
 };
 
-export default function LoginPage() {
-  const [state, formAction, isPending] = useActionState(
-    loginAction,
-    initialState,
-  );
+export default function SignupPage() {
+  const [state, formAction, isPending] = useActionState(signupAction, initialState);
 
   const handleMockBypass = () => {
     startTransition(async () => {
       const formData = new FormData();
+      formData.append("name", "Local Dev");
       formData.append("email", "developer@packlisto.local");
       formData.append("password", "localdevpass");
       formAction(formData);
@@ -36,6 +35,10 @@ export default function LoginPage() {
         px: "4",
         py: "12",
         bg: { base: "slate.50", _dark: "zinc.950" },
+        backgroundImage: {
+          base: "radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.08) 0%, transparent 40%), radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.08) 0%, transparent 40%)",
+          _dark: "radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 50%), radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.12) 0%, transparent 50%)",
+        },
         fontFamily: "sans",
       })}
     >
@@ -84,9 +87,10 @@ export default function LoginPage() {
               strokeLinecap="round"
               strokeLinejoin="round"
             >
-              <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
-              <polyline points="3.29 7 12 12 20.71 7" />
-              <line x1="12" y1="22" x2="12" y2="12" />
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+              <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+              <path d="M16 3.13a4 4 0 0 1 0 7.75" />
             </svg>
           </div>
           <h1
@@ -97,7 +101,7 @@ export default function LoginPage() {
               letterSpacing: "tight",
             })}
           >
-            Welcome Back
+            Create Account
           </h1>
           <p
             className={css({
@@ -106,7 +110,7 @@ export default function LoginPage() {
               mt: "1.5",
             })}
           >
-            Pack smarter, travel lighter, feel stress-free
+            Get ready to explore the world stress-free
           </p>
         </div>
 
@@ -141,6 +145,52 @@ export default function LoginPage() {
               <span>{state.error}</span>
             </div>
           )}
+
+          <div>
+            <label
+              htmlFor="name"
+              className={css({
+                display: "block",
+                fontSize: "xs",
+                fontWeight: "semibold",
+                color: { base: "slate.700", _dark: "zinc.300" },
+                mb: "1.5",
+                textTransform: "uppercase",
+                letterSpacing: "wider",
+              })}
+            >
+              Full Name
+            </label>
+            <input
+              id="name"
+              name="name"
+              type="text"
+              required
+              placeholder="Alex Mercer"
+              disabled={isPending}
+              className={css({
+                width: "full",
+                px: "4",
+                py: "3",
+                borderRadius: "xl",
+                border: "1px solid",
+                borderColor: { base: "slate-200", _dark: "zinc-800" },
+                bg: { base: "white/50", _dark: "zinc-950/50" },
+                color: { base: "slate.900", _dark: "white" },
+                outline: "none",
+                fontSize: "sm",
+                transition: "all 0.2s ease",
+                _focus: {
+                  borderColor: "indigo.500",
+                  boxShadow: "0 0 0 3px rgba(99, 102, 241, 0.15)",
+                },
+                _disabled: {
+                  opacity: 0.6,
+                  cursor: "not-allowed",
+                },
+              })}
+            />
+          </div>
 
           <div>
             <label
@@ -265,7 +315,7 @@ export default function LoginPage() {
               },
             })}
           >
-            {isPending ? "Signing in..." : "Sign In"}
+            {isPending ? "Creating account..." : "Sign Up"}
           </button>
         </form>
 
@@ -314,16 +364,16 @@ export default function LoginPage() {
               color: { base: "slate.500", _dark: "zinc.400" },
             })}
           >
-            Don't have an account?{" "}
+            Already have an account?{" "}
             <Link
-              href="/signup"
+              href="/login"
               className={css({
                 color: "indigo.500",
                 fontWeight: "semibold",
                 _hover: { textDecoration: "underline" },
               })}
             >
-              Sign Up
+              Sign In
             </Link>
           </p>
         </div>
@@ -331,3 +381,4 @@ export default function LoginPage() {
     </div>
   );
 }
+

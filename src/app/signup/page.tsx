@@ -26,6 +26,7 @@ export default function SignupPage() {
   );
 
   const [fieldErrors, setFieldErrors] = useState<{
+    name?: boolean;
     email?: boolean;
     password?: boolean;
   }>({});
@@ -38,10 +39,12 @@ export default function SignupPage() {
       e.preventDefault(); // Stop form submission
 
       // 2. Query individual fields to see who is failing
+      const nameInput = form.querySelector("#name") as HTMLInputElement;
       const emailInput = form.querySelector("#email") as HTMLInputElement;
       const passwordInput = form.querySelector("#password") as HTMLInputElement;
 
       setFieldErrors({
+        name: !nameInput.validity.valid,
         email: !emailInput.validity.valid,
         password: !passwordInput.validity.valid,
       });
@@ -69,7 +72,7 @@ export default function SignupPage() {
         <Logo />
         <FormContainer action={formAction} onSubmit={handleSubmit} noValidate>
           <div>
-            <InputLabel htmlFor="email" label="Name" />
+            <InputLabel htmlFor="name" label="Name" />
             <Input
               id="name"
               name="name"
@@ -77,7 +80,7 @@ export default function SignupPage() {
               required
               placeholder="John Doe"
               disabled={isPending}
-              hasError={fieldErrors.email}
+              hasError={fieldErrors.name}
             />
           </div>
           <div>

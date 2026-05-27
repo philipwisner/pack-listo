@@ -1,0 +1,23 @@
+<!-- .storybook/preview-head.html -->
+
+<!-- 1. Connect to Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+<!-- 2. Load the exact font you use in Next.js (e.g., Inter) -->
+<link
+  href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&display=swap"
+  rel="stylesheet"
+/>
+
+<!-- 3. Assign it to the CSS Variable your project uses -->
+<style>
+  :root {
+    --font-inter: "DM Sans", sans-serif;
+  }
+
+  /* Force it as the default body font in the Storybook iframe if desired */
+  body {
+    font-family: var(--font-inter);
+  }
+</style>

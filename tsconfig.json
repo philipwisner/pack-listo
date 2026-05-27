@@ -30,7 +30,9 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "styled-system",
-    "**/*.mts"
+    "**/*.mts",
+    ".storybook",
+    "global.d.ts"
   ],
   "exclude": ["node_modules"]
 }

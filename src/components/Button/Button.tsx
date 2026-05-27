@@ -31,6 +31,10 @@ export const ButtonStyled = styled("button", {
     outline: "none",
     transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
 
+    _focus: {
+      outline: "2px solid",
+      outlineOffset: "2px",
+    },
     _focusVisible: {
       outline: "2px solid",
       outlineOffset: "2px",
@@ -59,6 +63,9 @@ export const ButtonStyled = styled("button", {
             "0 12px 20px -4px rgba(161, 126, 4, 0.35), 0 4px 8px -2px rgba(161, 126, 4, 0.2)",
           transform: "translateY(-1px)",
         },
+        _focus: {
+          outlineColor: "button.primary.focusRing",
+        },
         _focusVisible: {
           outlineColor: "button.primary.focusRing",
         },
@@ -80,6 +87,9 @@ export const ButtonStyled = styled("button", {
           bg: "button.secondary.hoverBg",
           shadow: "shadows.button.secondary",
           transform: "translateY(-1px)",
+        },
+        _focus: {
+          outlineColor: "input.border.focus",
         },
         _focusVisible: {
           outlineColor: "input.border.focus",

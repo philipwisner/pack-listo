@@ -20,6 +20,78 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Local Development with Supabase
+
+This app uses Supabase for authentication and PostgreSQL for the database. For local development, you can run Supabase locally using the Supabase CLI.
+
+### Prerequisites
+
+Install the Supabase CLI:
+```bash
+brew install supabase/tap/supabase
+```
+
+Verify installation:
+```bash
+supabase --version
+```
+
+### Starting Local Supabase
+
+1. **Initialize Supabase** (one-time setup):
+```bash
+supabase init
+```
+
+2. **Start the local Supabase stack** (Docker required):
+```bash
+supabase start
+```
+
+This will output your local credentials. Copy these into `.env.local`:
+```bash
+NEXT_PUBLIC_SUPABASE_URL=http://localhost:54321
+NEXT_PUBLIC_SUPABASE_ANON_KEY=<your-anon-key-from-supabase-start>
+SUPABASE_SERVICE_ROLE_KEY=<your-service-role-key-from-supabase-start>
+DATABASE_URL=postgresql://postgres:postgres@localhost:54322/postgres
+NEXT_PUBLIC_USE_MOCK_AUTH=false
+```
+
+3. **Push Prisma schema to the local database**:
+```bash
+npx prisma db push
+npx prisma generate
+```
+
+4. **Start the Next.js dev server**:
+```bash
+npm run dev
+```
+
+5. **Test the app**:
+- Open http://localhost:3000
+- Go to /signup and create a user
+- User should appear in both Supabase Auth and the PostgreSQL database
+
+### Stopping Local Supabase
+
+```bash
+supabase stop
+```
+
+### Deployment to Hosted Supabase
+
+When deploying to production, set these environment variables on your hosting platform (e.g., Vercel) with your hosted Supabase credentials:
+```
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_hosted_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_hosted_service_role_key
+DATABASE_URL=postgresql://postgres:...@db.your-project.supabase.co:5432/postgres
+NEXT_PUBLIC_USE_MOCK_AUTH=false
+```
+
+The same code works for both local and hosted—only environment variables differ.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

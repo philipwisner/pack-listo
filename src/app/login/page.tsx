@@ -1,15 +1,16 @@
 "use client";
-import { useActionState, startTransition } from "react";
-import Link from "next/link";
+import { useActionState, startTransition, useState } from "react";
 import { loginAction } from "@/utils/auth/actions";
 import { isMockMode } from "@/utils/auth/shared";
 import { css } from "@/styled-system/css";
 import { flex } from "@/styled-system/patterns";
-import { Input } from "@/components/TextInput/TextInput";
-import InputLabel from "@/components/InputLabel/InputLabel";
-import { styled } from "@/styled-system/jsx";
 import { DarkModeToggle } from "@/components/DarkModeToggle/DarkModeToggle";
-import Logo from "@/components/Logo/Logo";
+import { Input } from "@/components/TextInput/TextInput";
+import { Logo } from "@/components/Logo/Logo";
+import { InputLabel } from "@/components/InputLabel/InputLabel";
+import { Button } from "@/components/Button/Button";
+import { InternalLink } from "@/components/InternalLink/InternalLink";
+import { PageBackground, FormContainer, AuthContainerContent } from "./styles";
 
 const initialState = {
   error: "",
@@ -20,6 +21,31 @@ export default function LoginPage() {
     loginAction,
     initialState,
   );
+  const [fieldErrors, setFieldErrors] = useState<{
+    email?: boolean;
+    password?: boolean;
+  }>({});
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const form = e.currentTarget;
+
+    // Check if the overall form is invalid
+    if (!form.checkValidity()) {
+      e.preventDefault(); // Stop form submission
+
+      // 2. Query individual fields to see who is failing
+      const emailInput = form.querySelector("#email") as HTMLInputElement;
+      const passwordInput = form.querySelector("#password") as HTMLInputElement;
+
+      setFieldErrors({
+        email: !emailInput.validity.valid,
+        password: !passwordInput.validity.valid,
+      });
+    } else {
+      // Clear errors if everything is valid on submission attempt
+      setFieldErrors({});
+    }
+  };
 
   const handleMockBypass = () => {
     startTransition(async () => {
@@ -32,27 +58,6 @@ export default function LoginPage() {
 
   const isMockActive = isMockMode();
 
-  const PageBackground = styled("div", {
-    base: {
-      transition: "all 0.2s ease",
-      minHeight: "100vh",
-      display: "flex",
-      alignContent: "center",
-      justifyContent: "center",
-      alignItems: "center",
-      px: "4",
-      py: "12",
-      bg: "background",
-    },
-  });
-
-  const FormContainer = styled("form", {
-    base: {
-      width: "100%",
-      marginTop: "8",
-    },
-  });
-
   return (
     <PageBackground>
       <div
@@ -64,15 +69,9 @@ export default function LoginPage() {
       >
         <DarkModeToggle />
       </div>
-      <div
-        className={css({
-          maxWidth: "450px",
-          width: "100%",
-          height: "auto",
-        })}
-      >
+      <AuthContainerContent>
         <Logo />
-        <FormContainer action={formAction} className={css({ spaceY: "5" })}>
+        <FormContainer action={formAction} onSubmit={handleSubmit} noValidate>
           <div>
             <InputLabel htmlFor="email" label="E-mail" />
             <Input
@@ -80,8 +79,9 @@ export default function LoginPage() {
               name="email"
               type="email"
               required
-              placeholder="you@example.com"
+              placeholder="user@email.com"
               disabled={isPending}
+              hasError={fieldErrors.email}
             />
           </div>
           <div>
@@ -91,41 +91,17 @@ export default function LoginPage() {
               name="password"
               type="password"
               required
-              placeholder="••••••••"
+              placeholder="••••••••••"
               disabled={isPending}
+              hasError={fieldErrors.password}
             />
           </div>
-          <button
+          <Button
+            text="Sign In"
             type="submit"
-            disabled={isPending}
-            className={css({
-              width: "100%",
-              py: "3",
-              px: "4",
-              borderRadius: "md",
-              bg: "button.primary.bg",
-              color: "button.primary.text",
-              fontWeight: "semibold",
-              fontSize: "base",
-              shadow: "lg",
-              cursor: "pointer",
-              transition: "all 0.2s ease",
-              _hover: {
-                shadow: "0 10px 20px -10px rgba(99, 102, 241, 0.5)",
-                transform: "translateY(-1px)",
-              },
-              _active: {
-                transform: "translateY(1px)",
-              },
-              _disabled: {
-                opacity: 0.7,
-                cursor: "not-allowed",
-                transform: "none",
-              },
-            })}
-          >
-            {isPending ? "Signing in..." : "Sign In"}
-          </button>
+            isLoading={isPending}
+            loadingText="Signing in..."
+          />
         </FormContainer>
         <div
           className={flex({
@@ -141,20 +117,7 @@ export default function LoginPage() {
               color: "text.muted",
             })}
           >
-            Don't have an account?{" "}
-            <Link
-              href="/signup"
-              className={css({
-                fontWeight: "semibold",
-                textDecoration: "underline",
-                color: "text.main",
-                _hover: {
-                  textDecorationColor: "accent",
-                },
-              })}
-            >
-              Sign Up
-            </Link>
+            Don't have an account? <InternalLink text="Sign Up" url="/signup" />
           </p>
           {isMockActive && (
             <button
@@ -184,7 +147,7 @@ export default function LoginPage() {
             </button>
           )}
         </div>
-      </div>
+      </AuthContainerContent>
     </PageBackground>
   );
 }

@@ -5,7 +5,9 @@ import { type ComponentProps, type ReactNode } from "react";
 export interface ButtonProps extends ComponentProps<typeof ButtonStyled> {
   visual?: "primary" | "secondary";
   width?: "full" | "fit";
-  text: string;
+  size?: "small" | "medium";
+  primary?: boolean;
+  text?: string;
   isLoading?: boolean;
   loadingText?: string;
   iconLeft?: ReactNode;
@@ -98,12 +100,27 @@ export const ButtonStyled = styled("button", {
       full: { width: "100%", mt: "2" },
       fit: { width: "fit-content" },
     },
+
+    // Button sizing rules
+    size: {
+      small: {
+        py: "2",
+        px: "3",
+        fontSize: "sm",
+      },
+      medium: {
+        py: "3",
+        px: "4",
+        fontSize: "base",
+      },
+    },
   },
 
   // Fallback production safety defaults
   defaultVariants: {
     visual: "primary",
     width: "full",
+    size: "medium",
   },
 });
 
@@ -111,6 +128,7 @@ export const ButtonStyled = styled("button", {
 export const Button = ({
   visual = "primary",
   width = "full",
+  size = "medium",
   type = "button",
   text = "",
   isLoading = false,
@@ -125,6 +143,7 @@ export const Button = ({
       type={type}
       visual={visual}
       width={width}
+      size={size}
       disabled={isLoading || disabled}
       data-loading={isLoading ? "true" : undefined} // Excellent for target styling rules
       {...props}

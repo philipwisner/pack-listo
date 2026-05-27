@@ -1,1 +1,31 @@
 @layer reset, base, tokens, recipes, utilities;
+
+@layer base {
+  html {
+    min-height: 100%;
+    background-color: var(--colors-background, white);
+    color-scheme: light;
+  }
+
+  body {
+    min-height: 100%;
+    margin: 0;
+    background-color: var(--colors-background, white);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    html,
+    body {
+      background-color: var(--colors-background, #0f172a);
+      color-scheme: dark;
+    }
+  }
+
+  .dark,
+  .dark html,
+  .dark body {
+    background-color: var(--colors-background, #0f172a);
+    color-scheme: dark;
+  }
+}
+

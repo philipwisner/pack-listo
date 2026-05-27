@@ -91,10 +91,10 @@ export default function LoginPage() {
             />
           </div>
           <Button
-            text="Sign In"
+            text="Log In"
             type="submit"
             isLoading={isPending}
-            loadingText="Signing in..."
+            loadingText="Logging in..."
           />
         </FormContainer>
         <AdditionalOptions>

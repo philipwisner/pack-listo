@@ -1,13 +1,27 @@
 import * as dotenv from "dotenv";
+// Load .env.local first for local development override
 dotenv.config({ path: ".env.local" });
+// Fall back to standard .env if keys aren't found in .env.local
+dotenv.config();
+
 import { PrismaClient } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { Pool } from "pg";
 
-const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+// Fall back to the Supabase integration strings if local DATABASE_URL is missing
+const connectionString =
+  process.env.DATABASE_URL || process.env.POSTGRES_URL_NON_POOLING;
+
+if (!connectionString) {
+  console.error(
+    "❌ Error: Connection string missing. Define DATABASE_URL or POSTGRES_URL_NON_POOLING.",
+  );
+  process.exit(1);
+}
+
+const pool = new Pool({ connectionString });
 const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter, log: ["warn", "error"] });
-
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
@@ -59,7 +73,9 @@ async function seedItem(
   // Resolve category IDs – use findFirst to safely pick one record per name
   const categoryIds: { id: string }[] = [];
   for (const catName of categoryNames) {
-    const cat = await prisma.category.findFirst({ where: { name: catName, userId: null } });
+    const cat = await prisma.category.findFirst({
+      where: { name: catName, userId: null },
+    });
     if (cat) categoryIds.push({ id: cat.id });
   }
 

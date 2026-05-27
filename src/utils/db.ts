@@ -9,13 +9,23 @@ let prisma: PrismaClient;
 if (globalForPrisma.prisma) {
   prisma = globalForPrisma.prisma;
 } else {
-  const connectionString = process.env.DATABASE_URL;
+  // Check for Supabase pooler URL first (Vercel), fallback to DATABASE_URL (Docker)
+  const connectionString =
+    process.env.POSTGRES_PRISMA_URL || process.env.DATABASE_URL;
+
   if (connectionString) {
     const pool = new Pool({ connectionString });
     const adapter = new PrismaPg(pool);
     prisma = new PrismaClient({ adapter });
   } else {
-    prisma = new PrismaClient();
+    // Fallback block just to satisfy TypeScript/Prisma validation safety,
+    // but passing an empty configuration object to satisfy Prisma 7 if string is missing
+    prisma = new PrismaClient({
+      // @ts-expect-error
+      datasource: {
+        url: "",
+      },
+    });
   }
 
   if (process.env.NODE_ENV !== "production") {

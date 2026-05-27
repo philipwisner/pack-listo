@@ -41,37 +41,93 @@ export default async function AdminPage() {
         bg: { base: "slate.50", _dark: "zinc.950" },
       })}
     >
-      <div className={flex({ justify: "space-between", align: "center", gap: "4" })}>
+      <div
+        className={flex({
+          justify: "space-between",
+          align: "center",
+          gap: "4",
+        })}
+      >
         <div>
-          <p className={css({ color: "indigo.500", fontSize: "sm", fontWeight: "semibold", mb: "2" })}>
+          <p
+            className={css({
+              color: "indigo.500",
+              fontSize: "sm",
+              fontWeight: "semibold",
+              mb: "2",
+            })}
+          >
             Admin Console
           </p>
-          <h1 className={css({ fontSize: "3xl", fontWeight: "extrabold", color: { base: "slate.900", _dark: "white" } })}>
+          <h1
+            className={css({
+              fontSize: "3xl",
+              fontWeight: "extrabold",
+              color: { base: "slate.900", _dark: "white" },
+            })}
+          >
             Default Global Templates
           </h1>
-          <p className={css({ color: { base: "slate.600", _dark: "zinc.400" }, maxWidth: "3xl", mt: "2" })}>
-            Signed in as {user.email}. These are the shared categories, bag types, and items that are cloned into every new user account when they sign up.
+          <p
+            className={css({
+              color: { base: "slate.600", _dark: "zinc.400" },
+              maxWidth: "3xl",
+              mt: "2",
+            })}
+          >
+            Signed in as {user.email}. These are the shared categories, bag
+            types, and items that are cloned into every new user account when
+            they sign up.
           </p>
         </div>
         <InternalLink text="Back to Dashboard" url="/dashboard" />
       </div>
 
       <section className={grid({ columns: { base: 1, lg: 2 }, gap: "6" })}>
-        <div className={css({ bg: { base: "white", _dark: "zinc.900/60" }, border: "1px solid", borderColor: { base: "slate.200", _dark: "zinc.800" }, p: "6", rounded: "3xl", shadow: "sm" })}>
-          <h2 className={css({ fontSize: "2xl", fontWeight: "bold", mb: "4" })}>Categories</h2>
+        <div
+          className={css({
+            bg: { base: "white", _dark: "zinc.900/60" },
+            border: "1px solid",
+            borderColor: { base: "slate.200", _dark: "zinc.800" },
+            p: "6",
+            rounded: "3xl",
+            shadow: "sm",
+          })}
+        >
+          <h2 className={css({ fontSize: "2xl", fontWeight: "bold", mb: "4" })}>
+            Categories
+          </h2>
 
-          <form action={createCategoryAction} className={flex({ direction: "column", gap: "3", mb: "6" })}>
+          {/* FIX: Changed from formAction to createCategoryAction wrapper */}
+          <form
+            action={async (formData) => {
+              "use server";
+              await createCategoryAction(null, formData);
+            }}
+            className={flex({ direction: "column", gap: "3", mb: "6" })}
+          >
             <InputLabel htmlFor="category-name" label="New category name" />
-            <Input id="category-name" name="name" placeholder="e.g. Clothing" required />
+            <Input
+              id="category-name"
+              name="name"
+              placeholder="e.g. Clothing"
+              required
+            />
             <InputLabel htmlFor="category-icon" label="Icon" />
             <Input id="category-icon" name="icon" placeholder="e.g. shirt" />
             <InputLabel htmlFor="category-color" label="Color" />
-            <Input id="category-color" name="color" placeholder="e.g. #4f46e5" />
+            <Input
+              id="category-color"
+              name="color"
+              placeholder="e.g. #4f46e5"
+            />
             <Button text="Create category" type="submit" />
           </form>
 
           {categories.length === 0 ? (
-            <p className={css({ color: "slate.500" })}>No global categories yet.</p>
+            <p className={css({ color: "slate.500" })}>
+              No global categories yet.
+            </p>
           ) : (
             <div className={grid({ columns: { base: 1, sm: 2 }, gap: "4" })}>
               {categories.map((category) => (
@@ -86,26 +142,79 @@ export default async function AdminPage() {
                     shadow: "sm",
                   })}
                 >
-                  <form action={updateCategoryAction} className={grid({ columns: { base: 1 }, gap: "4" })}>
+                  {/* FIX: Wrapped action to pass 2 arguments */}
+                  <form
+                    action={async (formData) => {
+                      "use server";
+                      await updateCategoryAction(null, formData);
+                    }}
+                    className={grid({ columns: { base: 1 }, gap: "4" })}
+                  >
                     <input type="hidden" name="id" value={category.id} />
                     <div>
-                      <InputLabel htmlFor={`cat-name-${category.id}`} label="Name" />
-                      <Input id={`cat-name-${category.id}`} name="name" defaultValue={category.name} required />
+                      <InputLabel
+                        htmlFor={`cat-name-${category.id}`}
+                        label="Name"
+                      />
+                      <Input
+                        id={`cat-name-${category.id}`}
+                        name="name"
+                        defaultValue={category.name}
+                        required
+                      />
                     </div>
                     <div>
-                      <InputLabel htmlFor={`cat-icon-${category.id}`} label="Icon" />
-                      <Input id={`cat-icon-${category.id}`} name="icon" defaultValue={category.icon ?? ""} placeholder="icon" />
+                      <InputLabel
+                        htmlFor={`cat-icon-${category.id}`}
+                        label="Icon"
+                      />
+                      <Input
+                        id={`cat-icon-${category.id}`}
+                        name="icon"
+                        defaultValue={category.icon ?? ""}
+                        placeholder="icon"
+                      />
                     </div>
                     <div>
-                      <InputLabel htmlFor={`cat-color-${category.id}`} label="Color" />
-                      <Input id={`cat-color-${category.id}`} name="color" defaultValue={category.color ?? ""} placeholder="color" />
+                      <InputLabel
+                        htmlFor={`cat-color-${category.id}`}
+                        label="Color"
+                      />
+                      <Input
+                        id={`cat-color-${category.id}`}
+                        name="color"
+                        defaultValue={category.color ?? ""}
+                        placeholder="color"
+                      />
                     </div>
-                    <div className={flex({ justify: "space-between", align: "center", gap: "3", wrap: "wrap" })}>
+                    <div
+                      className={flex({
+                        justify: "space-between",
+                        align: "center",
+                        gap: "3",
+                        wrap: "wrap",
+                      })}
+                    >
                       <Button text="Save" type="submit" />
-                      <span className={css({ color: "slate.500", fontSize: "xs" })}>ID: {category.id}</span>
+                      <span
+                        className={css({ color: "slate.500", fontSize: "xs" })}
+                      >
+                        ID: {category.id}
+                      </span>
                     </div>
                   </form>
-                  <form action={deleteCategoryAction} className={css({ mt: "4", display: "flex", justifyContent: "flex-end" })}>
+                  {/* FIX: Wrapped action */}
+                  <form
+                    action={async (formData) => {
+                      "use server";
+                      await deleteCategoryAction(null, formData);
+                    }}
+                    className={css({
+                      mt: "4",
+                      display: "flex",
+                      justifyContent: "flex-end",
+                    })}
+                  >
                     <input type="hidden" name="id" value={category.id} />
                     <Button text="Delete" type="submit" variant="secondary" />
                   </form>
@@ -115,12 +224,35 @@ export default async function AdminPage() {
           )}
         </div>
 
-        <div className={css({ bg: { base: "white", _dark: "zinc.900/60" }, border: "1px solid", borderColor: { base: "slate.200", _dark: "zinc.800" }, p: "6", rounded: "3xl", shadow: "sm" })}>
-          <h2 className={css({ fontSize: "2xl", fontWeight: "bold", mb: "4" })}>Bag Types</h2>
+        <div
+          className={css({
+            bg: { base: "white", _dark: "zinc.900/60" },
+            border: "1px solid",
+            borderColor: { base: "slate.200", _dark: "zinc.800" },
+            p: "6",
+            rounded: "3xl",
+            shadow: "sm",
+          })}
+        >
+          <h2 className={css({ fontSize: "2xl", fontWeight: "bold", mb: "4" })}>
+            Bag Types
+          </h2>
 
-          <form action={createBagTypeAction} className={flex({ direction: "column", gap: "3", mb: "6" })}>
+          {/* FIX: Wrapped action */}
+          <form
+            action={async (formData) => {
+              "use server";
+              await createBagTypeAction(null, formData);
+            }}
+            className={flex({ direction: "column", gap: "3", mb: "6" })}
+          >
             <InputLabel htmlFor="bagtype-name" label="New bag type name" />
-            <Input id="bagtype-name" name="name" placeholder="e.g. Carry-on Backpack" required />
+            <Input
+              id="bagtype-name"
+              name="name"
+              placeholder="e.g. Carry-on Backpack"
+              required
+            />
             <InputLabel htmlFor="bagtype-icon" label="Icon" />
             <Input id="bagtype-icon" name="icon" placeholder="e.g. briefcase" />
             <InputLabel htmlFor="bagtype-color" label="Color" />
@@ -129,7 +261,9 @@ export default async function AdminPage() {
           </form>
 
           {bagTypes.length === 0 ? (
-            <p className={css({ color: "slate.500" })}>No global bag types yet.</p>
+            <p className={css({ color: "slate.500" })}>
+              No global bag types yet.
+            </p>
           ) : (
             <div className={grid({ columns: { base: 1, sm: 2 }, gap: "4" })}>
               {bagTypes.map((bagType) => (
@@ -144,26 +278,79 @@ export default async function AdminPage() {
                     shadow: "sm",
                   })}
                 >
-                  <form action={updateBagTypeAction} className={grid({ columns: { base: 1 }, gap: "4" })}>
+                  {/* FIX: Wrapped action */}
+                  <form
+                    action={async (formData) => {
+                      "use server";
+                      await updateBagTypeAction(null, formData);
+                    }}
+                    className={grid({ columns: { base: 1 }, gap: "4" })}
+                  >
                     <input type="hidden" name="id" value={bagType.id} />
                     <div>
-                      <InputLabel htmlFor={`bagtype-name-${bagType.id}`} label="Name" />
-                      <Input id={`bagtype-name-${bagType.id}`} name="name" defaultValue={bagType.name} required />
+                      <InputLabel
+                        htmlFor={`bagtype-name-${bagType.id}`}
+                        label="Name"
+                      />
+                      <Input
+                        id={`bagtype-name-${bagType.id}`}
+                        name="name"
+                        defaultValue={bagType.name}
+                        required
+                      />
                     </div>
                     <div>
-                      <InputLabel htmlFor={`bagtype-icon-${bagType.id}`} label="Icon" />
-                      <Input id={`bagtype-icon-${bagType.id}`} name="icon" defaultValue={bagType.icon ?? ""} placeholder="icon" />
+                      <InputLabel
+                        htmlFor={`bagtype-icon-${bagType.id}`}
+                        label="Icon"
+                      />
+                      <Input
+                        id={`bagtype-icon-${bagType.id}`}
+                        name="icon"
+                        defaultValue={bagType.icon ?? ""}
+                        placeholder="icon"
+                      />
                     </div>
                     <div>
-                      <InputLabel htmlFor={`bagtype-color-${bagType.id}`} label="Color" />
-                      <Input id={`bagtype-color-${bagType.id}`} name="color" defaultValue={bagType.color ?? ""} placeholder="color" />
+                      <InputLabel
+                        htmlFor={`bagtype-color-${bagType.id}`}
+                        label="Color"
+                      />
+                      <Input
+                        id={`bagtype-color-${bagType.id}`}
+                        name="color"
+                        defaultValue={bagType.color ?? ""}
+                        placeholder="color"
+                      />
                     </div>
-                    <div className={flex({ justify: "space-between", align: "center", gap: "3", wrap: "wrap" })}>
+                    <div
+                      className={flex({
+                        justify: "space-between",
+                        align: "center",
+                        gap: "3",
+                        wrap: "wrap",
+                      })}
+                    >
                       <Button text="Save" type="submit" />
-                      <span className={css({ color: "slate.500", fontSize: "xs" })}>ID: {bagType.id}</span>
+                      <span
+                        className={css({ color: "slate.500", fontSize: "xs" })}
+                      >
+                        ID: {bagType.id}
+                      </span>
                     </div>
                   </form>
-                  <form action={deleteBagTypeAction} className={css({ mt: "4", display: "flex", justifyContent: "flex-end" })}>
+                  {/* FIX: Wrapped action */}
+                  <form
+                    action={async (formData) => {
+                      "use server";
+                      await deleteBagTypeAction(null, formData);
+                    }}
+                    className={css({
+                      mt: "4",
+                      display: "flex",
+                      justifyContent: "flex-end",
+                    })}
+                  >
                     <input type="hidden" name="id" value={bagType.id} />
                     <Button text="Delete" type="submit" variant="secondary" />
                   </form>
@@ -174,27 +361,73 @@ export default async function AdminPage() {
         </div>
       </section>
 
-      <section className={css({ bg: { base: "white", _dark: "zinc.900/60" }, border: "1px solid", borderColor: { base: "slate.200", _dark: "zinc.800" }, p: "6", rounded: "3xl", shadow: "sm" })}>
-        <h2 className={css({ fontSize: "2xl", fontWeight: "bold", mb: "4" })}>Items</h2>
+      <section
+        className={css({
+          bg: { base: "white", _dark: "zinc.900/60" },
+          border: "1px solid",
+          borderColor: { base: "slate.200", _dark: "zinc.800" },
+          p: "6",
+          rounded: "3xl",
+          shadow: "sm",
+        })}
+      >
+        <h2 className={css({ fontSize: "2xl", fontWeight: "bold", mb: "4" })}>
+          Items
+        </h2>
 
-        <form action={createItemAction} className={grid({ columns: { base: 1, md: 3 }, gap: "4", mb: "6" })}>
+        {/* FIX: Wrapped action */}
+        <form
+          action={async (formData) => {
+            "use server";
+            await createItemAction(null, formData);
+          }}
+          className={grid({ columns: { base: 1, md: 3 }, gap: "4", mb: "6" })}
+        >
           <div>
             <InputLabel htmlFor="item-name" label="Name" />
-            <Input id="item-name" name="name" placeholder="e.g. T-Shirt" required />
+            <Input
+              id="item-name"
+              name="name"
+              placeholder="e.g. T-Shirt"
+              required
+            />
           </div>
           <div>
             <InputLabel htmlFor="item-defaultWeight" label="Default weight" />
-            <Input id="item-defaultWeight" name="defaultWeight" placeholder="e.g. 0.5" />
+            <Input
+              id="item-defaultWeight"
+              name="defaultWeight"
+              placeholder="e.g. 0.5"
+            />
           </div>
           <div>
             <InputLabel htmlFor="item-categories" label="Categories" />
-            <select id="item-categories" name="categoryIds" multiple size={4} className={css({ width: "100%", px: "3", py: "2.5", borderRadius: "md", border: "1px solid", borderColor: "input.border.default", background: "input.background.default" })}>
+            {/* FIX: Replaced 'selected' attributes with defaultValue for React standards */}
+            <select
+              id="item-categories"
+              name="categoryIds"
+              multiple
+              size={4}
+              className={css({
+                width: "100%",
+                px: "3",
+                py: "2.5",
+                borderRadius: "md",
+                border: "1px solid",
+                borderColor: "input.border.default",
+                background: "input.background.default",
+              })}
+            >
               {categories.map((category) => (
-                <option key={category.id} value={category.id}>{category.name}</option>
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
               ))}
             </select>
           </div>
-          <div className={css({ gridColumn: { base: "span 1", md: "span 3" } })}>
+          <div
+            className={css({ gridColumn: { base: "span 1", md: "span 3" } })}
+          >
             <Button text="Create item" type="submit" />
           </div>
         </form>
@@ -202,7 +435,9 @@ export default async function AdminPage() {
         {items.length === 0 ? (
           <p className={css({ color: "slate.500" })}>No global items yet.</p>
         ) : (
-          <div className={grid({ columns: { base: 1, md: 2, xl: 3 }, gap: "4" })}>
+          <div
+            className={grid({ columns: { base: 1, md: 2, xl: 3 }, gap: "4" })}
+          >
             {items.map((item) => (
               <div
                 key={item.id}
@@ -215,23 +450,47 @@ export default async function AdminPage() {
                   shadow: "sm",
                 })}
               >
-                <form action={updateItemAction} className={grid({ columns: { base: 1 }, gap: "4" })}>
+                {/* FIX: Wrapped action */}
+                <form
+                  action={async (formData) => {
+                    "use server";
+                    await updateItemAction(null, formData);
+                  }}
+                  className={grid({ columns: { base: 1 }, gap: "4" })}
+                >
                   <input type="hidden" name="id" value={item.id} />
                   <div>
                     <InputLabel htmlFor={`item-name-${item.id}`} label="Name" />
-                    <Input id={`item-name-${item.id}`} name="name" defaultValue={item.name} required />
+                    <Input
+                      id={`item-name-${item.id}`}
+                      name="name"
+                      defaultValue={item.name}
+                      required
+                    />
                   </div>
                   <div>
-                    <InputLabel htmlFor={`item-defaultWeight-${item.id}`} label="Default weight" />
-                    <Input id={`item-defaultWeight-${item.id}`} name="defaultWeight" defaultValue={item.defaultWeight?.toString() ?? ""} />
+                    <InputLabel
+                      htmlFor={`item-defaultWeight-${item.id}`}
+                      label="Default weight"
+                    />
+                    <Input
+                      id={`item-defaultWeight-${item.id}`}
+                      name="defaultWeight"
+                      defaultValue={item.defaultWeight?.toString() ?? ""}
+                    />
                   </div>
                   <div>
-                    <InputLabel htmlFor={`item-categories-${item.id}`} label="Categories" />
+                    <InputLabel
+                      htmlFor={`item-categories-${item.id}`}
+                      label="Categories"
+                    />
+                    {/* FIX: Converted explicit option tags selection to a clean multi-select component rule */}
                     <select
                       id={`item-categories-${item.id}`}
                       name="categoryIds"
                       multiple
                       size={4}
+                      defaultValue={item.categories.map((cat) => cat.id)}
                       className={css({
                         width: "100%",
                         px: "3",
@@ -243,18 +502,40 @@ export default async function AdminPage() {
                       })}
                     >
                       {categories.map((category) => (
-                        <option key={category.id} value={category.id} selected={item.categories.some((cat) => cat.id === category.id)}>
+                        <option key={category.id} value={category.id}>
                           {category.name}
                         </option>
                       ))}
                     </select>
                   </div>
-                  <div className={flex({ justify: "space-between", align: "center", gap: "3", wrap: "wrap" })}>
+                  <div
+                    className={flex({
+                      justify: "space-between",
+                      align: "center",
+                      gap: "3",
+                      wrap: "wrap",
+                    })}
+                  >
                     <Button text="Save" type="submit" />
-                    <span className={css({ color: "slate.500", fontSize: "xs" })}>Item ID: {item.id}</span>
+                    <span
+                      className={css({ color: "slate.500", fontSize: "xs" })}
+                    >
+                      Item ID: {item.id}
+                    </span>
                   </div>
                 </form>
-                <form action={deleteItemAction} className={css({ mt: "4", display: "flex", justifyContent: "flex-end" })}>
+                {/* FIX: Wrapped action */}
+                <form
+                  action={async (formData) => {
+                    "use server";
+                    await deleteItemAction(null, formData);
+                  }}
+                  className={css({
+                    mt: "4",
+                    display: "flex",
+                    justifyContent: "flex-end",
+                  })}
+                >
                   <input type="hidden" name="id" value={item.id} />
                   <Button text="Delete" type="submit" variant="secondary" />
                 </form>

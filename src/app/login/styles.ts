@@ -3,7 +3,6 @@ import { styled } from "@/styled-system/jsx";
 export const PageBackground = styled("div", {
   base: {
     transition: "all 0.2s ease",
-    minHeight: "100vh",
     display: "flex",
     alignContent: "center",
     justifyContent: "center",

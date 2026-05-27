@@ -15,8 +15,6 @@ export interface InputLabelProps {
   htmlFor: string;
 }
 
-const InputLabel = ({ label, htmlFor }: InputLabelProps) => {
+export const InputLabel = ({ label, htmlFor }: InputLabelProps) => {
   return <InputLabelStyled htmlFor={htmlFor}>{label}</InputLabelStyled>;
 };
-
-export default InputLabel;

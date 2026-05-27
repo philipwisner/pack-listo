@@ -4,8 +4,7 @@ interface LogoProps {
   width?: number | string;
   height?: number | string;
 }
-
-export default function Logo({ width = "100%", height = "100%" }: LogoProps) {
+export const Logo = ({ width = "100%", height = "100%" }: LogoProps) => {
   return (
     <div
       className={css({
@@ -61,4 +60,4 @@ export default function Logo({ width = "100%", height = "100%" }: LogoProps) {
       </svg>
     </div>
   );
-}
+};

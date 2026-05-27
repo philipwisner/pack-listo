@@ -3,9 +3,9 @@ import { type ComponentProps, type ReactNode } from "react";
 
 // 1. Define strict type props for your API layout
 export interface ButtonProps extends ComponentProps<typeof ButtonStyled> {
-  visual?: "primary" | "secondary";
+  variant?: "primary" | "secondary" | "alternative";
   width?: "full" | "fit";
-  size?: "small" | "medium";
+  size?: "small" | "base";
   primary?: boolean;
   text?: string;
   isLoading?: boolean;
@@ -20,17 +20,14 @@ export const ButtonStyled = styled("button", {
     display: "inline-flex",
     alignItems: "center",
     justifyContent: "center",
-    gap: "2", // Perfect spacing balance for when icons are added
+    gap: "2",
     py: "3",
     px: "4",
     borderRadius: "md",
     fontWeight: "bold",
     fontSize: "base",
-    fontFamily: "sans",
     cursor: "pointer",
-    outline: "none",
     transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
-
     _focus: {
       outline: "2px solid",
       outlineOffset: "2px",
@@ -53,7 +50,7 @@ export const ButtonStyled = styled("button", {
     },
   },
   variants: {
-    visual: {
+    variant: {
       primary: {
         bg: "button.primary.bg",
         color: "button.primary.text",
@@ -103,6 +100,19 @@ export const ButtonStyled = styled("button", {
           _hover: { bg: "input.background.disabled" },
         },
       },
+      alternative: {
+        borderRadius: "full",
+        border: "1px dashed",
+        borderColor: { base: "gray.300", _dark: "gray.500" },
+        color: "text.muted",
+        fontWeight: "semibold",
+        _hover: {
+          bg: { base: "gray.100", _dark: "gray.900" },
+          borderColor: { base: "gray.400", _dark: "gray.400" },
+          color: "text.main",
+          scale: "1.01",
+        },
+      },
     },
 
     // Width Sizing Rules
@@ -114,11 +124,11 @@ export const ButtonStyled = styled("button", {
     // Button sizing rules
     size: {
       small: {
-        py: "2",
-        px: "3",
+        py: "1",
+        px: "4",
         fontSize: "sm",
       },
-      medium: {
+      base: {
         py: "3",
         px: "4",
         fontSize: "base",
@@ -128,18 +138,21 @@ export const ButtonStyled = styled("button", {
 
   // Fallback production safety defaults
   defaultVariants: {
-    visual: "primary",
+    variant: "primary",
     width: "full",
-    size: "medium",
+    size: "base",
   },
 });
 
+//Need variants (primary, secondary, tertiary, alternative), width (full, fit), size (small, base, large)
+//Need loading state and icon support
+//Need outline versions of the icons?
+
 // 3. Render Component Structure
 export const Button = ({
-  visual = "primary",
+  variant = "primary",
   width = "full",
-  size = "medium",
-  type = "button",
+  size = "base",
   text = "",
   isLoading = false,
   loadingText = "",
@@ -150,30 +163,25 @@ export const Button = ({
 }: ButtonProps) => {
   return (
     <ButtonStyled
-      type={type}
-      visual={visual}
+      variant={variant}
       width={width}
       size={size}
       disabled={isLoading || disabled}
-      data-loading={isLoading ? "true" : undefined} // Excellent for target styling rules
+      data-loading={isLoading ? "true" : undefined}
       {...props}
     >
-      {/* Left Icon Render Block */}
       {!isLoading && iconLeft && (
         <span className="button-icon">{iconLeft}</span>
       )}
 
-      {/* Operational Spinner Element (Optional/Customizable) */}
       {isLoading && (
         <span className="button-spinner" aria-hidden="true">
           🌀 {/* Replace with an SVG spin-graphic or keyframe component */}
         </span>
       )}
 
-      {/* Primary Display Text Block */}
       <span>{isLoading ? loadingText : text}</span>
 
-      {/* Right Icon Render Block */}
       {!isLoading && iconRight && (
         <span className="button-icon">{iconRight}</span>
       )}

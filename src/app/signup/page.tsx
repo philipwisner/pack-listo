@@ -2,19 +2,18 @@
 import { useActionState, startTransition, useState } from "react";
 import { signupAction } from "@/utils/auth/actions";
 import { isMockMode } from "@/utils/auth/shared";
-import { css } from "@/styled-system/css";
-import { flex } from "@/styled-system/patterns";
 import { InputLabel } from "@/components/InputLabel/InputLabel";
-import {
-  AuthContainerContent,
-  FormContainer,
-  PageBackground,
-} from "../login/styles";
-import { DarkModeToggle } from "@/components/DarkModeToggle/DarkModeToggle";
 import { Logo } from "@/components/Logo/Logo";
 import { Input } from "@/components/TextInput/TextInput";
 import { Button } from "@/components/Button/Button";
 import { InternalLink } from "@/components/InternalLink/InternalLink";
+import { MutedText } from "@/styles/textStyles";
+import {
+  PageBackground,
+  AuthContainerContent,
+  FormContainer,
+  AdditionalOptions,
+} from "@/styles/authStyles";
 
 const initialState = {
   error: "",
@@ -66,15 +65,6 @@ export default function SignupPage() {
 
   return (
     <PageBackground>
-      <div
-        className={css({
-          position: "fixed",
-          top: "0",
-          right: "0",
-        })}
-      >
-        <DarkModeToggle />
-      </div>
       <AuthContainerContent>
         <Logo />
         <FormContainer action={formAction} onSubmit={handleSubmit} noValidate>
@@ -121,50 +111,22 @@ export default function SignupPage() {
             loadingText="Creating Account..."
           />
         </FormContainer>
-        <div
-          className={flex({
-            direction: "column",
-            align: "center",
-            gap: "4",
-            mt: "8",
-          })}
-        >
-          <p
-            className={css({
-              fontSize: "base",
-              color: "text.muted",
-            })}
-          >
+        <AdditionalOptions>
+          <MutedText>
             Already have an account? <InternalLink text="Log In" url="/login" />
-          </p>
+          </MutedText>
           {isMockActive && (
-            <button
-              onClick={handleMockBypass}
+            <Button
+              text="💡 Dev Shortcut: Bypass Auth (Mock Mode)"
               type="button"
+              variant="alternative"
+              size="small"
+              width="fit"
+              onClick={handleMockBypass}
               disabled={isPending}
-              className={css({
-                width: "full",
-                py: "2.5",
-                px: "4",
-                borderRadius: "xl",
-                bg: { base: "indigo.50/50", _dark: "indigo.950/20" },
-                border: "1px dashed",
-                borderColor: "indigo.300/50",
-                color: "text.muted",
-                fontSize: "xs",
-                fontWeight: "semibold",
-                cursor: "pointer",
-                transition: "all 0.2s ease",
-                _hover: {
-                  bg: { base: "indigo.50", _dark: "indigo.950/40" },
-                  borderColor: "indigo.500",
-                },
-              })}
-            >
-              💡 Dev Shortcut: Bypass Auth (Mock Mode)
-            </button>
+            />
           )}
-        </div>
+        </AdditionalOptions>
       </AuthContainerContent>
     </PageBackground>
   );

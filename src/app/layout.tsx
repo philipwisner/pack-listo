@@ -2,6 +2,10 @@ import type { Metadata, Viewport } from "next";
 import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import { RootLayoutClient } from "./RootLayoutClient";
+import {
+  DarkModeToggle,
+  ToggleContainer,
+} from "@/components/DarkModeToggle/DarkModeToggle";
 
 export const metadata: Metadata = {
   title: "Pack Listo",
@@ -73,7 +77,12 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <RootLayoutClient>{children}</RootLayoutClient>
+        <RootLayoutClient>
+          <ToggleContainer>
+            <DarkModeToggle />
+          </ToggleContainer>
+          {children}
+        </RootLayoutClient>
       </body>
     </html>
   );

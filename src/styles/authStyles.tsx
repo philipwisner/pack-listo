@@ -1,4 +1,5 @@
-import { styled } from "@/styled-system/jsx";
+import { Flex, styled } from "@/styled-system/jsx";
+import { ComponentProps } from "react";
 
 export const PageBackground = styled("div", {
   base: {
@@ -30,3 +31,14 @@ export const FormContainer = styled("form", {
     flexDirection: "column",
   },
 });
+
+export const AdditionalOptions = (props: ComponentProps<typeof Flex>) => (
+  <Flex
+    direction="column"
+    align="center"
+    justify="center"
+    gap="4"
+    mt="8"
+    {...props}
+  />
+);

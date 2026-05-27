@@ -49,26 +49,26 @@ export default defineConfig({
         full: { value: "9999px" },
       },
       spacing: {
-        "1": { value: "0.25rem" }, // 4px
-        "2": { value: "0.5rem" }, // 8px
-        "3": { value: "0.75rem" }, // 12px
-        "4": { value: "1rem" }, // 16px
-        "5": { value: "1.25rem" }, // 20px
-        "6": { value: "1.5rem" }, // 24px
-        "7": { value: "1.75rem" }, // 28px
-        "8": { value: "2rem" }, // 32px
-        "9": { value: "2.25rem" }, // 36px
-        "10": { value: "2.5rem" }, // 40px
-        "11": { value: "2.75rem" }, // 44px
-        "12": { value: "3rem" }, // 48px
-        "14": { value: "3.5rem" }, // 56px
-        "16": { value: "4rem" }, // 64px
-        "20": { value: "5rem" }, // 80px
-        "24": { value: "6rem" }, // 96px
-        "32": { value: "8rem" }, // 128px
+        "1": { value: "0.25rem" },
+        "2": { value: "0.5rem" },
+        "3": { value: "0.75rem" },
+        "4": { value: "1rem" },
+        "5": { value: "1.25rem" },
+        "6": { value: "1.5rem" },
+        "7": { value: "1.75rem" },
+        "8": { value: "2rem" },
+        "9": { value: "2.25rem" },
+        "10": { value: "2.5rem" },
+        "11": { value: "2.75rem" },
+        "12": { value: "3rem" },
+        "14": { value: "3.5rem" },
+        "16": { value: "4rem" },
+        "20": { value: "5rem" },
+        "24": { value: "6rem" },
+        "32": { value: "8rem" },
       },
       colors: {
-        black: { value: "#0f172a" },
+        black: { value: "#000000" },
         white: { value: "#ffffff" },
         gray: {
           50: { value: "#F9FAFC" },
@@ -97,16 +97,32 @@ export default defineConfig({
           950: { value: "#332902" },
         },
         red: {
+          25: { value: "#FFF8F8" },
           50: { value: "#FEF2F2" },
           100: { value: "#FEE2E2" },
+          200: { value: "#FECACA" },
+          300: { value: "#FCA5A5" },
+          400: { value: "#F87171" },
           500: { value: "#EF4444" },
           600: { value: "#DC2626" },
+          700: { value: "#B91C1C" },
+          800: { value: "#991B1B" },
+          900: { value: "#7F1D1D" },
+          950: { value: "#450A0A" },
         },
         green: {
+          25: { value: "#F7FDF9" },
           50: { value: "#F0FDF4" },
           100: { value: "#DCFCE7" },
+          200: { value: "#BBF7D0" },
+          300: { value: "#86EFAC" },
+          400: { value: "#4ADE80" },
           500: { value: "#22C55E" },
           600: { value: "#16A34A" },
+          700: { value: "#15803D" },
+          800: { value: "#166534" },
+          900: { value: "#14532D" },
+          950: { value: "#052E16" },
         },
         blue: {
           50: { value: "#EFF6FF" },
@@ -123,8 +139,6 @@ export default defineConfig({
         },
       },
     },
-
-    // 2. Responsive Light/Dark Semantic Tokens (No Extend Block Needed!)
     semanticTokens: {
       colors: {
         accent: {
@@ -138,7 +152,21 @@ export default defineConfig({
             value: { base: "{colors.gray.950}", _dark: "{colors.gray.50}" },
           },
           muted: {
-            value: { base: "{colors.gray.700}", _dark: "{colors.gray.400}" },
+            value: { base: "{colors.gray.700}", _dark: "{colors.gray.300}" },
+          },
+          active: {
+            value: { base: "{colors.gray.700}", _dark: "{colors.gray.200}" },
+          },
+        },
+        link: {
+          main: {
+            value: { base: "{colors.gray.950}", _dark: "{colors.gray.50}" },
+          },
+          hover: {
+            value: { base: "{colors.gray.800}", _dark: "{colors.gray.100}" },
+          },
+          active: {
+            value: { base: "{colors.gray.700}", _dark: "{colors.gray.200}" },
           },
         },
         logo: {
@@ -160,10 +188,43 @@ export default defineConfig({
                 _dark: "{colors.yellow.500}",
               },
             },
+            hoverBg: {
+              value: {
+                base: "{colors.yellow.400}",
+                _dark: "{colors.yellow.400}",
+              },
+            },
+            activeBg: {
+              value: {
+                base: "{colors.yellow.600}",
+                _dark: "{colors.yellow.600}",
+              },
+            },
+            disabledBg: {
+              value: { base: "{colors.gray.200}", _dark: "{colors.gray.800}" },
+            },
+            disabledText: {
+              value: { base: "{colors.gray.400}", _dark: "{colors.gray.500}" },
+            },
+            focusRing: {
+              value: {
+                base: "{colors.gray.400}",
+                _dark: "{colors.yellow.300}",
+              },
+            },
           },
           secondary: {
             text: {
-              value: { base: "#FFFFFF", _dark: "#FFFFFF" },
+              value: { base: "{colors.gray.950}", _dark: "{colors.white}" },
+            },
+            bg: {
+              value: { base: "{colors.gray.100}", _dark: "{colors.gray.800}" },
+            },
+            hoverBg: {
+              value: { base: "{colors.gray.200}", _dark: "{colors.gray.700}" },
+            },
+            activeBg: {
+              value: { base: "{colors.gray.300}", _dark: "{colors.gray.600}" },
             },
           },
         },
@@ -172,68 +233,131 @@ export default defineConfig({
             value: { base: "{colors.gray.700}", _dark: "{colors.gray.200}" },
           },
           border: {
-            value: { base: "{colors.gray.300}", _dark: "{colors.gray.500}" },
+            default: {
+              value: { base: "{colors.gray.300}", _dark: "{colors.gray.500}" },
+            },
+            focus: {
+              value: { base: "{colors.gray.400}", _dark: "{colors.gray.300}" },
+            },
+            hover: {
+              value: { base: "{colors.gray.400}", _dark: "{colors.gray.300}" },
+            },
+            error: {
+              value: { base: "{colors.red.400}", _dark: "{colors.red.300}" },
+            },
+            focusError: {
+              value: { base: "{colors.red.600}", _dark: "{colors.red.500}" },
+            },
+            hoverError: {
+              value: { base: "{colors.red.600}", _dark: "{colors.red.500}" },
+            },
+            success: {
+              value: {
+                base: "{colors.green.400}",
+                _dark: "{colors.green.300}",
+              },
+            },
+            focusSuccess: {
+              value: {
+                base: "{colors.green.600}",
+                _dark: "{colors.green.500}",
+              },
+            },
+            hoverSuccess: {
+              value: {
+                base: "{colors.green.600}",
+                _dark: "{colors.green.500}",
+              },
+            },
           },
           placeholder: {
-            value: { base: "{colors.gray.600}", _dark: "{colors.gray.300}" },
+            default: {
+              value: { base: "{colors.gray.400}", _dark: "{colors.gray.300}" },
+            },
+            error: {
+              value: { base: "{colors.red.300}", _dark: "{colors.red.300}" },
+            },
+            success: {
+              value: {
+                base: "{colors.green.300}",
+                _dark: "{colors.green.300}",
+              },
+            },
           },
           background: {
-            value: { base: "{colors.white}", _dark: "{colors.gray.700}" },
-          },
-          "background-darker": {
-            value: { base: "{colors.gray.100}", _dark: "{colors.gray.800}" },
+            default: {
+              value: { base: "{colors.white}", _dark: "{colors.gray.700}" },
+            },
+            disabled: {
+              value: { base: "{colors.gray.100}", _dark: "{colors.gray.800}" },
+            },
+            error: {
+              value: { base: "{colors.red.25}", _dark: "{colors.red.500/10}" },
+            },
+            success: {
+              value: {
+                base: "{colors.green.25}",
+                _dark: "{colors.green.500/10}",
+              },
+            },
           },
           text: {
             value: { base: "{colors.gray.950}", _dark: "{colors.gray.50}" },
           },
-          focus: {
-            value: {
-              base: "{colors.yellow.300}",
-              _dark: "{colors.yellow.300}",
+          focusRing: {
+            default: {
+              value: {
+                base: "{colors.yellow.300}",
+                _dark: "{colors.yellow.300}",
+              },
+            },
+            error: {
+              value: {
+                base: "{colors.red.300}",
+                _dark: "{colors.red.300}",
+              },
+            },
+            success: {
+              value: {
+                base: "{colors.green.300}",
+                _dark: "{colors.green.300}",
+              },
             },
           },
         },
-        textStyles: {
-          bodyXs: {
-            value: {
-              fontSize: "{fontSizes.xs}",
-              lineHeight: "{lineHeights.normal}",
+        shadows: {
+          button: {
+            primary: {
+              default: {
+                value: {
+                  _light: "0 2px 4px 0 rgba(161, 126, 4, 0.15)",
+                  _dark: "0 2px 4px 0 rgba(0, 0, 0, 0.4)",
+                },
+              },
+              hover: {
+                value: {
+                  _light:
+                    "0 12px 20px -4px rgba(161, 126, 4, 0.35), 0 4px 8px -2px rgba(161, 126, 4, 0.2)",
+                  _dark:
+                    "0 0 25px 2px rgba(255, 202, 8, 0.25), 0 8px 16px -4px rgba(0, 0, 0, 0.7)",
+                },
+              },
             },
-          },
-          bodySm: {
-            value: {
-              fontSize: "{fontSizes.sm}",
-              lineHeight: "{lineHeights.normal}",
-            },
-          },
-          bodyBase: {
-            value: {
-              fontSize: "{fontSizes.base}",
-              lineHeight: "{lineHeights.relaxed}",
-            },
-          },
-          headingMd: {
-            value: {
-              fontSize: "{fontSizes.md}",
-              lineHeight: "{lineHeights.tight}",
-            },
-          },
-          headingLg: {
-            value: {
-              fontSize: "{fontSizes.lg}",
-              lineHeight: "{lineHeights.tight}",
-            },
-          },
-          headingXl: {
-            value: {
-              fontSize: "{fontSizes.xl}",
-              lineHeight: "{lineHeights.tight}",
-            },
-          },
-          heading2xl: {
-            value: {
-              fontSize: "{fontSizes.2xl}",
-              lineHeight: "{lineHeights.none}",
+            secondary: {
+              default: {
+                value: {
+                  _light: "0 1px 2px 0 rgba(15, 23, 42, 0.05)",
+                  _dark: "0 1px 2px 0 rgba(0, 0, 0, 0.3)",
+                },
+              },
+              hover: {
+                value: {
+                  _light:
+                    "0 10px 15px -3px rgba(15, 23, 42, 0.1), 0 4px 6px -2px rgba(15, 23, 42, 0.05)",
+                  _dark:
+                    "0 10px 20px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.3)",
+                },
+              },
             },
           },
         },
@@ -241,6 +365,7 @@ export default defineConfig({
           bg: { value: "{colors.red.50}" },
           border: { value: "{colors.red.100}" },
           main: { value: "{colors.red.500}" },
+          active: { value: "{colors.red.600}" },
           text: { value: "{colors.red.600}" },
           "bg-subtle": { value: "{colors.red.500/10}" },
         },
@@ -265,6 +390,36 @@ export default defineConfig({
           text: { value: "{colors.orange.600}" },
           "bg-subtle": { value: "{colors.orange.500/10}" },
         },
+      },
+    },
+    textStyles: {
+      bodyXs: {
+        fontSize: "{fontSizes.xs}" as any,
+        lineHeight: "{lineHeights.normal}" as any,
+      },
+      bodySm: {
+        fontSize: "{fontSizes.sm}" as any,
+        lineHeight: "{lineHeights.normal}" as any,
+      },
+      bodyBase: {
+        fontSize: "{fontSizes.base}" as any,
+        lineHeight: "{lineHeights.relaxed}" as any,
+      },
+      headingMd: {
+        fontSize: "{fontSizes.md}" as any,
+        lineHeight: "{lineHeights.tight}" as any,
+      },
+      headingLg: {
+        fontSize: "{fontSizes.lg}" as any,
+        lineHeight: "{lineHeights.tight}" as any,
+      },
+      headingXl: {
+        fontSize: "{fontSizes.xl}" as any,
+        lineHeight: "{lineHeights.tight}" as any,
+      },
+      heading2xl: {
+        fontSize: "{fontSizes.2xl}" as any,
+        lineHeight: "{lineHeights.none}" as any,
       },
     },
   },

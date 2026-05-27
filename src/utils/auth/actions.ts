@@ -7,6 +7,49 @@ import { createAdminClient } from "../supabase/admin";
 import { MOCK_COOKIE_NAME, isMockMode } from "./shared";
 import { prisma } from "../db";
 
+async function cloneDefaultsForUser(userId: string) {
+  try {
+    // If the user already has categories/items/bagTypes, skip cloning
+    const existingCount = await prisma.category.count({ where: { userId } });
+    if (existingCount > 0) return;
+
+    const [defaultCategories, defaultBagTypes, defaultItems] = await Promise.all([
+      prisma.category.findMany({ where: { userId: null } }),
+      prisma.bagType.findMany({ where: { userId: null } }),
+      prisma.item.findMany({ where: { userId: null }, include: { categories: true } }),
+    ]);
+
+    const categoryMap = new Map<string, string>();
+    for (const cat of defaultCategories) {
+      const created = await prisma.category.create({
+        data: { name: cat.name, icon: cat.icon, color: cat.color, userId },
+      });
+      categoryMap.set(cat.id, created.id);
+    }
+
+    for (const bt of defaultBagTypes) {
+      await prisma.bagType.create({ data: { name: bt.name, icon: bt.icon, color: bt.color, userId } });
+    }
+
+    for (const it of defaultItems) {
+      const connectCats = (it.categories || [])
+        .map((c) => ({ id: categoryMap.get(c.id) }))
+        .filter((c) => c.id) as { id: string }[];
+
+      await prisma.item.create({
+        data: {
+          name: it.name,
+          defaultWeight: it.defaultWeight,
+          userId,
+          categories: { connect: connectCats },
+        },
+      });
+    }
+  } catch (err) {
+    console.warn("Failed to clone default data for user:", err);
+  }
+}
+
 export async function loginAction(prevState: any, formData: FormData) {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
@@ -114,6 +157,8 @@ export async function signupAction(prevState: any, formData: FormData) {
           update: { email: data.user.email || email, name },
           create: { id: data.user.id, email: data.user.email || email, name },
         });
+        // Clone global default items/categories/bagTypes for the new user
+        await cloneDefaultsForUser(data.user.id);
       } catch (dbErr) {
         console.warn(
           "Prisma user upsert skipped/failed (likely offline database):",
@@ -152,6 +197,8 @@ export async function signupAction(prevState: any, formData: FormData) {
                   name,
                 },
               });
+              // Clone default data for admin-created user as well
+              await cloneDefaultsForUser(createdUser.id);
             } catch (dbErr) {
               console.warn(
                 "Prisma user upsert skipped/failed after admin create:",

@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/utils/auth/server";
 import { getDashboardData } from "@/utils/data";
 import { logoutAction } from "@/utils/auth/actions";
+import { InternalLink } from "@/components/InternalLink/InternalLink";
 import { css } from "@/styled-system/css";
 import { flex, grid } from "@/styled-system/patterns";
 
@@ -128,6 +129,10 @@ export default async function DashboardPage() {
                 {user.name || user.email}
               </span>
             </div>
+
+            {user.isAdmin && (
+              <InternalLink text="Admin" url="/admin" />
+            )}
 
             <form action={logoutAction}>
               <button

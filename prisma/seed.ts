@@ -50,21 +50,16 @@ async function seedItem(
   defaultWeight?: number,
 ) {
   const existing = await prisma.item.findFirst({
-    where: { name, userId: "c422818a-cbd3-45f3-9f68-d9a1f945cdc6" },
+    where: { name, userId: null },
   });
   if (existing) {
-    console.log("existing", existing);
-    await prisma.item.deleteMany({
-      where: { id: existing.id },
-    });
+    return;
   }
-
-  // return // already seeded
 
   // Resolve category IDs – use findFirst to safely pick one record per name
   const categoryIds: { id: string }[] = [];
   for (const catName of categoryNames) {
-    const cat = await prisma.category.findFirst({ where: { name: catName } });
+    const cat = await prisma.category.findFirst({ where: { name: catName, userId: null } });
     if (cat) categoryIds.push({ id: cat.id });
   }
 
@@ -73,7 +68,7 @@ async function seedItem(
       name,
       defaultWeight: defaultWeight ?? null,
       categories: { connect: categoryIds },
-      userId: process.env.USER_ID,
+      userId: null,
     },
   });
   console.log(`  + ${name}`);

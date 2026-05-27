@@ -2,6 +2,7 @@ export interface AuthUser {
   id: string;
   email: string;
   name?: string | null;
+  isAdmin?: boolean;
 }
 
 export const MOCK_COOKIE_NAME = "mock-auth-session";

@@ -27,11 +27,13 @@ This app uses Supabase for authentication and PostgreSQL for the database. For l
 ### Prerequisites
 
 Install the Supabase CLI:
+
 ```bash
 brew install supabase/tap/supabase
 ```
 
 Verify installation:
+
 ```bash
 supabase --version
 ```
@@ -39,16 +41,19 @@ supabase --version
 ### Starting Local Supabase
 
 1. **Initialize Supabase** (one-time setup):
+
 ```bash
 supabase init
 ```
 
 2. **Start the local Supabase stack** (Docker required):
+
 ```bash
 supabase start
 ```
 
 This will output your local credentials. Copy these into `.env.local`:
+
 ```bash
 NEXT_PUBLIC_SUPABASE_URL=http://localhost:54321
 NEXT_PUBLIC_SUPABASE_ANON_KEY=<your-anon-key-from-supabase-start>
@@ -58,17 +63,20 @@ NEXT_PUBLIC_USE_MOCK_AUTH=false
 ```
 
 3. **Push Prisma schema to the local database**:
+
 ```bash
 npx prisma db push
 npx prisma generate
 ```
 
 4. **Start the Next.js dev server**:
+
 ```bash
 npm run dev
 ```
 
 5. **Test the app**:
+
 - Open http://localhost:3000
 - Go to /signup and create a user
 - User should appear in both Supabase Auth and the PostgreSQL database
@@ -79,9 +87,23 @@ npm run dev
 supabase stop
 ```
 
+### Password Reset Helper
+
+This repo includes a helper script to reset any Supabase auth user's password by email.
+It uses the local `SUPABASE_SERVICE_ROLE_KEY` in `.env.local` and calls the Supabase admin API.
+
+Run it like this:
+
+```bash
+npm run reset-password -- user@example.com
+```
+
+You will be prompted to enter and confirm a new password. It works for any existing auth user, not just the admin user.
+
 ### Deployment to Hosted Supabase
 
 When deploying to production, set these environment variables on your hosting platform (e.g., Vercel) with your hosted Supabase credentials:
+
 ```
 NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_hosted_anon_key

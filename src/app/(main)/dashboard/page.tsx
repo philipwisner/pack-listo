@@ -1,11 +1,21 @@
 import { getCurrentUser } from "@/lib/auth";
-import { getDashboardData } from "@/lib/data";
+import { getDashboardData } from "@/services/dashboard.service";
 import { css } from "@/styled-system/css";
 import { flex, grid } from "@/styled-system/patterns";
 
 export default async function DashboardPage() {
   const user = await getCurrentUser();
-  const { trips, stats, isFallback } = await getDashboardData(user!.id);
+
+  // Safely redirect or error out if there's no user session found
+  if (!user) {
+    return <div>Please log in to view your dashboard.</div>;
+  }
+
+  const { trips, stats, error } = await getDashboardData(user.id);
+
+  if (error) {
+    console.error("Dashboard page error:", error);
+  }
 
   return (
     <main
@@ -49,7 +59,7 @@ export default async function DashboardPage() {
           gap: "5",
         })}
       >
-        {/* Card 1 */}
+        {/* Card 1: Total Trips */}
         <div
           className={css({
             bg: { base: "white", _dark: "zinc.900/40" },
@@ -105,12 +115,12 @@ export default async function DashboardPage() {
                 color: { base: "slate.900", _dark: "white" },
               })}
             >
-              0
+              {stats.totalTrips}
             </span>
           </div>
         </div>
 
-        {/* Card 2 */}
+        {/* Card 2: Fully Packed */}
         <div
           className={css({
             bg: { base: "white", _dark: "zinc.900/40" },
@@ -166,12 +176,12 @@ export default async function DashboardPage() {
                 color: { base: "slate.900", _dark: "white" },
               })}
             >
-              0
+              {stats.packedTrips}
             </span>
           </div>
         </div>
 
-        {/* Card 3 */}
+        {/* Card 3: Items Packed */}
         <div
           className={css({
             bg: { base: "white", _dark: "zinc.900/40" },
@@ -227,12 +237,12 @@ export default async function DashboardPage() {
                 color: { base: "slate.900", _dark: "white" },
               })}
             >
-              0
+              {stats.totalItemsPacked}
             </span>
           </div>
         </div>
 
-        {/* Card 4 */}
+        {/* Card 4: Overall Progress */}
         <div
           className={css({
             bg: { base: "white", _dark: "zinc.900/40" },
@@ -289,7 +299,7 @@ export default async function DashboardPage() {
                 color: { base: "slate.900", _dark: "white" },
               })}
             >
-              0%
+              {stats.overallProgress}%
             </span>
           </div>
         </div>
@@ -331,239 +341,230 @@ export default async function DashboardPage() {
           </button>
         </div>
 
-        <div
-          className={grid({
-            columns: { base: 1, md: 2, lg: 3 },
-            gap: "6",
-          })}
-        >
-          {trips.map((trip) => {
-            // Color matching for bags
-            let bagColorClass = css({
-              bg: "blue.50",
-              color: "blue.600",
-              _dark: { bg: "blue.950/40", color: "blue.400" },
-            });
-            if (
-              trip.bagType.includes("Suitcase") ||
-              trip.bagType.includes("Checked")
-            ) {
-              bagColorClass = css({
-                bg: "orange.50",
-                color: "orange.600",
-                _dark: { bg: "orange.950/40", color: "orange.400" },
+        {trips.length === 0 ? (
+          <div
+            className={css({
+              textAlign: "center",
+              py: "12",
+              border: "2px dashed",
+              borderColor: { base: "slate.200", _dark: "zinc.800" },
+              borderRadius: "2xl",
+              color: "slate.400",
+            })}
+          >
+            No trips found. Click above to create your first packing list!
+          </div>
+        ) : (
+          <div
+            className={grid({
+              columns: { base: 1, md: 2, lg: 3 },
+              gap: "6",
+            })}
+          >
+            {trips.map((trip) => {
+              let bagColorClass = css({
+                bg: "blue.50",
+                color: "blue.600",
+                _dark: { bg: "blue.950/40", color: "blue.400" },
               });
-            } else if (trip.bagType.includes("Personal")) {
-              bagColorClass = css({
-                bg: "pink.50",
-                color: "pink.600",
-                _dark: { bg: "pink.950/40", color: "pink.400" },
+
+              const statusColorClass = css({
+                bg: "green.50",
+                color: "green.600",
+                _dark: { bg: "green.950/40", color: "green.400" },
               });
-            }
 
-            // Color matching for status
-            const statusColorClass =
-              trip.status === "READY"
-                ? css({
-                    bg: "green.50",
-                    color: "green.600",
-                    _dark: { bg: "green.950/40", color: "green.400" },
-                  })
-                : css({
-                    bg: "amber.50",
-                    color: "amber.600",
-                    _dark: { bg: "amber.950/40", color: "amber.400" },
-                  });
-
-            return (
-              <div
-                key={trip.id}
-                className={flex({
-                  direction: "column",
-                  bg: { base: "white", _dark: "zinc.900/40" },
-                  border: "1px solid",
-                  borderColor: { base: "slate-100", _dark: "zinc-800/60" },
-                  borderRadius: "2xl",
-                  p: "6",
-                  shadow: "sm",
-                  transition: "all 0.3s ease",
-                  position: "relative",
-                  overflow: "hidden",
-                  _hover: {
-                    transform: "translateY(-4px)",
-                    shadow: "xl",
-                    borderColor: "indigo.500/20",
-                  },
-                })}
-              >
-                {/* Decorative edge line reflecting status */}
+              return (
                 <div
-                  className={css({
-                    position: "absolute",
-                    left: 0,
-                    top: 0,
-                    bottom: 0,
-                    width: "1.5",
-                    bg: trip.status === "READY" ? "green.500" : "indigo.400",
-                  })}
-                />
-
-                {/* Trip Header */}
-                <div
-                  className={flex({
-                    justify: "space-between",
-                    align: "flex-start",
-                    mb: "3",
-                  })}
-                >
-                  <div className={flex({ direction: "column", gap: "1" })}>
-                    <h4
-                      className={css({
-                        fontSize: "md",
-                        fontWeight: "bold",
-                        color: { base: "slate.900", _dark: "white" },
-                      })}
-                    >
-                      {trip.name}
-                    </h4>
-                    <span
-                      className={css({
-                        fontSize: "xs",
-                        color: { base: "slate.400", _dark: "zinc.500" },
-                        fontWeight: "medium",
-                      })}
-                    >
-                      📍 {trip.destination || "Anywhere"}
-                    </span>
-                  </div>
-
-                  <span
-                    className={[
-                      css({
-                        px: "2.5",
-                        py: "0.5",
-                        borderRadius: "full",
-                        fontSize: "[10px]",
-                        fontWeight: "extrabold",
-                        textTransform: "uppercase",
-                        letterSpacing: "wider",
-                      }),
-                      statusColorClass,
-                    ].join(" ")}
-                  >
-                    {trip.status}
-                  </span>
-                </div>
-
-                {/* Date and Length */}
-                <div
-                  className={flex({
-                    align: "center",
-                    gap: "3",
-                    fontSize: "xs",
-                    color: { base: "slate.500", _dark: "zinc.400" },
-                    mb: "4",
-                  })}
-                >
-                  <span>
-                    📅{" "}
-                    {trip.tripDate
-                      ? new Date(trip.tripDate).toLocaleDateString("en-US", {
-                          month: "short",
-                          day: "numeric",
-                          year: "numeric",
-                        })
-                      : "No departure date"}
-                  </span>
-                  <span>•</span>
-                  <span>⏱️ {trip.lengthOfStay || 0} days</span>
-                </div>
-
-                {/* Bag Tag */}
-                <div className={flex({ mb: "6" })}>
-                  <span
-                    className={[
-                      css({
-                        px: "2.5",
-                        py: "1",
-                        borderRadius: "lg",
-                        fontSize: "xs",
-                        fontWeight: "semibold",
-                        display: "inline-flex",
-                        alignItems: "center",
-                        gap: "1.5",
-                      }),
-                      bagColorClass,
-                    ].join(" ")}
-                  >
-                    🧳 {trip.bagType}
-                  </span>
-                </div>
-
-                {/* Packing Progress */}
-                <div
+                  key={trip.id}
                   className={flex({
                     direction: "column",
-                    gap: "2.5",
-                    mt: "auto",
+                    bg: { base: "white", _dark: "zinc.900/40" },
+                    border: "1px solid",
+                    borderColor: { base: "slate-100", _dark: "zinc-800/60" },
+                    borderRadius: "2xl",
+                    p: "6",
+                    shadow: "sm",
+                    transition: "all 0.3s ease",
+                    position: "relative",
+                    overflow: "hidden",
+                    _hover: {
+                      transform: "translateY(-4px)",
+                      shadow: "xl",
+                      borderColor: "indigo.500/20",
+                    },
                   })}
                 >
+                  <div
+                    className={css({
+                      position: "absolute",
+                      left: 0,
+                      top: 0,
+                      bottom: 0,
+                      width: "1.5",
+                      bg: trip.status === "READY" ? "green.500" : "indigo.400",
+                    })}
+                  />
+
+                  {/* Trip Header */}
                   <div
                     className={flex({
                       justify: "space-between",
-                      align: "center",
-                      fontSize: "xs",
+                      align: "flex-start",
+                      mb: "3",
                     })}
                   >
+                    <div className={flex({ direction: "column", gap: "1" })}>
+                      <h4
+                        className={css({
+                          fontSize: "md",
+                          fontWeight: "bold",
+                          color: { base: "slate.900", _dark: "white" },
+                        })}
+                      >
+                        {trip.name}
+                      </h4>
+                      <span
+                        className={css({
+                          fontSize: "xs",
+                          color: { base: "slate.400", _dark: "zinc.500" },
+                          fontWeight: "medium",
+                        })}
+                      >
+                        📍 {trip.destination || "Anywhere"}
+                      </span>
+                    </div>
+
                     <span
-                      className={css({
-                        color: { base: "slate.500", _dark: "zinc.400" },
-                        fontWeight: "medium",
-                      })}
+                      className={[
+                        css({
+                          px: "2.5",
+                          py: "0.5",
+                          borderRadius: "full",
+                          fontSize: "[10px]",
+                          fontWeight: "extrabold",
+                          textTransform: "uppercase",
+                          letterSpacing: "wider",
+                        }),
+                        statusColorClass,
+                      ].join(" ")}
                     >
-                      Packing Progress
+                      {trip.status}
                     </span>
-                    <strong
-                      className={css({
-                        color: { base: "slate.900", _dark: "white" },
-                      })}
-                    >
-                      {trip.packedItems} / {trip.totalItems} (
-                      {trip.packedPercentage}%)
-                    </strong>
                   </div>
 
-                  {/* Progress Bar Container */}
+                  {/* Date and Length */}
                   <div
-                    className={css({
-                      width: "full",
-                      height: "2",
-                      bg: { base: "slate.100", _dark: "zinc-800" },
-                      borderRadius: "full",
-                      overflow: "hidden",
+                    className={flex({
+                      align: "center",
+                      gap: "3",
+                      fontSize: "xs",
+                      color: { base: "slate.500", _dark: "zinc.400" },
+                      mb: "4",
+                    })}
+                  >
+                    <span>
+                      📅{" "}
+                      {trip.tripDate
+                        ? new Date(trip.tripDate).toLocaleDateString("en-US", {
+                            month: "short",
+                            day: "numeric",
+                            year: "numeric",
+                          })
+                        : "No departure date"}
+                    </span>
+                    <span>•</span>
+                    <span>⏱️ {trip.lengthOfStay || 0} days</span>
+                  </div>
+
+                  {/* Bag Tag */}
+                  <div className={flex({ mb: "6" })}>
+                    <span
+                      className={[
+                        css({
+                          px: "2.5",
+                          py: "1",
+                          borderRadius: "lg",
+                          fontSize: "xs",
+                          fontWeight: "semibold",
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "1.5",
+                        }),
+                        bagColorClass,
+                      ].join(" ")}
+                    >
+                      🧳 {trip.bagType}
+                    </span>
+                  </div>
+
+                  {/* Packing Progress */}
+                  <div
+                    className={flex({
+                      direction: "column",
+                      gap: "2.5",
+                      mt: "auto",
                     })}
                   >
                     <div
-                      className={css({
-                        height: "full",
-                        bgGradient: "to-r",
-                        gradientFrom:
-                          trip.status === "READY" ? "green.400" : "indigo.400",
-                        gradientTo:
-                          trip.status === "READY"
-                            ? "emerald.500"
-                            : "violet.500",
-                        borderRadius: "full",
-                        transition: "width 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+                      className={flex({
+                        justify: "space-between",
+                        align: "center",
+                        fontSize: "xs",
                       })}
-                      style={{ width: `${trip.packedPercentage}%` }}
-                    />
+                    >
+                      <span
+                        className={css({
+                          color: { base: "slate.500", _dark: "zinc.400" },
+                          fontWeight: "medium",
+                        })}
+                      >
+                        Packing Progress
+                      </span>
+                      <strong
+                        className={css({
+                          color: { base: "slate.900", _dark: "white" },
+                        })}
+                      >
+                        {trip.packedItems} / {trip.totalItems} (
+                        {trip.packedPercentage}%)
+                      </strong>
+                    </div>
+
+                    {/* Progress Bar Container */}
+                    <div
+                      className={css({
+                        width: "full",
+                        height: "2",
+                        bg: { base: "slate.100", _dark: "zinc-800" },
+                        borderRadius: "full",
+                        overflow: "hidden",
+                      })}
+                    >
+                      <div
+                        className={css({
+                          height: "full",
+                          bgGradient: "to-r",
+                          gradientFrom:
+                            trip.status === "READY"
+                              ? "green.400"
+                              : "indigo.400",
+                          gradientTo:
+                            trip.status === "READY"
+                              ? "emerald.500"
+                              : "violet.500",
+                          borderRadius: "full",
+                          transition: "width 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+                        })}
+                        style={{ width: `${trip.packedPercentage}%` }}
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
+        )}
       </section>
     </main>
   );

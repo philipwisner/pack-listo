@@ -3,6 +3,7 @@ import { NextResponse, type NextRequest } from "next/server";
 
 const GUEST_ONLY_ROUTES = ["/login", "/signup"];
 const AUTH_HOME = "/dashboard";
+const UNAUTH_HOME = "/login";
 
 export async function proxy(request: NextRequest) {
   const url = request.nextUrl.clone();
@@ -18,7 +19,7 @@ export async function proxy(request: NextRequest) {
   if (!hasSessionCookie && !GUEST_ONLY_ROUTES.includes(pathname)) {
     // If hitting the root domain unauthenticated, fast-redirect to login
     if (pathname === "/") {
-      url.pathname = "/login";
+      url.pathname = UNAUTH_HOME;
       return NextResponse.redirect(url);
     }
 
@@ -28,7 +29,7 @@ export async function proxy(request: NextRequest) {
     }
 
     // For full page requests to protected routes, force a clean redirect to login
-    url.pathname = "/login";
+    url.pathname = UNAUTH_HOME;
     url.searchParams.set("next", pathname);
     return NextResponse.redirect(url);
   }
@@ -71,7 +72,7 @@ export async function proxy(request: NextRequest) {
 
   // A. Root Domain Pivot
   if (pathname === "/") {
-    url.pathname = isAuthenticated ? AUTH_HOME : "/login";
+    url.pathname = isAuthenticated ? AUTH_HOME : UNAUTH_HOME;
     return NextResponse.redirect(url);
   }
 
@@ -90,7 +91,7 @@ export async function proxy(request: NextRequest) {
 
   // C. Default-Closed Gatekeeper
   if (!isAuthenticated) {
-    url.pathname = "/login";
+    url.pathname = UNAUTH_HOME;
     url.searchParams.set("next", pathname);
     return NextResponse.redirect(url);
   }

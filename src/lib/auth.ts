@@ -1,5 +1,5 @@
 import { cache } from "react";
-import { createClient as createSupabaseClient } from "@/utils/supabase/server";
+import { createClient } from "@/utils/supabase/server";
 import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
 
@@ -10,10 +10,10 @@ export interface AuthUser {
   isAdmin?: boolean;
 }
 
-// Wrapping in cache ensures this logic runs only once per request
+//Function to get the current authenticated user, including their admin status from the database. This is cached for the duration of the request to avoid redundant database calls.
 export const getCurrentUser = cache(async (): Promise<AuthUser | null> => {
   try {
-    const supabase = await createSupabaseClient();
+    const supabase = await createClient();
     const {
       data: { user },
     } = await supabase.auth.getUser();
@@ -36,6 +36,7 @@ export const getCurrentUser = cache(async (): Promise<AuthUser | null> => {
   }
 });
 
+// Function to check if users isAdmin
 export async function requireAdminUser() {
   const user = await getCurrentUser();
   if (!user?.isAdmin) {

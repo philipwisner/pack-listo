@@ -34,15 +34,15 @@ model Category {
 }
 
 model CategoryOrder {
-  listId     String
-  categoryId String
-  position   Int
-  list       List     @relation(fields: [listId], references: [id])
-  category   Category @relation(fields: [categoryId], references: [id])
+  listId      String
+  categoryId  String
+  position    Int
+  // Add onDelete: Cascade to both fields below
+  list        List     @relation(fields: [listId], references: [id], onDelete: Cascade)
+  category    Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 
-  @@id([listId, categoryId]) // Composite ID for the join table
+  @@id([listId, categoryId])
 }
-
 
 model BagType {
   id        String     @id @default(cuid())
@@ -61,8 +61,9 @@ model BagTypeOrder {
   listId    String
   bagTypeId String
   position  Int
-  list      List    @relation(fields: [listId], references: [id])
-  bagType   BagType @relation(fields: [bagTypeId], references: [id])
+  // Add onDelete: Cascade to both fields below
+  list      List    @relation(fields: [listId], references: [id], onDelete: Cascade)
+  bagType   BagType @relation(fields: [bagTypeId], references: [id], onDelete: Cascade)
 
   @@id([listId, bagTypeId])
 }
@@ -96,22 +97,22 @@ model List {
 }
 
 model ListItem {
-  id          String   @id @default(cuid())
+  id          String    @id @default(cuid())
   listId      String
   itemId      String
-  quantity    Int      @default(1)
-  isPacked    Boolean  @default(false)
-  isEssential Boolean  @default(false)
+  quantity    Int       @default(1)
+  isPacked    Boolean   @default(false)
+  isEssential Boolean   @default(false)
   notes       String?
   categoryId  String?
-  category    Category? @relation(fields: [categoryId], references: [id])
+  category    Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
   bagType     String?
   bagTypeId   String?
-  bagTypeRef  BagType? @relation(fields: [bagTypeId], references: [id])
+  bagTypeRef  BagType?  @relation(fields: [bagTypeId], references: [id], onDelete: SetNull)
   bagLocation String?
-  sortOrder   Int      @default(0)
-  item        Item     @relation(fields: [itemId], references: [id])
-  list        List     @relation(fields: [listId], references: [id], onDelete: Cascade)
+  sortOrder   Int       @default(0)
+  item        Item      @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  list        List      @relation(fields: [listId], references: [id], onDelete: Cascade)
 
   @@unique([listId, itemId])
 }

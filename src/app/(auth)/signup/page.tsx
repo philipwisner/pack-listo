@@ -1,21 +1,22 @@
 "use client";
 import { useActionState, startTransition, useState } from "react";
-import { signupAction } from "@/utils/auth/actions";
+import { signupAction } from "@/features/auth/auth.actions";
 import { InputLabel } from "@/components/InputLabel/InputLabel";
 import { Logo } from "@/components/Logo/Logo";
 import { Input } from "@/components/TextInput/TextInput";
 import { Button } from "@/components/Button/Button";
 import { InternalLink } from "@/components/InternalLink/InternalLink";
-import { MutedText } from "@/styles/textStyles";
+import { MutedText } from "@/styles/text.styles";
 import {
   PageBackground,
   AuthContainerContent,
   FormContainer,
   AdditionalOptions,
-} from "@/styles/authStyles";
+} from "@/features/auth/auth.styles";
 
 const initialState = {
   error: "",
+  success: false,
 };
 
 export default function SignupPage() {

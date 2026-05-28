@@ -1,6 +1,7 @@
 "use client";
-import { useActionState, useState } from "react";
-import { loginAction } from "@/utils/auth/actions";
+import { useActionState, useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation"; // 1. Import the hooks
+import { loginAction } from "@/features/auth/auth.actions";
 import { Input } from "@/components/TextInput/TextInput";
 import { Logo } from "@/components/Logo/Logo";
 import { InputLabel } from "@/components/InputLabel/InputLabel";
@@ -11,40 +12,65 @@ import {
   FormContainer,
   AuthContainerContent,
   AdditionalOptions,
-} from "@/styles/authStyles";
-import { MutedText } from "@/styles/textStyles";
+} from "@/features/auth/auth.styles";
+import { MutedText } from "@/styles/text.styles";
 
 const initialState = {
   error: "",
+  success: false, // Must match your interface
 };
 
 export default function LoginPage() {
-  const [_state, formAction, isPending] = useActionState(
+  const [state, formAction, isPending] = useActionState(
     loginAction,
     initialState,
   );
+
+  // 2. Initialize search params to look for ?next=/path
+  const searchParams = useSearchParams();
+  const redirectToValue = searchParams.get("next") || "/dashboard";
+
   const [fieldErrors, setFieldErrors] = useState<{
     email?: boolean;
     password?: boolean;
+    server?: string;
   }>({});
+
+  useEffect(() => {
+    if (state?.error) {
+      setFieldErrors({
+        email: true,
+        password: true,
+        server: state.error,
+      });
+    }
+  }, [state]);
+
+  const handleInputChange = (field: "email" | "password") => {
+    if (fieldErrors[field] || fieldErrors.server) {
+      setFieldErrors((prev) => ({
+        ...prev,
+        [field]: false,
+        server: undefined,
+      }));
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     const form = e.currentTarget;
 
-    // Check if the overall form is invalid
     if (!form.checkValidity()) {
-      e.preventDefault(); // Stop form submission
+      e.preventDefault();
 
-      // 2. Query individual fields to see who is failing
       const emailInput = form.querySelector("#email") as HTMLInputElement;
       const passwordInput = form.querySelector("#password") as HTMLInputElement;
 
       setFieldErrors({
         email: !emailInput.validity.valid,
         password: !passwordInput.validity.valid,
+        server: "Please fill out all required fields correctly.",
       });
     } else {
-      // Clear errors if everything is valid on submission attempt
       setFieldErrors({});
     }
   };
@@ -54,6 +80,20 @@ export default function LoginPage() {
       <AuthContainerContent>
         <Logo />
         <FormContainer action={formAction} onSubmit={handleSubmit} noValidate>
+          {/* 3. Hidden input preserves the redirect route inside the FormData payload */}
+          <input type="hidden" name="redirectTo" value={redirectToValue} />
+
+          {fieldErrors.server && (
+            <p
+              style={{
+                color: "var(--colors-red-500, #ef4444)",
+                fontSize: "0.875rem",
+              }}
+            >
+              {fieldErrors.server}
+            </p>
+          )}
+
           <div>
             <InputLabel htmlFor="email" label="E-mail" />
             <Input
@@ -64,6 +104,7 @@ export default function LoginPage() {
               placeholder="user@email.com"
               disabled={isPending}
               hasError={fieldErrors.email}
+              onChange={() => handleInputChange("email")}
             />
           </div>
           <div>
@@ -76,6 +117,7 @@ export default function LoginPage() {
               placeholder="••••••••••"
               disabled={isPending}
               hasError={fieldErrors.password}
+              onChange={() => handleInputChange("password")}
             />
           </div>
           <Button

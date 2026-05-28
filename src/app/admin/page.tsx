@@ -1,9 +1,9 @@
-import { requireAdminUser } from "@/utils/auth/server";
+import { requireAdminUser } from "@/lib/auth";
 import {
-  getDefaultBagTypes,
   getDefaultCategories,
   getDefaultItems,
-} from "@/utils/admin/defaults";
+  getDefaultBagTypes,
+} from "@/features/admin/admin.defaults";
 import {
   createCategoryAction,
   updateCategoryAction,
@@ -14,7 +14,7 @@ import {
   createItemAction,
   updateItemAction,
   deleteItemAction,
-} from "@/utils/admin/actions";
+} from "@/features/admin/admin.actions";
 import { Button } from "@/components/Button/Button";
 import { Input } from "@/components/TextInput/TextInput";
 import { InputLabel } from "@/components/InputLabel/InputLabel";
@@ -98,12 +98,8 @@ export default async function AdminPage() {
             Categories
           </h2>
 
-          {/* FIX: Changed from formAction to createCategoryAction wrapper */}
           <form
-            action={async (formData) => {
-              "use server";
-              await createCategoryAction(null, formData);
-            }}
+            action={createCategoryAction}
             className={flex({ direction: "column", gap: "3", mb: "6" })}
           >
             <InputLabel htmlFor="category-name" label="New category name" />
@@ -142,12 +138,8 @@ export default async function AdminPage() {
                     shadow: "sm",
                   })}
                 >
-                  {/* FIX: Wrapped action to pass 2 arguments */}
                   <form
-                    action={async (formData) => {
-                      "use server";
-                      await updateCategoryAction(null, formData);
-                    }}
+                    action={updateCategoryAction}
                     className={grid({ columns: { base: 1 }, gap: "4" })}
                   >
                     <input type="hidden" name="id" value={category.id} />
@@ -203,12 +195,8 @@ export default async function AdminPage() {
                       </span>
                     </div>
                   </form>
-                  {/* FIX: Wrapped action */}
                   <form
-                    action={async (formData) => {
-                      "use server";
-                      await deleteCategoryAction(null, formData);
-                    }}
+                    action={deleteCategoryAction}
                     className={css({
                       mt: "4",
                       display: "flex",
@@ -238,12 +226,8 @@ export default async function AdminPage() {
             Bag Types
           </h2>
 
-          {/* FIX: Wrapped action */}
           <form
-            action={async (formData) => {
-              "use server";
-              await createBagTypeAction(null, formData);
-            }}
+            action={createBagTypeAction}
             className={flex({ direction: "column", gap: "3", mb: "6" })}
           >
             <InputLabel htmlFor="bagtype-name" label="New bag type name" />
@@ -278,12 +262,8 @@ export default async function AdminPage() {
                     shadow: "sm",
                   })}
                 >
-                  {/* FIX: Wrapped action */}
                   <form
-                    action={async (formData) => {
-                      "use server";
-                      await updateBagTypeAction(null, formData);
-                    }}
+                    action={updateBagTypeAction}
                     className={grid({ columns: { base: 1 }, gap: "4" })}
                   >
                     <input type="hidden" name="id" value={bagType.id} />
@@ -339,12 +319,8 @@ export default async function AdminPage() {
                       </span>
                     </div>
                   </form>
-                  {/* FIX: Wrapped action */}
                   <form
-                    action={async (formData) => {
-                      "use server";
-                      await deleteBagTypeAction(null, formData);
-                    }}
+                    action={deleteBagTypeAction}
                     className={css({
                       mt: "4",
                       display: "flex",
@@ -375,12 +351,8 @@ export default async function AdminPage() {
           Items
         </h2>
 
-        {/* FIX: Wrapped action */}
         <form
-          action={async (formData) => {
-            "use server";
-            await createItemAction(null, formData);
-          }}
+          action={createItemAction}
           className={grid({ columns: { base: 1, md: 3 }, gap: "4", mb: "6" })}
         >
           <div>
@@ -402,7 +374,6 @@ export default async function AdminPage() {
           </div>
           <div>
             <InputLabel htmlFor="item-categories" label="Categories" />
-            {/* FIX: Replaced 'selected' attributes with defaultValue for React standards */}
             <select
               id="item-categories"
               name="categoryIds"
@@ -450,12 +421,8 @@ export default async function AdminPage() {
                   shadow: "sm",
                 })}
               >
-                {/* FIX: Wrapped action */}
                 <form
-                  action={async (formData) => {
-                    "use server";
-                    await updateItemAction(null, formData);
-                  }}
+                  action={updateItemAction}
                   className={grid({ columns: { base: 1 }, gap: "4" })}
                 >
                   <input type="hidden" name="id" value={item.id} />
@@ -484,13 +451,11 @@ export default async function AdminPage() {
                       htmlFor={`item-categories-${item.id}`}
                       label="Categories"
                     />
-                    {/* FIX: Converted explicit option tags selection to a clean multi-select component rule */}
                     <select
                       id={`item-categories-${item.id}`}
                       name="categoryIds"
                       multiple
                       size={4}
-                      defaultValue={item.categories.map((cat) => cat.id)}
                       className={css({
                         width: "100%",
                         px: "3",
@@ -502,7 +467,13 @@ export default async function AdminPage() {
                       })}
                     >
                       {categories.map((category) => (
-                        <option key={category.id} value={category.id}>
+                        <option
+                          key={category.id}
+                          value={category.id}
+                          selected={item.categories.some(
+                            (cat) => cat.id === category.id,
+                          )}
+                        >
                           {category.name}
                         </option>
                       ))}
@@ -524,12 +495,8 @@ export default async function AdminPage() {
                     </span>
                   </div>
                 </form>
-                {/* FIX: Wrapped action */}
                 <form
-                  action={async (formData) => {
-                    "use server";
-                    await deleteItemAction(null, formData);
-                  }}
+                  action={deleteItemAction}
                   className={css({
                     mt: "4",
                     display: "flex",

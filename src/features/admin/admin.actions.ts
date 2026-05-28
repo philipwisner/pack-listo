@@ -1,0 +1,102 @@
+"use server";
+
+import { protectedActionClient } from "@/lib/safe-action";
+import {
+  CategorySchema,
+  BagTypeSchema,
+  ItemSchema,
+} from "@/features/admin/admin.schema";
+import prisma from "@/lib/prisma";
+import { redirect } from "next/navigation";
+import { z } from "zod";
+
+// Base admin client (You can add an isAdmin check to your existing protectedActionClient)
+const adminClient = protectedActionClient.use(async ({ next, ctx }) => {
+  // Assuming your context already contains user info
+  // You might want to add an isAdmin check here globally
+  return next({ ctx });
+});
+
+export const createCategoryAction = adminClient
+  .schema(CategorySchema)
+  .action(async ({ parsedInput: { name, icon, color } }) => {
+    await prisma.category.create({ data: { name, icon, color, userId: null } });
+    redirect("/admin");
+  });
+
+export const updateCategoryAction = adminClient
+  .schema(CategorySchema)
+  .action(async ({ parsedInput: { id, name, icon, color } }) => {
+    if (!id) throw new Error("ID required");
+    await prisma.category.update({
+      where: { id },
+      data: { name, icon, color },
+    });
+    redirect("/admin");
+  });
+
+export const deleteCategoryAction = adminClient
+  .schema(z.object({ id: z.string() }))
+  .action(async ({ parsedInput: { id } }) => {
+    await prisma.category.delete({ where: { id } });
+    redirect("/admin");
+  });
+
+export const createItemAction = adminClient
+  .schema(ItemSchema)
+  .action(async ({ parsedInput: { name, defaultWeight, categoryIds } }) => {
+    await prisma.item.create({
+      data: {
+        name,
+        defaultWeight,
+        userId: null,
+        categories: { connect: categoryIds.map((id) => ({ id })) },
+      },
+    });
+    redirect("/admin");
+  });
+
+export const updateItemAction = adminClient
+  .schema(ItemSchema)
+  .action(async ({ parsedInput: { id, name, defaultWeight, categoryIds } }) => {
+    if (!id) throw new Error("ID required");
+    await prisma.item.update({
+      where: { id },
+      data: {
+        name,
+        defaultWeight,
+        categories: { set: categoryIds.map((id) => ({ id })) },
+      },
+    });
+    redirect("/admin");
+  });
+
+export const deleteItemAction = adminClient
+  .schema(z.object({ id: z.string() }))
+  .action(async ({ parsedInput: { id } }) => {
+    await prisma.item.delete({ where: { id } });
+    redirect("/admin");
+  });
+
+// Add these exports to your actions.ts
+export const createBagTypeAction = adminClient
+  .schema(BagTypeSchema)
+  .action(async ({ parsedInput: { name, icon, color } }) => {
+    await prisma.bagType.create({ data: { name, icon, color, userId: null } });
+    redirect("/admin");
+  });
+
+export const updateBagTypeAction = adminClient
+  .schema(BagTypeSchema)
+  .action(async ({ parsedInput: { id, name, icon, color } }) => {
+    if (!id) throw new Error("ID required");
+    await prisma.bagType.update({ where: { id }, data: { name, icon, color } });
+    redirect("/admin");
+  });
+
+export const deleteBagTypeAction = adminClient
+  .schema(z.object({ id: z.string() }))
+  .action(async ({ parsedInput: { id } }) => {
+    await prisma.bagType.delete({ where: { id } });
+    redirect("/admin");
+  });

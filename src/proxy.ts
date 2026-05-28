@@ -1,112 +1,100 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
-import { MOCK_COOKIE_NAME, isMockMode } from "./utils/auth/shared";
+
+const GUEST_ONLY_ROUTES = ["/login", "/signup"];
+const AUTH_HOME = "/dashboard";
 
 export async function proxy(request: NextRequest) {
   const url = request.nextUrl.clone();
-  
-  // Exclude static assets, icons, public assets, and api/storybook routes from proxy interception
-  const isStaticFile =
-    url.pathname.startsWith("/_next") ||
-    url.pathname.startsWith("/api") ||
-    url.pathname.startsWith("/static") ||
-    url.pathname.includes(".") || // e.g. favicon.ico, manifest.json, svg files
-    url.pathname.startsWith("/storybook");
+  const { pathname } = url;
 
-  if (isStaticFile) {
-    return NextResponse.next();
-  }
+  // 1. Performance Gate: Drop Next.js background pre-fetches early if no session cookie exists
+  // This saves heavy Supabase CPU/API calls before a user even fills out your form.
+  const isPrefetch = request.headers.get("purpose") === "prefetch";
+  const hasSessionCookie = request.cookies
+    .getAll()
+    .some((c) => c.name.startsWith("sb-"));
 
-  let isAuthenticated = false;
-
-  // 1. Check Mock Mode authentication session
-  if (isMockMode()) {
-    const mockCookie = request.cookies.get(MOCK_COOKIE_NAME);
-    if (mockCookie && mockCookie.value) {
-      try {
-        JSON.parse(decodeURIComponent(mockCookie.value));
-        isAuthenticated = true;
-      } catch {
-        isAuthenticated = false;
-      }
-    }
-  } else {
-    // 2. Check Supabase authentication session
-    let response = NextResponse.next({
-      request,
+  if (
+    isPrefetch &&
+    !hasSessionCookie &&
+    !GUEST_ONLY_ROUTES.includes(pathname)
+  ) {
+    return new NextResponse(null, {
+      status: 401,
+      headers: { "x-middleware-skip": "true" },
     });
+  }
 
-    const supabase = createServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          getAll() {
-            return request.cookies.getAll();
-          },
-          setAll(cookiesToSet) {
-            cookiesToSet.forEach(({ name, value }) =>
-              request.cookies.set(name, value)
-            );
-            response = NextResponse.next({
-              request,
-            });
-            cookiesToSet.forEach(({ name, value, options }) =>
-              response.cookies.set(name, value, options)
-            );
-          },
+  // 2. Single Response Context Initialization
+  let response = NextResponse.next({ request });
+
+  // 3. Initialize Supabase SSR Client
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() {
+          return request.cookies.getAll();
         },
-      }
-    );
+        setAll(cookiesToSet) {
+          // CRITICAL FIX FOR SERVER ACTIONS:
+          // Mutate the request and response objects inline. Do NOT re-create the NextResponse instance.
+          cookiesToSet.forEach(({ name, value, options }) => {
+            request.cookies.set(name, value);
+            response.cookies.set(name, value, options);
+          });
+        },
+      },
+    },
+  );
 
-    try {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      if (user) {
-        isAuthenticated = true;
-      }
-    } catch {
-      isAuthenticated = false;
-    }
+  // 4. Evaluate Authentication Status
+  let user = null;
+  try {
+    const { data } = await supabase.auth.getUser();
+    user = data.user;
+  } catch {
+    user = null;
+  }
+  const isAuthenticated = !!user;
+
+  // 5. Centralized Routing Pipeline
+
+  // A. Root Domain Pivot
+  if (pathname === "/") {
+    url.pathname = isAuthenticated ? AUTH_HOME : "/login";
+    return NextResponse.redirect(url);
   }
 
-  // 3. Routing and Redirect logic
-  
-  // A. If accessing root '/' route, redirect to /dashboard or /login
-  if (url.pathname === "/") {
+  // B. Guest-Only Route Verification
+  const isGuestOnlyRoute = GUEST_ONLY_ROUTES.some(
+    (route) => pathname === route,
+  );
+
+  if (isGuestOnlyRoute) {
     if (isAuthenticated) {
-      url.pathname = "/dashboard";
-      return NextResponse.redirect(url);
-    } else {
-      url.pathname = "/login";
+      url.pathname = AUTH_HOME;
       return NextResponse.redirect(url);
     }
+    return response;
   }
 
-  // B. If accessing protected routes (like /dashboard) and not logged in, redirect to /login
-  if (url.pathname.startsWith("/dashboard")) {
-    if (!isAuthenticated) {
-      url.pathname = "/login";
-      return NextResponse.redirect(url);
-    }
+  // C. Default-Closed Gatekeeper
+  if (!isAuthenticated) {
+    url.pathname = "/login";
+    url.searchParams.set("next", pathname);
+    return NextResponse.redirect(url);
   }
 
-  // C. If accessing guest-only routes (like /login, /signup) and logged in, redirect to /dashboard
-  if (url.pathname === "/login" || url.pathname === "/signup") {
-    if (isAuthenticated) {
-      url.pathname = "/dashboard";
-      return NextResponse.redirect(url);
-    }
-  }
-
-  // Fallback to standard request pipeline
-  return NextResponse.next();
+  // Return the stable, cookie-carrying response object context
+  return response;
 }
 
 export const config = {
   matcher: [
-    // Intercept all routes except static/public files
-    "/((?!_next/static|_next/image|favicon.ico|.*\\..*).*)",
+    // Ensure all assets, microservices, and internal tools are bypassed
+    "/((?!_next/static|_next/image|favicon.ico|static|storybook|api|.*\\..*).*)",
   ],
 };

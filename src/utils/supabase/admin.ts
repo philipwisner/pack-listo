@@ -1,14 +1,17 @@
+// src/utils/supabase/admin.ts
 import { createClient } from "@supabase/supabase-js";
 
 export function createAdminClient() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-  if (!url || !serviceRoleKey) {
-    throw new Error(
-      "SUPABASE_SERVICE_ROLE_KEY and NEXT_PUBLIC_SUPABASE_URL must be set for admin client",
-    );
-  }
+  if (!url) throw new Error("Missing NEXT_PUBLIC_SUPABASE_URL");
+  if (!serviceRoleKey)
+    throw new Error("Missing SUPABASE_SERVICE_ROLE_KEY (Service Role)");
 
-  return createClient(url, serviceRoleKey, { auth: { persistSession: false } });
+  // We set persistSession to false because admin clients run in
+  // server-side actions and don't need to store Auth tokens locally.
+  return createClient(url, serviceRoleKey, {
+    auth: { persistSession: false },
+  });
 }

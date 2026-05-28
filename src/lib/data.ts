@@ -1,5 +1,4 @@
-import { prisma } from "./db";
-import { isMockMode } from "./auth/shared";
+import prisma from "@/lib/prisma";
 
 export interface TripList {
   id: string;
@@ -76,10 +75,6 @@ export async function getDashboardData(userId: string): Promise<{
   stats: DashboardStats;
   isFallback: boolean;
 }> {
-  if (isMockMode()) {
-    return { trips: MOCK_TRIPS, stats: MOCK_STATS, isFallback: true };
-  }
-
   try {
     // Attempt actual Prisma DB query
     const lists = await prisma.list.findMany({
@@ -97,16 +92,28 @@ export async function getDashboardData(userId: string): Promise<{
 
     if (lists.length === 0) {
       // If user is logged in but has no trips, we could return empty or mock data for preview
-      return { trips: [], stats: { totalTrips: 0, packedTrips: 0, totalItemsPacked: 0, overallProgress: 0 }, isFallback: false };
+      return {
+        trips: [],
+        stats: {
+          totalTrips: 0,
+          packedTrips: 0,
+          totalItemsPacked: 0,
+          overallProgress: 0,
+        },
+        isFallback: false,
+      };
     }
 
     const trips: TripList[] = lists.map((list) => {
       const totalItems = list.items.length;
       const packedItems = list.items.filter((i) => i.isPacked).length;
-      const packedPercentage = totalItems > 0 ? Math.round((packedItems / totalItems) * 100) : 0;
-      
+      const packedPercentage =
+        totalItems > 0 ? Math.round((packedItems / totalItems) * 100) : 0;
+
       // Determine list bagType (fallback to Carry-on Backpack if not set)
-      const bagType = list.items.find((i) => i.bagTypeRef)?.bagTypeRef?.name || "Carry-on Backpack";
+      const bagType =
+        list.items.find((i) => i.bagTypeRef)?.bagTypeRef?.name ||
+        "Carry-on Backpack";
 
       return {
         id: list.id,
@@ -126,7 +133,10 @@ export async function getDashboardData(userId: string): Promise<{
     const packedTrips = trips.filter((t) => t.packedPercentage === 100).length;
     const totalItemsPacked = trips.reduce((acc, t) => acc + t.packedItems, 0);
     const totalAllItems = trips.reduce((acc, t) => acc + t.totalItems, 0);
-    const overallProgress = totalAllItems > 0 ? Math.round((totalItemsPacked / totalAllItems) * 100) : 0;
+    const overallProgress =
+      totalAllItems > 0
+        ? Math.round((totalItemsPacked / totalAllItems) * 100)
+        : 0;
 
     return {
       trips,
@@ -139,7 +149,10 @@ export async function getDashboardData(userId: string): Promise<{
       isFallback: false,
     };
   } catch (error) {
-    console.warn("Prisma query failed, falling back to mock data. Database offline:", error);
+    console.warn(
+      "Prisma query failed, falling back to mock data. Database offline:",
+      error,
+    );
     // Graceful fallback to mock data if database is not reachable/offline in local development
     return { trips: MOCK_TRIPS, stats: MOCK_STATS, isFallback: true };
   }

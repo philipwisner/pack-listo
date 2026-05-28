@@ -1,6 +1,6 @@
 "use client";
-import { useActionState, useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation"; // 1. Import the hooks
+import { useActionState, useState, useEffect, Suspense } from "react"; // 👈 Added Suspense
+import { useSearchParams } from "next/navigation";
 import { loginAction } from "@/features/auth/auth.actions";
 import { Input } from "@/components/TextInput/TextInput";
 import { Logo } from "@/components/Logo/Logo";
@@ -17,16 +17,16 @@ import { MutedText } from "@/styles/text.styles";
 
 const initialState = {
   error: "",
-  success: false, // Must match your interface
+  success: false,
 };
 
-export default function LoginPage() {
+// 1. Move the search params and form logic into a sub-component
+function LoginFormContent() {
   const [state, formAction, isPending] = useActionState(
     loginAction,
     initialState,
   );
 
-  // 2. Initialize search params to look for ?next=/path
   const searchParams = useSearchParams();
   const redirectToValue = searchParams.get("next") || "/dashboard";
 
@@ -76,57 +76,72 @@ export default function LoginPage() {
   };
 
   return (
+    <FormContainer action={formAction} onSubmit={handleSubmit} noValidate>
+      <input type="hidden" name="redirectTo" value={redirectToValue} />
+
+      {fieldErrors.server && (
+        <p
+          style={{
+            color: "var(--colors-red-500, #ef4444)",
+            fontSize: "0.875rem",
+          }}
+        >
+          {fieldErrors.server}
+        </p>
+      )}
+
+      <div>
+        <InputLabel htmlFor="email" label="E-mail" />
+        <Input
+          id="email"
+          name="email"
+          type="email"
+          required
+          placeholder="user@email.com"
+          disabled={isPending}
+          hasError={fieldErrors.email}
+          onChange={() => handleInputChange("email")}
+        />
+      </div>
+      <div>
+        <InputLabel htmlFor="password" label="Password" />
+        <Input
+          id="password"
+          name="password"
+          type="password"
+          required
+          placeholder="••••••••••"
+          disabled={isPending}
+          hasError={fieldErrors.password}
+          onChange={() => handleInputChange("password")}
+        />
+      </div>
+      <Button
+        text="Log In"
+        type="submit"
+        isLoading={isPending}
+        loadingText="Logging in..."
+      />
+    </FormContainer>
+  );
+}
+
+// 2. The default export safely wraps the content in a Suspense boundary
+export default function LoginPage() {
+  return (
     <PageBackground>
       <AuthContainerContent>
         <Logo />
-        <FormContainer action={formAction} onSubmit={handleSubmit} noValidate>
-          {/* 3. Hidden input preserves the redirect route inside the FormData payload */}
-          <input type="hidden" name="redirectTo" value={redirectToValue} />
 
-          {fieldErrors.server && (
-            <p
-              style={{
-                color: "var(--colors-red-500, #ef4444)",
-                fontSize: "0.875rem",
-              }}
-            >
-              {fieldErrors.server}
-            </p>
-          )}
+        {/* 👈 Next.js will now safely prerender this page shell statically */}
+        <Suspense
+          fallback={
+            <p style={{ color: "var(--colors-slate-500)" }}>Loading form...</p>
+          }
+        >
+          <LoginFormContent />
+        </Suspense>
 
-          <div>
-            <InputLabel htmlFor="email" label="E-mail" />
-            <Input
-              id="email"
-              name="email"
-              type="email"
-              required
-              placeholder="user@email.com"
-              disabled={isPending}
-              hasError={fieldErrors.email}
-              onChange={() => handleInputChange("email")}
-            />
-          </div>
-          <div>
-            <InputLabel htmlFor="password" label="Password" />
-            <Input
-              id="password"
-              name="password"
-              type="password"
-              required
-              placeholder="••••••••••"
-              disabled={isPending}
-              hasError={fieldErrors.password}
-              onChange={() => handleInputChange("password")}
-            />
-          </div>
-          <Button
-            text="Log In"
-            type="submit"
-            isLoading={isPending}
-            loadingText="Logging in..."
-          />
-        </FormContainer>
         <AdditionalOptions>
           <MutedText>
             Don't have an account? <InternalLink text="Sign Up" url="/signup" />

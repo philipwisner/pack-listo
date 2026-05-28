@@ -10,12 +10,10 @@ export default defineConfig({
   ],
   exclude: [],
   theme: {
-    // 1. Raw Core System Tokens
     tokens: {
       fonts: {
         sans: {
-          value:
-            'var(--font-dm-sans), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+          value: "var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif",
         },
       },
       fontSizes: {

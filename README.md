@@ -59,7 +59,6 @@ NEXT_PUBLIC_SUPABASE_URL=http://localhost:54321
 NEXT_PUBLIC_SUPABASE_ANON_KEY=<your-anon-key-from-supabase-start>
 SUPABASE_SERVICE_ROLE_KEY=<your-service-role-key-from-supabase-start>
 DATABASE_URL=postgresql://postgres:postgres@localhost:54322/postgres
-NEXT_PUBLIC_USE_MOCK_AUTH=false
 ```
 
 3. **Push Prisma schema to the local database**:
@@ -109,7 +108,6 @@ NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_hosted_anon_key
 SUPABASE_SERVICE_ROLE_KEY=your_hosted_service_role_key
 DATABASE_URL=postgresql://postgres:...@db.your-project.supabase.co:5432/postgres
-NEXT_PUBLIC_USE_MOCK_AUTH=false
 ```
 
 The same code works for both local and hosted—only environment variables differ.

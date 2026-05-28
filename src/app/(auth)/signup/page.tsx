@@ -1,7 +1,6 @@
 "use client";
 import { useActionState, startTransition, useState } from "react";
 import { signupAction } from "@/utils/auth/actions";
-import { isMockMode } from "@/utils/auth/shared";
 import { InputLabel } from "@/components/InputLabel/InputLabel";
 import { Logo } from "@/components/Logo/Logo";
 import { Input } from "@/components/TextInput/TextInput";
@@ -20,7 +19,7 @@ const initialState = {
 };
 
 export default function SignupPage() {
-  const [state, formAction, isPending] = useActionState(
+  const [_state, formAction, isPending] = useActionState(
     signupAction,
     initialState,
   );
@@ -53,18 +52,6 @@ export default function SignupPage() {
       setFieldErrors({});
     }
   };
-
-  const handleMockBypass = () => {
-    startTransition(async () => {
-      const formData = new FormData();
-      formData.append("name", "Local Dev");
-      formData.append("email", "developer@packlisto.local");
-      formData.append("password", "localdevpass");
-      formAction(formData);
-    });
-  };
-
-  const isMockActive = isMockMode();
 
   return (
     <PageBackground>
@@ -118,17 +105,6 @@ export default function SignupPage() {
           <MutedText>
             Already have an account? <InternalLink text="Log In" url="/login" />
           </MutedText>
-          {isMockActive && (
-            <Button
-              text="💡 Dev Shortcut: Bypass Auth (Mock Mode)"
-              type="button"
-              variant="alternative"
-              size="small"
-              width="fit"
-              onClick={handleMockBypass}
-              disabled={isPending}
-            />
-          )}
         </AdditionalOptions>
       </AuthContainerContent>
     </PageBackground>

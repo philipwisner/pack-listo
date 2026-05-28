@@ -12,6 +12,6 @@ export default defineConfig({
 
     // 2. Map the non-pooling URL for migrations (Prisma v7 looks for this here)
     // @ts-expect-error - Prisma 7 type definitions don't explicitly type directUrl here yet
-    directUrl: env("POSTGRES_URL_NON_POOLING") || (env("DATABASE_URL") as any),
+    directUrl: env("POSTGRES_URL_NON_POOLING") || env("DATABASE_URL"),
   },
 });

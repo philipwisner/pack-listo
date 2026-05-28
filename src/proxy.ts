@@ -8,22 +8,29 @@ export async function proxy(request: NextRequest) {
   const url = request.nextUrl.clone();
   const { pathname } = url;
 
-  // 1. Performance Gate: Drop Next.js background pre-fetches early if no session cookie exists
-  // This saves heavy Supabase CPU/API calls before a user even fills out your form.
+  // 1. Performance Gate: Fast-track routing if no session cookie exists
+  // This saves heavy Supabase CPU/API network calls for unauthenticated traffic.
   const isPrefetch = request.headers.get("purpose") === "prefetch";
   const hasSessionCookie = request.cookies
     .getAll()
     .some((c) => c.name.startsWith("sb-"));
 
-  if (
-    isPrefetch &&
-    !hasSessionCookie &&
-    !GUEST_ONLY_ROUTES.includes(pathname)
-  ) {
-    return new NextResponse(null, {
-      status: 401,
-      headers: { "x-middleware-skip": "true" },
-    });
+  if (!hasSessionCookie && !GUEST_ONLY_ROUTES.includes(pathname)) {
+    // If hitting the root domain unauthenticated, fast-redirect to login
+    if (pathname === "/") {
+      url.pathname = "/login";
+      return NextResponse.redirect(url);
+    }
+
+    // Allow background pre-fetches to resolve natively without throwing breaking 401s
+    if (isPrefetch) {
+      return NextResponse.next({ request });
+    }
+
+    // For full page requests to protected routes, force a clean redirect to login
+    url.pathname = "/login";
+    url.searchParams.set("next", pathname);
+    return NextResponse.redirect(url);
   }
 
   // 2. Single Response Context Initialization

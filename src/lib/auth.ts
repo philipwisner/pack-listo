@@ -1,5 +1,5 @@
 import { cache } from "react";
-import { createClient as createSupabaseClient } from "../utils/supabase/server";
+import { createClient as createSupabaseClient } from "@/utils/supabase/server";
 import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
 

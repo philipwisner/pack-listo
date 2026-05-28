@@ -1,67 +1,59 @@
 "use client";
+import { css } from "@/styled-system/css/css";
+import { flex } from "@/styled-system/patterns/flex";
+import { InternalLink } from "../InternalLink/InternalLink";
+import { logoutAction } from "@/features/auth/auth.actions";
 import { Button } from "../Button/Button";
-import { DarkModeToggle } from "../DarkModeToggle/DarkModeToggle";
-import "./header.css";
-
-type User = {
-  name: string;
-};
+import { Logo } from "../Logo/Logo";
+import Link from "next/link";
+import { AuthUser } from "@/lib/auth";
 
 export interface HeaderProps {
-  user?: User;
-  onLogin?: () => void;
-  onLogout?: () => void;
-  onCreateAccount?: () => void;
+  user?: AuthUser | null;
 }
 
-export const Header = ({
-  user,
-  onLogin,
-  onLogout,
-  onCreateAccount,
-}: HeaderProps) => (
-  <header>
-    <div className="storybook-header">
-      <div>
-        <svg
-          width="32"
-          height="32"
-          viewBox="0 0 32 32"
-          xmlns="http://www.w3.org/2000/svg"
+export const Header = ({ user }: HeaderProps) => {
+  return (
+    <header
+      className={css({
+        bg: "background",
+        w: "100%",
+      })}
+    >
+      <div
+        className={flex({
+          justify: "space-between",
+          align: "center",
+          maxWidth: "6xl",
+          mx: "auto",
+          px: { base: "4", md: "8" },
+          py: "4",
+        })}
+      >
+        <Link
+          href="/dashboard"
+          className={flex({ align: "center", gap: "2.5" })}
         >
-          <g fill="none" fillRule="evenodd">
-            <path
-              d="M10 0h12a10 10 0 0110 10v12a10 10 0 01-10 10H10A10 10 0 010 22V10A10 10 0 0110 0z"
-              fill="#FFF"
+          <Logo />
+        </Link>
+        <div className={flex({ align: "center", gap: "4" })}>
+          <InternalLink text="Dashboard" url="/dashboard" />
+          <InternalLink text="Lists" url="/lists" />
+          <InternalLink text="Items" url="/items" />
+          <InternalLink text="Categories" url="/categories" />
+          <InternalLink text="Bags" url="/bags" />
+          {user && user.isAdmin && <InternalLink text="Admin" url="/admin" />}
+          <p>{user?.name}</p>
+          <form action={logoutAction}>
+            <Button
+              type="submit"
+              text="Log Out"
+              variant="secondary"
+              size="small"
             />
-            <path
-              d="M5.3 10.6l10.4 6v11.1l-10.4-6v-11zm11.4-6.2l9.7 5.5-9.7 5.6V4.4z"
-              fill="#555AB9"
-            />
-            <path
-              d="M27.2 10.6v11.2l-10.5 6V16.5l10.5-6zM15.7 4.4v11L6 10l9.7-5.5z"
-              fill="#91BAF8"
-            />
-          </g>
-        </svg>
-        <h1>Acme</h1>
+          </form>
+        </div>
       </div>
-      <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-        <DarkModeToggle />
-        {user ? (
-          <>
-            <span className="welcome">
-              Welcome, <b>{user.name}</b>!
-            </span>
-            <Button onClick={onLogout} text="Log out" />
-          </>
-        ) : (
-          <>
-            <Button onClick={onLogin} text="Log in" />
-            <Button onClick={onCreateAccount} text="Sign up" />
-          </>
-        )}
-      </div>
-    </div>
-  </header>
-);
+    </header>
+  );
+};

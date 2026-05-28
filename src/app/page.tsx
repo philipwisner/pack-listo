@@ -1,15 +1,6 @@
-import { redirect } from "next/navigation";
-import { getCurrentUser } from "@/lib/auth";
-
+//This is bypassed but can be used as a public facing home page if we want to add marketing content or something in the future. For now it just redirects to the dashboard if the user is logged in, otherwise to the login page.
 export default async function Home() {
-  const user = await getCurrentUser();
-
-  if (user) {
-    redirect("/dashboard");
-  } else {
-    redirect("/login");
-  }
-
+  return null;
   return (
     <div
       style={{

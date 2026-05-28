@@ -8,6 +8,7 @@ export const ToggleContainer = styled("form", {
     position: "fixed",
     top: "0",
     right: "0",
+    zIndex: "50",
   },
 });
 

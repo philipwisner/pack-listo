@@ -1,6 +1,7 @@
+"use client";
 import { styled } from "@/styled-system/jsx/factory";
-import { Sign } from "crypto";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export interface InternalLinkProps {
   text: string;
@@ -28,6 +29,14 @@ const LinkStyled = styled(Link, {
       color: "link.active",
     },
   },
+  variants: {
+    isActive: {
+      true: {
+        textDecoration: "underline",
+        textDecorationColor: "accent",
+      },
+    },
+  },
 });
 
 export const InternalLink = ({
@@ -35,8 +44,10 @@ export const InternalLink = ({
   url = "",
   ...props
 }: InternalLinkProps) => {
+  const pathname = usePathname();
+  const isActive = pathname === url;
   return (
-    <LinkStyled href={url} {...props}>
+    <LinkStyled href={url} {...props} isActive={isActive}>
       {text}
     </LinkStyled>
   );

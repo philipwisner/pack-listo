@@ -132,16 +132,11 @@ export default function LoginPage() {
     <PageBackground>
       <AuthContainerContent>
         <Logo />
-
-        {/* 👈 Next.js will now safely prerender this page shell statically */}
         <Suspense
-          fallback={
-            <p style={{ color: "var(--colors-slate-500)" }}>Loading form...</p>
-          }
+          fallback={<p style={{ color: "text.main" }}>Loading form...</p>}
         >
           <LoginFormContent />
         </Suspense>
-
         <AdditionalOptions>
           <MutedText>
             Don't have an account? <InternalLink text="Sign Up" url="/signup" />

@@ -99,7 +99,14 @@ export default async function AdminPage() {
           </h2>
 
           <form
-            action={createCategoryAction}
+            action={async (formData: FormData) => {
+              "use server";
+              await createCategoryAction({
+                name: formData.get("name") as string,
+                icon: (formData.get("icon") as string) || null,
+                color: (formData.get("color") as string) || null,
+              });
+            }}
             className={flex({ direction: "column", gap: "3", mb: "6" })}
           >
             <InputLabel htmlFor="category-name" label="New category name" />
@@ -139,7 +146,15 @@ export default async function AdminPage() {
                   })}
                 >
                   <form
-                    action={updateCategoryAction}
+                    action={async (formData: FormData) => {
+                      "use server";
+                      await updateCategoryAction({
+                        id: formData.get("id") as string,
+                        name: formData.get("name") as string,
+                        icon: (formData.get("icon") as string) || null,
+                        color: (formData.get("color") as string) || null,
+                      });
+                    }}
                     className={grid({ columns: { base: 1 }, gap: "4" })}
                   >
                     <input type="hidden" name="id" value={category.id} />
@@ -196,14 +211,16 @@ export default async function AdminPage() {
                     </div>
                   </form>
                   <form
-                    action={deleteCategoryAction}
+                    action={async () => {
+                      "use server";
+                      await deleteCategoryAction({ id: category.id });
+                    }}
                     className={css({
                       mt: "4",
                       display: "flex",
                       justifyContent: "flex-end",
                     })}
                   >
-                    <input type="hidden" name="id" value={category.id} />
                     <Button text="Delete" type="submit" variant="secondary" />
                   </form>
                 </div>
@@ -212,6 +229,7 @@ export default async function AdminPage() {
           )}
         </div>
 
+        {/* BAG TYPES SECTION */}
         <div
           className={css({
             bg: { base: "white", _dark: "zinc.900/60" },
@@ -227,7 +245,14 @@ export default async function AdminPage() {
           </h2>
 
           <form
-            action={createBagTypeAction}
+            action={async (formData: FormData) => {
+              "use server";
+              await createBagTypeAction({
+                name: formData.get("name") as string,
+                icon: (formData.get("icon") as string) || null,
+                color: (formData.get("color") as string) || null,
+              });
+            }}
             className={flex({ direction: "column", gap: "3", mb: "6" })}
           >
             <InputLabel htmlFor="bagtype-name" label="New bag type name" />
@@ -263,7 +288,15 @@ export default async function AdminPage() {
                   })}
                 >
                   <form
-                    action={updateBagTypeAction}
+                    action={async (formData: FormData) => {
+                      "use server";
+                      await updateBagTypeAction({
+                        id: formData.get("id") as string,
+                        name: formData.get("name") as string,
+                        icon: (formData.get("icon") as string) || null,
+                        color: (formData.get("color") as string) || null,
+                      });
+                    }}
                     className={grid({ columns: { base: 1 }, gap: "4" })}
                   >
                     <input type="hidden" name="id" value={bagType.id} />
@@ -320,14 +353,16 @@ export default async function AdminPage() {
                     </div>
                   </form>
                   <form
-                    action={deleteBagTypeAction}
+                    action={async () => {
+                      "use server";
+                      await deleteBagTypeAction({ id: bagType.id });
+                    }}
                     className={css({
                       mt: "4",
                       display: "flex",
                       justifyContent: "flex-end",
                     })}
                   >
-                    <input type="hidden" name="id" value={bagType.id} />
                     <Button text="Delete" type="submit" variant="secondary" />
                   </form>
                 </div>
@@ -337,6 +372,7 @@ export default async function AdminPage() {
         </div>
       </section>
 
+      {/* ITEMS SECTION */}
       <section
         className={css({
           bg: { base: "white", _dark: "zinc.900/60" },
@@ -352,7 +388,15 @@ export default async function AdminPage() {
         </h2>
 
         <form
-          action={createItemAction}
+          action={async (formData: FormData) => {
+            "use server";
+            const rawWeight = formData.get("defaultWeight") as string;
+            await createItemAction({
+              name: formData.get("name") as string,
+              defaultWeight: rawWeight ? parseFloat(rawWeight) : null,
+              categoryIds: formData.getAll("categoryIds") as string[],
+            });
+          }}
           className={grid({ columns: { base: 1, md: 3 }, gap: "4", mb: "6" })}
         >
           <div>
@@ -422,7 +466,16 @@ export default async function AdminPage() {
                 })}
               >
                 <form
-                  action={updateItemAction}
+                  action={async (formData: FormData) => {
+                    "use server";
+                    const rawWeight = formData.get("defaultWeight") as string;
+                    await updateItemAction({
+                      id: formData.get("id") as string,
+                      name: formData.get("name") as string,
+                      defaultWeight: rawWeight ? parseFloat(rawWeight) : null,
+                      categoryIds: formData.getAll("categoryIds") as string[],
+                    });
+                  }}
                   className={grid({ columns: { base: 1 }, gap: "4" })}
                 >
                   <input type="hidden" name="id" value={item.id} />
@@ -496,14 +549,16 @@ export default async function AdminPage() {
                   </div>
                 </form>
                 <form
-                  action={deleteItemAction}
+                  action={async () => {
+                    "use server";
+                    await deleteItemAction({ id: item.id });
+                  }}
                   className={css({
                     mt: "4",
                     display: "flex",
                     justifyContent: "flex-end",
                   })}
                 >
-                  <input type="hidden" name="id" value={item.id} />
                   <Button text="Delete" type="submit" variant="secondary" />
                 </form>
               </div>

@@ -18,14 +18,14 @@ const adminClient = protectedActionClient.use(async ({ next, ctx }) => {
 });
 
 export const createCategoryAction = adminClient
-  .schema(CategorySchema)
+  .inputSchema(CategorySchema) // 👈 Updated
   .action(async ({ parsedInput: { name, icon, color } }) => {
     await prisma.category.create({ data: { name, icon, color, userId: null } });
     redirect("/admin");
   });
 
 export const updateCategoryAction = adminClient
-  .schema(CategorySchema)
+  .inputSchema(CategorySchema) // 👈 Updated
   .action(async ({ parsedInput: { id, name, icon, color } }) => {
     if (!id) throw new Error("ID required");
     await prisma.category.update({
@@ -36,14 +36,14 @@ export const updateCategoryAction = adminClient
   });
 
 export const deleteCategoryAction = adminClient
-  .schema(z.object({ id: z.string() }))
+  .inputSchema(z.object({ id: z.string() })) // 👈 Updated
   .action(async ({ parsedInput: { id } }) => {
     await prisma.category.delete({ where: { id } });
     redirect("/admin");
   });
 
 export const createItemAction = adminClient
-  .schema(ItemSchema)
+  .inputSchema(ItemSchema) // 👈 Updated
   .action(async ({ parsedInput: { name, defaultWeight, categoryIds } }) => {
     await prisma.item.create({
       data: {
@@ -57,7 +57,7 @@ export const createItemAction = adminClient
   });
 
 export const updateItemAction = adminClient
-  .schema(ItemSchema)
+  .inputSchema(ItemSchema) // 👈 Updated
   .action(async ({ parsedInput: { id, name, defaultWeight, categoryIds } }) => {
     if (!id) throw new Error("ID required");
     await prisma.item.update({
@@ -72,22 +72,21 @@ export const updateItemAction = adminClient
   });
 
 export const deleteItemAction = adminClient
-  .schema(z.object({ id: z.string() }))
+  .inputSchema(z.object({ id: z.string() })) // 👈 Updated
   .action(async ({ parsedInput: { id } }) => {
     await prisma.item.delete({ where: { id } });
     redirect("/admin");
   });
 
-// Add these exports to your actions.ts
 export const createBagTypeAction = adminClient
-  .schema(BagTypeSchema)
+  .inputSchema(BagTypeSchema) // 👈 Updated
   .action(async ({ parsedInput: { name, icon, color } }) => {
     await prisma.bagType.create({ data: { name, icon, color, userId: null } });
     redirect("/admin");
   });
 
 export const updateBagTypeAction = adminClient
-  .schema(BagTypeSchema)
+  .inputSchema(BagTypeSchema) // 👈 Updated
   .action(async ({ parsedInput: { id, name, icon, color } }) => {
     if (!id) throw new Error("ID required");
     await prisma.bagType.update({ where: { id }, data: { name, icon, color } });
@@ -95,7 +94,7 @@ export const updateBagTypeAction = adminClient
   });
 
 export const deleteBagTypeAction = adminClient
-  .schema(z.object({ id: z.string() }))
+  .inputSchema(z.object({ id: z.string() })) // 👈 Updated
   .action(async ({ parsedInput: { id } }) => {
     await prisma.bagType.delete({ where: { id } });
     redirect("/admin");

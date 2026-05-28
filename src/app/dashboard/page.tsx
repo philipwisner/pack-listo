@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
-import { getCurrentUser } from "@/utils/auth/server";
-import { getDashboardData } from "@/utils/data";
-import { logoutAction } from "@/utils/auth/actions";
+import { getCurrentUser } from "@/lib/auth";
+import { getDashboardData } from "@/lib/data";
+import { logoutAction } from "@/features/auth/auth.actions";
 import { InternalLink } from "@/components/InternalLink/InternalLink";
 import { css } from "@/styled-system/css";
 import { flex, grid } from "@/styled-system/patterns";
@@ -32,7 +32,8 @@ export default async function DashboardPage() {
         bg: { base: "slate.50", _dark: "zinc.950" },
         backgroundImage: {
           base: "radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.05) 0%, transparent 50%)",
-          _dark: "radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.12) 0%, transparent 50%)",
+          _dark:
+            "radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.12) 0%, transparent 50%)",
         },
         fontFamily: "sans",
         color: { base: "slate.800", _dark: "zinc.200" },
@@ -130,9 +131,7 @@ export default async function DashboardPage() {
               </span>
             </div>
 
-            {user.isAdmin && (
-              <InternalLink text="Admin" url="/admin" />
-            )}
+            {user.isAdmin && <InternalLink text="Admin" url="/admin" />}
 
             <form action={logoutAction}>
               <button
@@ -174,49 +173,6 @@ export default async function DashboardPage() {
           gap: "8",
         })}
       >
-        {/* Offline Banner alert if database fallback is active */}
-        {isFallback && (
-          <div
-            className={flex({
-              align: "center",
-              justify: "space-between",
-              gap: "3",
-              bg: { base: "amber.50/80", _dark: "amber.950/20" },
-              backdropFilter: "blur(8px)",
-              border: "1px dashed",
-              borderColor: "amber.500/40",
-              color: { base: "amber.800", _dark: "amber.400" },
-              px: "4",
-              py: "3.5",
-              borderRadius: "xl",
-              fontSize: "xs",
-            })}
-          >
-            <div className={flex({ align: "center", gap: "2.5" })}>
-              <span className={css({ fontSize: "base" })}>⚡</span>
-              <div>
-                <strong className={css({ fontWeight: "semibold" })}>
-                  Local Offline Mock Mode Active:
-                </strong>{" "}
-                Running database-free using cookies & preloaded mock lists. Perfect for rapid prototyping!
-              </div>
-            </div>
-            <div
-              className={css({
-                bg: "amber.500/20",
-                px: "2.5",
-                py: "0.5",
-                borderRadius: "full",
-                fontWeight: "bold",
-                textTransform: "uppercase",
-                fontSize: "[10px]",
-              })}
-            >
-              Mocked
-            </div>
-          </div>
-        )}
-
         {/* Dashboard Title */}
         <div className={flex({ direction: "column", gap: "1" })}>
           <h2
@@ -259,7 +215,9 @@ export default async function DashboardPage() {
               _hover: { transform: "translateY(-2px)", shadow: "md" },
             })}
           >
-            <div className={flex({ align: "center", justify: "space-between" })}>
+            <div
+              className={flex({ align: "center", justify: "space-between" })}
+            >
               <span
                 className={css({
                   fontSize: "xs",
@@ -302,7 +260,7 @@ export default async function DashboardPage() {
                   color: { base: "slate.900", _dark: "white" },
                 })}
               >
-                {stats.totalTrips}
+                0
               </span>
             </div>
           </div>
@@ -320,7 +278,9 @@ export default async function DashboardPage() {
               _hover: { transform: "translateY(-2px)", shadow: "md" },
             })}
           >
-            <div className={flex({ align: "center", justify: "space-between" })}>
+            <div
+              className={flex({ align: "center", justify: "space-between" })}
+            >
               <span
                 className={css({
                   fontSize: "xs",
@@ -363,7 +323,7 @@ export default async function DashboardPage() {
                   color: { base: "slate.900", _dark: "white" },
                 })}
               >
-                {stats.packedTrips}
+                0
               </span>
             </div>
           </div>
@@ -381,7 +341,9 @@ export default async function DashboardPage() {
               _hover: { transform: "translateY(-2px)", shadow: "md" },
             })}
           >
-            <div className={flex({ align: "center", justify: "space-between" })}>
+            <div
+              className={flex({ align: "center", justify: "space-between" })}
+            >
               <span
                 className={css({
                   fontSize: "xs",
@@ -424,7 +386,7 @@ export default async function DashboardPage() {
                   color: { base: "slate.900", _dark: "white" },
                 })}
               >
-                {stats.totalItemsPacked}
+                0
               </span>
             </div>
           </div>
@@ -442,7 +404,9 @@ export default async function DashboardPage() {
               _hover: { transform: "translateY(-2px)", shadow: "md" },
             })}
           >
-            <div className={flex({ align: "center", justify: "space-between" })}>
+            <div
+              className={flex({ align: "center", justify: "space-between" })}
+            >
               <span
                 className={css({
                   fontSize: "xs",
@@ -486,7 +450,7 @@ export default async function DashboardPage() {
                   color: { base: "slate.900", _dark: "white" },
                 })}
               >
-                {stats.overallProgress}%
+                0%
               </span>
             </div>
           </div>
@@ -541,7 +505,10 @@ export default async function DashboardPage() {
                 color: "blue.600",
                 _dark: { bg: "blue.950/40", color: "blue.400" },
               });
-              if (trip.bagType.includes("Suitcase") || trip.bagType.includes("Checked")) {
+              if (
+                trip.bagType.includes("Suitcase") ||
+                trip.bagType.includes("Checked")
+              ) {
                 bagColorClass = css({
                   bg: "orange.50",
                   color: "orange.600",
@@ -603,7 +570,13 @@ export default async function DashboardPage() {
                   />
 
                   {/* Trip Header */}
-                  <div className={flex({ justify: "space-between", align: "flex-start", mb: "3" })}>
+                  <div
+                    className={flex({
+                      justify: "space-between",
+                      align: "flex-start",
+                      mb: "3",
+                    })}
+                  >
                     <div className={flex({ direction: "column", gap: "1" })}>
                       <h4
                         className={css({
@@ -689,13 +662,35 @@ export default async function DashboardPage() {
                   </div>
 
                   {/* Packing Progress */}
-                  <div className={flex({ direction: "column", gap: "2.5", mt: "auto" })}>
-                    <div className={flex({ justify: "space-between", align: "center", fontSize: "xs" })}>
-                      <span className={css({ color: { base: "slate.500", _dark: "zinc.400" }, fontWeight: "medium" })}>
+                  <div
+                    className={flex({
+                      direction: "column",
+                      gap: "2.5",
+                      mt: "auto",
+                    })}
+                  >
+                    <div
+                      className={flex({
+                        justify: "space-between",
+                        align: "center",
+                        fontSize: "xs",
+                      })}
+                    >
+                      <span
+                        className={css({
+                          color: { base: "slate.500", _dark: "zinc.400" },
+                          fontWeight: "medium",
+                        })}
+                      >
                         Packing Progress
                       </span>
-                      <strong className={css({ color: { base: "slate.900", _dark: "white" } })}>
-                        {trip.packedItems} / {trip.totalItems} ({trip.packedPercentage}%)
+                      <strong
+                        className={css({
+                          color: { base: "slate.900", _dark: "white" },
+                        })}
+                      >
+                        {trip.packedItems} / {trip.totalItems} (
+                        {trip.packedPercentage}%)
                       </strong>
                     </div>
 
@@ -713,8 +708,14 @@ export default async function DashboardPage() {
                         className={css({
                           height: "full",
                           bgGradient: "to-r",
-                          gradientFrom: trip.status === "READY" ? "green.400" : "indigo.400",
-                          gradientTo: trip.status === "READY" ? "emerald.500" : "violet.500",
+                          gradientFrom:
+                            trip.status === "READY"
+                              ? "green.400"
+                              : "indigo.400",
+                          gradientTo:
+                            trip.status === "READY"
+                              ? "emerald.500"
+                              : "violet.500",
                           borderRadius: "full",
                           transition: "width 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
                         })}

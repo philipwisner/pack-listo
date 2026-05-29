@@ -3,8 +3,14 @@ import { getDashboardData } from "@/services/dashboard.service";
 import { css } from "@/styled-system/css";
 import { flex, grid } from "@/styled-system/patterns";
 
+export const metadata = {
+  title: "Dashboard",
+};
+
 export default async function DashboardPage() {
   const user = await getCurrentUser();
+
+  console.log("Dashboard page - current user:", user);
 
   // Safely redirect or error out if there's no user session found
   if (!user) {

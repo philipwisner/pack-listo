@@ -2,6 +2,10 @@ import { categoryService } from "@/services/category.service";
 import CategoriesClient from "./CategoriesClient";
 import { getCurrentUser } from "@/lib/auth";
 
+export const metadata = {
+  title: "Categories",
+};
+
 export default async function CategoriesPage() {
   const user = await getCurrentUser();
 

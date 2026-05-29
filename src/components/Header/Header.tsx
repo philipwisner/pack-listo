@@ -24,7 +24,7 @@ export const Header = ({ user }: HeaderProps) => {
         className={flex({
           justify: "space-between",
           align: "center",
-          maxWidth: "6xl",
+          maxWidth: "xl",
           mx: "auto",
           px: { base: "4", md: "8" },
           py: "4",
@@ -32,7 +32,11 @@ export const Header = ({ user }: HeaderProps) => {
       >
         <Link
           href="/dashboard"
-          className={flex({ align: "center", gap: "2.5" })}
+          className={flex({
+            align: "center",
+            gap: "2.5",
+            maxWidth: "230px",
+          })}
         >
           <Logo />
         </Link>

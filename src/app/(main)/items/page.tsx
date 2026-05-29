@@ -1,9 +1,11 @@
-import React from "react";
 import { itemService } from "@/services/item.service";
 import { categoryService } from "@/services/category.service";
 import { createClient } from "@/utils/supabase/server";
 import ItemsClient from "./ItemsClient";
 
+export const metadata = {
+  title: "Items",
+};
 export default async function ItemsPage() {
   const supabase = await createClient();
   const {

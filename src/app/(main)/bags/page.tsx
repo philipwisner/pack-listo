@@ -1,8 +1,10 @@
-import React from "react";
 import { bagTypeService } from "@/services/bag-type.service";
 import { createClient } from "@/utils/supabase/server";
 import BagTypesClient from "./BagTypesClient";
 
+export const metadata = {
+  title: "Bags",
+};
 export default async function BagTypesPage() {
   const supabase = await createClient();
   const {

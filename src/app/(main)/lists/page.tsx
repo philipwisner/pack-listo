@@ -2,6 +2,10 @@ import { listService } from "@/services/list.service";
 import { createClient } from "@/utils/supabase/server";
 import ListsClient from "./ListsClient";
 
+export const metadata = {
+  title: "Lists",
+};
+
 export default async function ListsPage() {
   const supabase = await createClient();
   const {

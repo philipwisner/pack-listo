@@ -19,7 +19,7 @@ const LinkStyled = styled(Link, {
       textDecorationColor: "accent",
       color: "link.hover",
     },
-    _focus: {
+    _focusVisible: {
       outline: "1.5px solid",
       outlineColor: "input.focusRing.default",
       outlineOffset: "2px",

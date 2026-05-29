@@ -22,6 +22,10 @@ import { InternalLink } from "@/components/InternalLink/InternalLink";
 import { css } from "@/styled-system/css";
 import { flex, grid } from "@/styled-system/patterns";
 
+export const metadata = {
+  title: "Admin",
+};
+
 export default async function AdminPage() {
   const user = await requireAdminUser();
   const [categories, bagTypes, items] = await Promise.all([

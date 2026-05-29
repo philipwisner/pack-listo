@@ -3,6 +3,13 @@ import { getCurrentUser } from "@/lib/auth";
 import { flex } from "@/styled-system/patterns";
 import { css } from "@/styled-system/css";
 
+export const metadata = {
+  title: {
+    default: "Pack Listo",
+    template: "%s | Pack Listo",
+  },
+};
+
 export default async function MainLayout({
   children,
 }: {

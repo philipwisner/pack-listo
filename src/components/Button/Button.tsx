@@ -28,10 +28,10 @@ export const ButtonStyled = styled("button", {
     fontSize: "base",
     cursor: "pointer",
     transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
-    _focus: {
-      outline: "2px solid",
-      outlineOffset: "2px",
-    },
+    // _focus: {
+    //   outline: "2px solid",
+    //   outlineOffset: "2px",
+    // },
     _focusVisible: {
       outline: "2px solid",
       outlineOffset: "2px",

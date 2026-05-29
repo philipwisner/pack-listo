@@ -3,8 +3,8 @@ import { PrismaClient } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { Pool } from "pg";
 
+//Create prisma client that actions can use. This is set up as a singleton to avoid exhausting database connections in development due to hot reloading. In production, this will simply create a new client instance.
 const prismaClientSingleton = () => {
-  // Use the flexible connection string logic
   const connectionString =
     process.env.POSTGRES_PRISMA_URL || process.env.DATABASE_URL;
   const pool = new Pool({ connectionString });

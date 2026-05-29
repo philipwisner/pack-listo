@@ -1,5 +1,4 @@
 "use server";
-
 import { protectedActionClient } from "@/lib/safe-action";
 import { listService } from "@/services/list.service";
 import { z } from "zod";

@@ -507,6 +507,7 @@ export default async function AdminPage() {
                     <select
                       id={`item-categories-${item.id}`}
                       name="categoryIds"
+                      defaultValue={item.categories.map((cat) => cat.id)}
                       multiple
                       size={4}
                       className={css({
@@ -520,13 +521,7 @@ export default async function AdminPage() {
                       })}
                     >
                       {categories.map((category) => (
-                        <option
-                          key={category.id}
-                          value={category.id}
-                          selected={item.categories.some(
-                            (cat) => cat.id === category.id,
-                          )}
-                        >
+                        <option key={category.id} value={category.id}>
                           {category.name}
                         </option>
                       ))}

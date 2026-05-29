@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { ListCard } from "@/components/lists/ListCard";
-import { Modal } from "@/components/ui/Modal";
+import { Modal } from "@/components/Modal/Modal";
 import { NewListForm } from "@/components/forms/NewListForm";
 import styles from "@/components/lists/Lists.module.css";
 import { useRouter } from "next/navigation";

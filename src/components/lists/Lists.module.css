@@ -1,0 +1,113 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid var(--border);
+  background: var(--surface);
+  color: var(--foreground);
+  transition: all 0.1s ease;
+  min-height: 200px;
+}
+
+.card:hover {
+  background: var(--surface-alt);
+  border-color: var(--accent-yellow);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sharp);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background: var(--primary);
+  color: var(--primary-foreground);
+  font-weight: 800;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.status {
+  padding: 2px 6px;
+  background: var(--accent-yellow);
+  color: #000;
+}
+
+.body {
+  padding: 1.5rem;
+  flex: 1;
+}
+
+.name {
+  font-size: 1.5rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  line-height: 1.1;
+}
+
+.info {
+  font-size: 0.875rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.label {
+  opacity: 0.6;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--border-muted);
+  background: var(--surface-alt);
+}
+
+.counter {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.count {
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
+.countLabel {
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  opacity: 0.7;
+}
+
+.arrow {
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+
+.listsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.pageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 3rem;
+  border-bottom: 4px solid var(--border);
+  padding-bottom: 1.5rem;
+}
+
+.pageHeader h1 {
+  margin-bottom: 0;
+}

@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { ItemRow } from "@/components/items/ItemRow";
-import { Modal } from "@/components/ui/Modal";
+import { Modal } from "@/components/Modal/Modal";
 import { NewItemForm } from "@/components/forms/NewItemForm";
 import { EditItemForm } from "@/components/forms/EditItemForm";
 import styles from "@/components/items/Items.module.css";
@@ -13,7 +13,10 @@ interface ItemsClientProps {
   categories: any[];
 }
 
-export default function ItemsClient({ initialItems, categories }: ItemsClientProps) {
+export default function ItemsClient({
+  initialItems,
+  categories,
+}: ItemsClientProps) {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<any | null>(null);
   const router = useRouter();
@@ -25,13 +28,19 @@ export default function ItemsClient({ initialItems, categories }: ItemsClientPro
   };
 
   return (
-    <div className="dashboard-page" style={{ padding: '4rem' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '3rem', borderBottom: '4px solid var(--border)', paddingBottom: '1.5rem' }}>
+    <div className="dashboard-page" style={{ padding: "4rem" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "flex-end",
+          marginBottom: "3rem",
+          borderBottom: "4px solid var(--border)",
+          paddingBottom: "1.5rem",
+        }}
+      >
         <h1 style={{ marginBottom: 0 }}>Item Inventory</h1>
-        <button 
-          className="btn-sign" 
-          onClick={() => setIsCreateModalOpen(true)}
-        >
+        <button className="btn-sign" onClick={() => setIsCreateModalOpen(true)}>
           Register New Cargo
         </button>
       </div>
@@ -44,12 +53,16 @@ export default function ItemsClient({ initialItems, categories }: ItemsClientPro
           <span>Weight</span>
           <span>Actions</span>
         </div>
-        
+
         {initialItems.length === 0 ? (
-          <div style={{ padding: '2rem', textAlign: 'center', fontWeight: 800 }}>INVENTORY EMPTY. AUTHORIZATION REQUIRED.</div>
+          <div
+            style={{ padding: "2rem", textAlign: "center", fontWeight: 800 }}
+          >
+            INVENTORY EMPTY. AUTHORIZATION REQUIRED.
+          </div>
         ) : (
           initialItems.map((item) => (
-            <ItemRow 
+            <ItemRow
               key={item.id}
               id={item.id}
               name={item.name}
@@ -61,22 +74,28 @@ export default function ItemsClient({ initialItems, categories }: ItemsClientPro
         )}
       </div>
 
-      <section className="sign-panel sign-panel-accent" style={{ marginTop: '4rem' }}>
+      <section
+        className="sign-panel sign-panel-accent"
+        style={{ marginTop: "4rem" }}
+      >
         <h2>Inventory Control</h2>
-        <p style={{ fontWeight: 600 }}>Items registered here can be allocated to any manifest. Ensure weight specifications are accurate for total payload calculation.</p>
+        <p style={{ fontWeight: 600 }}>
+          Items registered here can be allocated to any manifest. Ensure weight
+          specifications are accurate for total payload calculation.
+        </p>
       </section>
 
       {/* Create Modal */}
-      <Modal 
-        isOpen={isCreateModalOpen} 
-        onClose={() => setIsCreateModalOpen(false)} 
+      <Modal
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
         title="REGISTER NEW CARGO"
         gate="C-12"
       >
-        <NewItemForm 
+        <NewItemForm
           categories={categories}
-          onSuccess={handleSuccess} 
-          onCancel={() => setIsCreateModalOpen(false)} 
+          onSuccess={handleSuccess}
+          onCancel={() => setIsCreateModalOpen(false)}
         />
       </Modal>
 

@@ -4,10 +4,10 @@
 import { redirect } from "next/navigation";
 import { createClient as createSupabaseClient } from "@/utils/supabase/server";
 import { createAdminClient } from "@/utils/supabase/admin";
-import prisma from "@/lib/prisma";
+// CHANGED: Use the named export to match our unified chunk-safe database client configuration
+import { prisma } from "@/lib/prisma";
 import { LoginSchema, SignupSchema, AuthActionState } from "./auth.schema";
 
-// Core background utility remains functionally intact
 async function cloneDefaultsForUser(userId: string) {
   try {
     const existingCount = await prisma.category.count({ where: { userId } });
@@ -66,12 +66,9 @@ export async function loginAction(
   const rawFields = {
     email: formData.get("email"),
     password: formData.get("password"),
-    // Pull the hidden input field value
     redirectTo: formData.get("redirectTo"),
   };
 
-  // 1. Zod validation parsing
-  // Make sure to add `redirectTo: z.string().optional()` to your LoginSchema
   const validatedFields = LoginSchema.safeParse(rawFields);
   if (!validatedFields.success) {
     return {
@@ -81,18 +78,26 @@ export async function loginAction(
     };
   }
 
-  // Destructure your validated fallback route
   const { email, password, redirectTo } = validatedFields.data;
 
   try {
     const supabase = await createSupabaseClient();
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
 
     if (error) {
       return { success: false, error: error.message };
+    }
+
+    // FIX: Force Next.js 16 to await the resolution of the server client session cache.
+    // This guarantees that setAll completes its cookie-mapping loops before redirect() drops execution.
+    if (data?.session) {
+      await supabase.auth.setSession({
+        access_token: data.session.access_token,
+        refresh_token: data.session.refresh_token,
+      });
     }
   } catch (err: any) {
     return {
@@ -102,9 +107,9 @@ export async function loginAction(
     };
   }
 
-  // Next.js standard redirect using the dynamic destination or falling back
   redirect(redirectTo || "/dashboard");
 }
+
 /**
  * SIGNUP SERVER ACTION
  */
@@ -118,7 +123,6 @@ export async function signupAction(
     password: formData.get("password"),
   };
 
-  // 1. Zod validation parsing
   const validatedFields = SignupSchema.safeParse(rawFields);
   if (!validatedFields.success) {
     return {
@@ -156,12 +160,9 @@ export async function signupAction(
         console.warn("Prisma user upsert failed:", dbErr);
       }
     } else {
-      // Fallback fallback handling block for bypassed verification pipelines
       if (process.env.SUPABASE_SERVICE_ROLE_KEY) {
         try {
           const admin = createAdminClient();
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
           const { data: adminData, error: adminError } =
             await admin.auth.admin.createUser({
               email,

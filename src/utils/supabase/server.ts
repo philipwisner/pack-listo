@@ -31,11 +31,16 @@ export async function createClient() {
         },
         setAll(cookiesToSet) {
           try {
-            cookiesToSet.forEach(({ name, value, options }) =>
-              cookieStore.set(name, value, options),
-            );
+            cookiesToSet.forEach(({ name, value, options }) => {
+              // Next.js 16 requires mapping options safely to prevent drops
+              cookieStore.set(name, value, {
+                ...options,
+                // Ensure cookies flow correctly through Vercel's serverless domain routing
+                path: options.path ?? "/",
+              });
+            });
           } catch {
-            // Handled for read-only page contexts
+            // Safely caught when called inside read-only Server Component layout streams
           }
         },
       },

@@ -28,14 +28,14 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  // 2. Setup standard response
+  // 2. Setup standard response container (Keep this as our single source of truth)
   let response = NextResponse.next({
     request: {
-      headers: new Headers(request.headers),
+      headers: request.headers,
     },
   });
 
-  // 3. Initialize Supabase Client
+  // 3. Initialize Supabase Client directly bound to our original request/response loop
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -45,9 +45,14 @@ export async function proxy(request: NextRequest) {
           return request.cookies.getAll();
         },
         setAll(cookiesToSet) {
-          // Sync changes to BOTH request and response to survive the Next.js runtime boundary
           cookiesToSet.forEach(({ name, value, options }) => {
             request.cookies.set(name, value);
+            // Re-bind the modified headers back to the runtime execution frame
+            response = NextResponse.next({
+              request: {
+                headers: request.headers,
+              },
+            });
             response.cookies.set(name, value, options);
           });
         },
@@ -55,7 +60,7 @@ export async function proxy(request: NextRequest) {
     },
   );
 
-  // 4. Evaluate Session
+  // 4. Evaluate Session securely
   let user = null;
   try {
     const { data } = await supabase.auth.getUser();
@@ -65,7 +70,7 @@ export async function proxy(request: NextRequest) {
   }
   const isAuthenticated = !!user;
 
-  // 5. Routing Logic
+  // 5. Routing Logic Gates
   if (pathname === "/") {
     url.pathname = isAuthenticated ? AUTH_HOME : UNAUTH_HOME;
     return NextResponse.redirect(url);
@@ -89,34 +94,10 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  // 6. CRITICAL FOR RESTRUCK VERCEL CONTAINERS:
-  // Explicitly map response-mutated Set-Cookie headers back onto Next.js request headers.
-  // This bypasses the async cookies() context loss in Page components.
-  const finalHeaders = new Headers(request.headers);
-
-  // Package cookies nicely as a standard Cookie string format
-  const currentCookiesString = request.cookies
-    .getAll()
-    .map((c) => `${c.name}=${c.value}`)
-    .join("; ");
-
-  if (currentCookiesString) {
-    finalHeaders.set("cookie", currentCookiesString);
-  }
-
-  // Construct a brand new response frame carrying the verified header chain
-  const verifiedResponse = NextResponse.next({
-    request: {
-      headers: finalHeaders,
-    },
-  });
-
-  // Re-append the cookie definitions so the client browser saves them
-  response.cookies.getAll().forEach((cookie) => {
-    verifiedResponse.cookies.set(cookie.name, cookie.value);
-  });
-
-  return verifiedResponse;
+  // 6. PRODUCTION-READY HANDOFF FOR NEXT.JS 16
+  // Return the original response container directly instead of creating a new frame.
+  // This maintains your database client initialization state across execution contexts.
+  return response;
 }
 
 export const config = {

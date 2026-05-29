@@ -9,35 +9,33 @@ export async function proxy(request: NextRequest) {
   const url = request.nextUrl.clone();
   const { pathname } = url;
 
-  // 1. Performance Gate: Fast-track routing if no session cookie exists
-  // This saves heavy Supabase CPU/API network calls for unauthenticated traffic.
+  // 1. Performance Gate
   const isPrefetch = request.headers.get("purpose") === "prefetch";
   const hasSessionCookie = request.cookies
     .getAll()
     .some((c) => c.name.startsWith("sb-"));
 
   if (!hasSessionCookie && !GUEST_ONLY_ROUTES.includes(pathname)) {
-    // If hitting the root domain unauthenticated, fast-redirect to login
     if (pathname === "/") {
       url.pathname = UNAUTH_HOME;
       return NextResponse.redirect(url);
     }
-
-    // Allow background pre-fetches to resolve natively without throwing breaking 401s
     if (isPrefetch) {
       return NextResponse.next({ request });
     }
-
-    // For full page requests to protected routes, force a clean redirect to login
     url.pathname = UNAUTH_HOME;
     url.searchParams.set("next", pathname);
     return NextResponse.redirect(url);
   }
 
-  // 2. Single Response Context Initialization
-  let response = NextResponse.next({ request });
+  // 2. Setup standard response
+  let response = NextResponse.next({
+    request: {
+      headers: new Headers(request.headers),
+    },
+  });
 
-  // 3. Initialize Supabase SSR Client
+  // 3. Initialize Supabase Client
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -47,8 +45,7 @@ export async function proxy(request: NextRequest) {
           return request.cookies.getAll();
         },
         setAll(cookiesToSet) {
-          // CRITICAL FIX FOR SERVER ACTIONS:
-          // Mutate the request and response objects inline. Do NOT re-create the NextResponse instance.
+          // Sync changes to BOTH request and response to survive the Next.js runtime boundary
           cookiesToSet.forEach(({ name, value, options }) => {
             request.cookies.set(name, value);
             response.cookies.set(name, value, options);
@@ -58,7 +55,7 @@ export async function proxy(request: NextRequest) {
     },
   );
 
-  // 4. Evaluate Authentication Status
+  // 4. Evaluate Session
   let user = null;
   try {
     const { data } = await supabase.auth.getUser();
@@ -68,15 +65,12 @@ export async function proxy(request: NextRequest) {
   }
   const isAuthenticated = !!user;
 
-  // 5. Centralized Routing Pipeline
-
-  // A. Root Domain Pivot
+  // 5. Routing Logic
   if (pathname === "/") {
     url.pathname = isAuthenticated ? AUTH_HOME : UNAUTH_HOME;
     return NextResponse.redirect(url);
   }
 
-  // B. Guest-Only Route Verification
   const isGuestOnlyRoute = GUEST_ONLY_ROUTES.some(
     (route) => pathname === route,
   );
@@ -89,23 +83,35 @@ export async function proxy(request: NextRequest) {
     return response;
   }
 
-  // C. Default-Closed Gatekeeper
   if (!isAuthenticated) {
     url.pathname = UNAUTH_HOME;
     url.searchParams.set("next", pathname);
     return NextResponse.redirect(url);
   }
 
-  // 6. FINAL EXIT GATEWAY FIX FOR VERCEL PRODUCTION RUNTIMES:
-  // Re-instantiate the NextResponse.next frame carrying the freshly mutated
-  // request header state explicitly down to the Serverless rendering engine.
+  // 6. CRITICAL FOR RESTRUCK VERCEL CONTAINERS:
+  // Explicitly map response-mutated Set-Cookie headers back onto Next.js request headers.
+  // This bypasses the async cookies() context loss in Page components.
+  const finalHeaders = new Headers(request.headers);
+
+  // Package cookies nicely as a standard Cookie string format
+  const currentCookiesString = request.cookies
+    .getAll()
+    .map((c) => `${c.name}=${c.value}`)
+    .join("; ");
+
+  if (currentCookiesString) {
+    finalHeaders.set("cookie", currentCookiesString);
+  }
+
+  // Construct a brand new response frame carrying the verified header chain
   const verifiedResponse = NextResponse.next({
     request: {
-      headers: new Headers(request.headers),
+      headers: finalHeaders,
     },
   });
 
-  // Sync over any fresh auth tokens or session rotations generated during step 4
+  // Re-append the cookie definitions so the client browser saves them
   response.cookies.getAll().forEach((cookie) => {
     verifiedResponse.cookies.set(cookie.name, cookie.value);
   });
@@ -115,7 +121,6 @@ export async function proxy(request: NextRequest) {
 
 export const config = {
   matcher: [
-    // Ensure all assets, microservices, and internal tools are bypassed
     "/((?!_next/static|_next/image|favicon.ico|static|storybook|api|.*\\..*).*)",
   ],
 };

@@ -96,8 +96,21 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  // Return the stable, cookie-carrying response object context
-  return response;
+  // 6. FINAL EXIT GATEWAY FIX FOR VERCEL PRODUCTION RUNTIMES:
+  // Re-instantiate the NextResponse.next frame carrying the freshly mutated
+  // request header state explicitly down to the Serverless rendering engine.
+  const verifiedResponse = NextResponse.next({
+    request: {
+      headers: new Headers(request.headers),
+    },
+  });
+
+  // Sync over any fresh auth tokens or session rotations generated during step 4
+  response.cookies.getAll().forEach((cookie) => {
+    verifiedResponse.cookies.set(cookie.name, cookie.value);
+  });
+
+  return verifiedResponse;
 }
 
 export const config = {

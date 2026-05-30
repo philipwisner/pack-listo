@@ -12,8 +12,7 @@
     "test": "vitest",
     "test:ui": "vitest --ui",
     "reset-password": "tsx scripts/reset-password.ts",
-    "db:push": "prisma db push",
-    "db:push:prod": "export $(cat .env.local | xargs) && POSTGRES_PRISMA_URL=$PRODUCTION_DATABASE_URL POSTGRES_URL_NON_POOLING=$PRODUCTION_DATABASE_URL DATABASE_URL=$PRODUCTION_DATABASE_URL prisma db push"
+    "db:push": "prisma db push"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.7.0",

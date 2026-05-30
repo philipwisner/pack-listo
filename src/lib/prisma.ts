@@ -6,15 +6,13 @@ import { Pool } from "pg";
 const prismaClientSingleton = () => {
   const isProduction = process.env.NODE_ENV === "production";
 
-  // Build the pool configuration explicitly by passing an object
-  // instead of relying on the raw pg library to parse a URL string.
+  if (!process.env.DATABASE_URL) {
+    throw new Error("DATABASE_URL is missing in environment variables.");
+  }
+
+  // Pass the connection string directly so pg parses the correct host automatically
   const pool = new Pool({
-    host: "aws-0-us-east-1.pooler.supabase.com",
-    port: 6543,
-    // Supavisor transaction routing requires the exact "user.project_ref" structure
-    user: "postgres.fxuwqygjelkoqlbllvzy",
-    password: "vUAnlmO0fCm2aSu2",
-    database: "postgres",
+    connectionString: process.env.DATABASE_URL,
     max: isProduction ? 10 : 1,
     idleTimeoutMillis: 30000,
     ssl: isProduction ? { rejectUnauthorized: false } : undefined,

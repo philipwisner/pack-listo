@@ -1,5 +1,6 @@
 import prisma from "@/lib/prisma";
-import { Prisma } from "@prisma/client";
+// import { Prisma } from "@prisma/client";
+import { Prisma } from "@/generated/prisma/client";
 import { cache } from "react";
 
 // Types for your UI components

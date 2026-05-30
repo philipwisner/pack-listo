@@ -4,7 +4,8 @@ dotenv.config({ path: ".env.local" });
 // Fall back to standard .env if keys aren't found in .env.local
 dotenv.config();
 
-import { PrismaClient } from "@prisma/client";
+// import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { Pool } from "pg";
 

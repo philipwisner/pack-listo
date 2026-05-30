@@ -1,5 +1,14 @@
 import "dotenv/config";
-import { defineConfig } from "prisma/config";
+import { defineConfig, env } from "prisma/config";
+
+// Detect if we are explicitly pushing to production via your package.json script
+const isProdPush =
+  process.env.DATABASE_URL === process.env.PRODUCTION_DATABASE_URL;
+
+// Select the non-pooling URL for production migrations, fallback to standard behavior for dev/Docker
+const databaseUrl = isProdPush
+  ? process.env.POSTGRES_URL_NON_POOLING || process.env.DATABASE_URL
+  : process.env.POSTGRES_PRISMA_URL || process.env.DATABASE_URL;
 
 export default defineConfig({
   schema: "prisma/schema.prisma",
@@ -7,11 +16,7 @@ export default defineConfig({
     path: "prisma/migrations",
   },
   datasource: {
-    // 1. Fall back to local Docker string if Supabase vars aren't present
-    url: process.env.POSTGRES_PRISMA_URL || process.env.DATABASE_URL,
-
-    // 2. Map the non-pooling URL for migrations (Prisma v7 looks for this here)
-    // @ts-expect-error - Prisma 7 type definitions don't explicitly type directUrl here yet
-    directUrl: process.env.POSTGRES_URL_NON_POOLING || process.env.DATABASE_URL,
+    // Prisma 7 uses this single URL for both client generation AND migrations
+    url: databaseUrl,
   },
 });

@@ -28,7 +28,7 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  // 2. Setup standard response container (Keep this as our single source of truth)
+  // 2. Setup standard response container as our singular source of truth
   let response = NextResponse.next({
     request: {
       headers: request.headers,
@@ -45,16 +45,22 @@ export async function proxy(request: NextRequest) {
           return request.cookies.getAll();
         },
         setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) => {
-            request.cookies.set(name, value);
-            // Re-bind the modified headers back to the runtime execution frame
-            response = NextResponse.next({
-              request: {
-                headers: request.headers,
-              },
-            });
-            response.cookies.set(name, value, options);
+          // Mutate the original request instance so consecutive tokens can read each other
+          cookiesToSet.forEach(({ name, value }) =>
+            request.cookies.set(name, value),
+          );
+
+          // Re-create the request forwarding frame exactly ONCE per sync call, not per-cookie
+          response = NextResponse.next({
+            request: {
+              headers: request.headers,
+            },
           });
+
+          // Apply all cookie keys atomically to our outbound response header block
+          cookiesToSet.forEach(({ name, value, options }) =>
+            response.cookies.set(name, value, options),
+          );
         },
       },
     },
@@ -95,8 +101,6 @@ export async function proxy(request: NextRequest) {
   }
 
   // 6. PRODUCTION-READY HANDOFF FOR NEXT.JS 16
-  // Return the original response container directly instead of creating a new frame.
-  // This maintains your database client initialization state across execution contexts.
   return response;
 }
 

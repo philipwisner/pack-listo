@@ -17,30 +17,41 @@ export async function createClient() {
 
           // Strategy 2: Fallback to the explicit forwarded header chain
           const rawCookieHeader = headerStore.get("cookie");
-          if (rawCookieHeader) {
-            return rawCookieHeader.split(";").map((str) => {
-              const [name, ...valueParts] = str.split("=");
-              return {
-                name: name.trim(),
-                value: valueParts.join("=").trim(),
-              };
-            });
-          }
+          if (!rawCookieHeader) return [];
 
-          return [];
+          return rawCookieHeader
+            .split(";")
+            .map((str) => {
+              const parts = str.trim();
+              if (!parts) return null;
+
+              const equalIndex = parts.indexOf("=");
+              if (equalIndex === -1) return null;
+
+              const name = parts.substring(0, equalIndex).trim();
+              const value = parts.substring(equalIndex + 1).trim();
+
+              // Avoid passing empty or broken cookie references down to the client
+              if (!name || !value) return null;
+
+              return { name, value };
+            })
+            .filter(
+              (cookie): cookie is { name: string; value: string } =>
+                cookie !== null,
+            );
         },
         setAll(cookiesToSet) {
           try {
             cookiesToSet.forEach(({ name, value, options }) => {
-              // Next.js 16 requires mapping options safely to prevent drops
               cookieStore.set(name, value, {
                 ...options,
-                // Ensure cookies flow correctly through Vercel's serverless domain routing
+                // Ensure cookies consistently flow correctly through internal domain routing
                 path: options.path ?? "/",
               });
             });
           } catch {
-            // Safely caught when called inside read-only Server Component layout streams
+            // Safely caught when evaluated inside Server Component layouts or read-only streams
           }
         },
       },

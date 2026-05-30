@@ -47,7 +47,7 @@ export const InternalLink = ({
   const pathname = usePathname();
   const isActive = pathname === url;
   return (
-    <LinkStyled href={url} {...props} isActive={isActive}>
+    <LinkStyled href={url} {...props} isActive={isActive} prefetch="auto">
       {text}
     </LinkStyled>
   );

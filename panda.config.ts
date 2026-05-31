@@ -425,19 +425,20 @@ export default defineConfig({
       },
     },
   },
-  globalCss: {
-    "html, body": {
-      margin: "0",
-      padding: "0",
-      height: "100%",
-      width: "100%",
-      fontFamily: "sans",
-    },
-    body: {
-      minHeight: "100vh",
-      display: "grid",
-    },
-  },
+  // globalCss: {
+  //   "html, body": {
+  //     margin: "0",
+  //     padding: "0",
+  //     height: "100%",
+  //     width: "100%",
+  //     fontFamily: "sans-serif",
+  //     overflow: "hidden",
+  //   },
+  //   body: {
+  //     // minHeight: "100vh",
+  //     display: "grid",
+  //   },
+  // },
   outdir: "src/styled-system",
   importMap: "@/styled-system",
 });

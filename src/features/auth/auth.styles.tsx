@@ -11,6 +11,7 @@ export const PageBackground = styled("div", {
     px: "8",
     py: "12",
     bg: "background",
+    height: "100%",
   },
 });
 

@@ -9,7 +9,7 @@ import {
 import { LoginFormContent } from "./loginClient";
 
 export const metadata = {
-  title: "Log In | Pack Listo",
+  title: "Log In",
 };
 
 interface PageProps {

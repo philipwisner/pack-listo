@@ -9,7 +9,7 @@ import {
 import { SignupFormContent } from "./signupClient";
 
 export const metadata = {
-  title: "Sign Up | Pack Listo",
+  title: "Sign Up",
 };
 
 export default function SignupPage() {

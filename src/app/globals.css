@@ -10,9 +10,9 @@
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background-color: theme("colors.background");
-    font-family: theme("fonts.sans");
-    color: theme("colors.text.main");
+    background-color: var(--colors-background);
+    color: var(--colors-text-main);
+    font-family: var(--fonts-sans);
   }
 
   /* body {

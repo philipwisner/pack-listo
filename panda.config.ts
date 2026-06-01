@@ -10,6 +10,13 @@ export default defineConfig({
   ],
   exclude: [],
   theme: {
+    breakpoints: {
+      sm: "640px",
+      md: "768px",
+      lg: "1024px",
+      xl: "1280px",
+      "2xl": "1536px",
+    },
     tokens: {
       fonts: {
         sans: {
@@ -38,6 +45,7 @@ export default defineConfig({
       lineHeights: {
         none: { value: "1" },
         tight: { value: "1.25" },
+        snug: { value: "1.375" },
         normal: { value: "1.5" },
         relaxed: { value: "1.625" },
       },
@@ -396,32 +404,88 @@ export default defineConfig({
     },
     textStyles: {
       bodyXs: {
-        fontSize: "{fontSizes.xs}" as any,
-        lineHeight: "{lineHeights.normal}" as any,
+        value: {
+          fontSize: "{fontSizes.xs}",
+          lineHeight: "{lineHeights.normal}",
+          fontWeight: "{fontWeights.regular}",
+        },
       },
       bodySm: {
-        fontSize: "{fontSizes.sm}" as any,
-        lineHeight: "{lineHeights.normal}" as any,
+        value: {
+          fontSize: "{fontSizes.sm}",
+          lineHeight: "{lineHeights.normal}",
+          fontWeight: "{fontWeights.regular}",
+        },
       },
       bodyBase: {
-        fontSize: "{fontSizes.base}" as any,
-        lineHeight: "{lineHeights.relaxed}" as any,
+        value: {
+          fontSize: "{fontSizes.base}",
+          lineHeight: "{lineHeights.relaxed}",
+          fontWeight: "{fontWeights.regular}",
+        },
       },
       headingMd: {
-        fontSize: "{fontSizes.md}" as any,
-        lineHeight: "{lineHeights.tight}" as any,
+        value: {
+          fontSize: "{fontSizes.md}",
+          lineHeight: "{lineHeights.tight}",
+          fontWeight: "{fontWeights.semibold}",
+        },
       },
       headingLg: {
-        fontSize: "{fontSizes.lg}" as any,
-        lineHeight: "{lineHeights.tight}" as any,
+        value: {
+          fontSize: "{fontSizes.lg}",
+          lineHeight: "{lineHeights.tight}",
+          fontWeight: "{fontWeights.bold}",
+        },
       },
       headingXl: {
-        fontSize: "{fontSizes.xl}" as any,
-        lineHeight: "{lineHeights.tight}" as any,
+        value: {
+          fontSize: "{fontSizes.xl}",
+          lineHeight: "{lineHeights.tight}",
+          fontWeight: "{fontWeights.bold}",
+        },
       },
       heading2xl: {
-        fontSize: "{fontSizes.2xl}" as any,
-        lineHeight: "{lineHeights.none}" as any,
+        value: {
+          fontSize: "{fontSizes.2xl}",
+          lineHeight: "{lineHeights.none}",
+          fontWeight: "{fontWeights.bold}",
+        },
+      },
+      navLink: {
+        value: {
+          fontSize: "{fontSizes.sm}",
+          lineHeight: "{lineHeights.snug}",
+          fontWeight: "{fontWeights.medium}",
+        },
+      },
+      link: {
+        value: {
+          fontSize: "inherit",
+          lineHeight: "inherit",
+          fontWeight: "{fontWeights.medium}",
+        },
+      },
+      label: {
+        value: {
+          fontSize: "{fontSizes.sm}",
+          lineHeight: "{lineHeights.snug}",
+          fontWeight: "{fontWeights.medium}",
+        },
+      },
+      buttonBase: {
+        value: {
+          fontSize: "{fontSizes.base}",
+          lineHeight: "{lineHeights.snug}",
+          fontWeight: "{fontWeights.semibold}",
+        },
+      },
+      buttonSm: {
+        value: {
+          fontSize: "{fontSizes.sm}",
+          lineHeight: "{lineHeights.snug}",
+          fontWeight: "{fontWeights.semibold}",
+        },
       },
     },
   },

@@ -65,9 +65,9 @@ export default async function AdminPage() {
           </p>
           <h1
             className={css({
-              fontSize: "3xl",
-              fontWeight: "extrabold",
-              color: { base: "slate.900", _dark: "white" },
+              // fontWeight: "extrabold",
+              // color: { base: "slate.900", _dark: "white" },
+              textStyle: "heading2xl",
             })}
           >
             Default Global Templates

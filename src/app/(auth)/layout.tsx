@@ -19,15 +19,13 @@ export default async function AuthLayout({
         direction: "column",
         h: "100dvh",
         w: "100vw",
-        overflow: "hidden",
+        overflowY: "auto",
         bg: "background",
       })}
     >
       <main
         className={css({
           flex: "1",
-          overflowY: "auto",
-          w: "100%",
         })}
       >
         {children}

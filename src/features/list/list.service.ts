@@ -1,5 +1,18 @@
 import "server-only";
+import { Prisma } from "@/generated/prisma/client";
 import prisma from "@/lib/prisma";
+
+// Define the payload type once for consistency
+export type ListWithDetails = Prisma.ListGetPayload<{
+  include: {
+    items: {
+      include: {
+        item: { include: { category: true } };
+        bagTypeRef: true;
+      };
+    };
+  };
+}>;
 
 export const listService = {
   async getAll(userId: string) {
@@ -14,16 +27,21 @@ export const listService = {
     });
   },
 
-  async getById(id: string, userId: string) {
-    return prisma.list.findFirst({
+  async getById(id: string, userId: string): Promise<ListWithDetails | null> {
+    const list = await prisma.list.findFirst({
       where: { id, userId },
       include: {
         items: {
-          include: { item: { include: { category: true } }, bagTypeRef: true },
+          include: {
+            item: { include: { category: true } },
+            bagTypeRef: true,
+          },
           orderBy: { sortOrder: "asc" },
         },
       },
     });
+
+    return list;
   },
 
   async create(data: {

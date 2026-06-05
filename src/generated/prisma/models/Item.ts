@@ -39,6 +39,9 @@ export type ItemMinAggregateOutputType = {
   name: string | null
   defaultWeight: number | null
   userId: string | null
+  categoryId: string | null
+  defaultBagTypeId: string | null
+  defaultLocationId: string | null
 }
 
 export type ItemMaxAggregateOutputType = {
@@ -46,6 +49,9 @@ export type ItemMaxAggregateOutputType = {
   name: string | null
   defaultWeight: number | null
   userId: string | null
+  categoryId: string | null
+  defaultBagTypeId: string | null
+  defaultLocationId: string | null
 }
 
 export type ItemCountAggregateOutputType = {
@@ -53,6 +59,10 @@ export type ItemCountAggregateOutputType = {
   name: number
   defaultWeight: number
   userId: number
+  categoryId: number
+  tags: number
+  defaultBagTypeId: number
+  defaultLocationId: number
   _all: number
 }
 
@@ -70,6 +80,9 @@ export type ItemMinAggregateInputType = {
   name?: true
   defaultWeight?: true
   userId?: true
+  categoryId?: true
+  defaultBagTypeId?: true
+  defaultLocationId?: true
 }
 
 export type ItemMaxAggregateInputType = {
@@ -77,6 +90,9 @@ export type ItemMaxAggregateInputType = {
   name?: true
   defaultWeight?: true
   userId?: true
+  categoryId?: true
+  defaultBagTypeId?: true
+  defaultLocationId?: true
 }
 
 export type ItemCountAggregateInputType = {
@@ -84,6 +100,10 @@ export type ItemCountAggregateInputType = {
   name?: true
   defaultWeight?: true
   userId?: true
+  categoryId?: true
+  tags?: true
+  defaultBagTypeId?: true
+  defaultLocationId?: true
   _all?: true
 }
 
@@ -178,6 +198,10 @@ export type ItemGroupByOutputType = {
   name: string
   defaultWeight: number | null
   userId: string | null
+  categoryId: string | null
+  tags: string[]
+  defaultBagTypeId: string | null
+  defaultLocationId: string | null
   _count: ItemCountAggregateOutputType | null
   _avg: ItemAvgAggregateOutputType | null
   _sum: ItemSumAggregateOutputType | null
@@ -208,9 +232,16 @@ export type ItemWhereInput = {
   name?: Prisma.StringFilter<"Item"> | string
   defaultWeight?: Prisma.FloatNullableFilter<"Item"> | number | null
   userId?: Prisma.StringNullableFilter<"Item"> | string | null
+  categoryId?: Prisma.StringNullableFilter<"Item"> | string | null
+  tags?: Prisma.StringNullableListFilter<"Item">
+  defaultBagTypeId?: Prisma.StringNullableFilter<"Item"> | string | null
+  defaultLocationId?: Prisma.StringNullableFilter<"Item"> | string | null
   user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   listItems?: Prisma.ListItemListRelationFilter
-  categories?: Prisma.CategoryListRelationFilter
+  category?: Prisma.XOR<Prisma.CategoryNullableScalarRelationFilter, Prisma.CategoryWhereInput> | null
+  defaultBagType?: Prisma.XOR<Prisma.BagTypeNullableScalarRelationFilter, Prisma.BagTypeWhereInput> | null
+  defaultLocation?: Prisma.XOR<Prisma.LocationNullableScalarRelationFilter, Prisma.LocationWhereInput> | null
+  hiddenSystemItems?: Prisma.HiddenSystemItemListRelationFilter
 }
 
 export type ItemOrderByWithRelationInput = {
@@ -218,9 +249,16 @@ export type ItemOrderByWithRelationInput = {
   name?: Prisma.SortOrder
   defaultWeight?: Prisma.SortOrderInput | Prisma.SortOrder
   userId?: Prisma.SortOrderInput | Prisma.SortOrder
+  categoryId?: Prisma.SortOrderInput | Prisma.SortOrder
+  tags?: Prisma.SortOrder
+  defaultBagTypeId?: Prisma.SortOrderInput | Prisma.SortOrder
+  defaultLocationId?: Prisma.SortOrderInput | Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
   listItems?: Prisma.ListItemOrderByRelationAggregateInput
-  categories?: Prisma.CategoryOrderByRelationAggregateInput
+  category?: Prisma.CategoryOrderByWithRelationInput
+  defaultBagType?: Prisma.BagTypeOrderByWithRelationInput
+  defaultLocation?: Prisma.LocationOrderByWithRelationInput
+  hiddenSystemItems?: Prisma.HiddenSystemItemOrderByRelationAggregateInput
 }
 
 export type ItemWhereUniqueInput = Prisma.AtLeast<{
@@ -231,9 +269,16 @@ export type ItemWhereUniqueInput = Prisma.AtLeast<{
   name?: Prisma.StringFilter<"Item"> | string
   defaultWeight?: Prisma.FloatNullableFilter<"Item"> | number | null
   userId?: Prisma.StringNullableFilter<"Item"> | string | null
+  categoryId?: Prisma.StringNullableFilter<"Item"> | string | null
+  tags?: Prisma.StringNullableListFilter<"Item">
+  defaultBagTypeId?: Prisma.StringNullableFilter<"Item"> | string | null
+  defaultLocationId?: Prisma.StringNullableFilter<"Item"> | string | null
   user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   listItems?: Prisma.ListItemListRelationFilter
-  categories?: Prisma.CategoryListRelationFilter
+  category?: Prisma.XOR<Prisma.CategoryNullableScalarRelationFilter, Prisma.CategoryWhereInput> | null
+  defaultBagType?: Prisma.XOR<Prisma.BagTypeNullableScalarRelationFilter, Prisma.BagTypeWhereInput> | null
+  defaultLocation?: Prisma.XOR<Prisma.LocationNullableScalarRelationFilter, Prisma.LocationWhereInput> | null
+  hiddenSystemItems?: Prisma.HiddenSystemItemListRelationFilter
 }, "id">
 
 export type ItemOrderByWithAggregationInput = {
@@ -241,6 +286,10 @@ export type ItemOrderByWithAggregationInput = {
   name?: Prisma.SortOrder
   defaultWeight?: Prisma.SortOrderInput | Prisma.SortOrder
   userId?: Prisma.SortOrderInput | Prisma.SortOrder
+  categoryId?: Prisma.SortOrderInput | Prisma.SortOrder
+  tags?: Prisma.SortOrder
+  defaultBagTypeId?: Prisma.SortOrderInput | Prisma.SortOrder
+  defaultLocationId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.ItemCountOrderByAggregateInput
   _avg?: Prisma.ItemAvgOrderByAggregateInput
   _max?: Prisma.ItemMaxOrderByAggregateInput
@@ -256,15 +305,23 @@ export type ItemScalarWhereWithAggregatesInput = {
   name?: Prisma.StringWithAggregatesFilter<"Item"> | string
   defaultWeight?: Prisma.FloatNullableWithAggregatesFilter<"Item"> | number | null
   userId?: Prisma.StringNullableWithAggregatesFilter<"Item"> | string | null
+  categoryId?: Prisma.StringNullableWithAggregatesFilter<"Item"> | string | null
+  tags?: Prisma.StringNullableListFilter<"Item">
+  defaultBagTypeId?: Prisma.StringNullableWithAggregatesFilter<"Item"> | string | null
+  defaultLocationId?: Prisma.StringNullableWithAggregatesFilter<"Item"> | string | null
 }
 
 export type ItemCreateInput = {
   id?: string
   name: string
   defaultWeight?: number | null
+  tags?: Prisma.ItemCreatetagsInput | string[]
   user?: Prisma.UserCreateNestedOneWithoutItemsInput
   listItems?: Prisma.ListItemCreateNestedManyWithoutItemInput
-  categories?: Prisma.CategoryCreateNestedManyWithoutItemsInput
+  category?: Prisma.CategoryCreateNestedOneWithoutItemsInput
+  defaultBagType?: Prisma.BagTypeCreateNestedOneWithoutDefaultItemsInput
+  defaultLocation?: Prisma.LocationCreateNestedOneWithoutDefaultItemsInput
+  hiddenSystemItems?: Prisma.HiddenSystemItemCreateNestedManyWithoutItemInput
 }
 
 export type ItemUncheckedCreateInput = {
@@ -272,17 +329,25 @@ export type ItemUncheckedCreateInput = {
   name: string
   defaultWeight?: number | null
   userId?: string | null
+  categoryId?: string | null
+  tags?: Prisma.ItemCreatetagsInput | string[]
+  defaultBagTypeId?: string | null
+  defaultLocationId?: string | null
   listItems?: Prisma.ListItemUncheckedCreateNestedManyWithoutItemInput
-  categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutItemsInput
+  hiddenSystemItems?: Prisma.HiddenSystemItemUncheckedCreateNestedManyWithoutItemInput
 }
 
 export type ItemUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   defaultWeight?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  tags?: Prisma.ItemUpdatetagsInput | string[]
   user?: Prisma.UserUpdateOneWithoutItemsNestedInput
   listItems?: Prisma.ListItemUpdateManyWithoutItemNestedInput
-  categories?: Prisma.CategoryUpdateManyWithoutItemsNestedInput
+  category?: Prisma.CategoryUpdateOneWithoutItemsNestedInput
+  defaultBagType?: Prisma.BagTypeUpdateOneWithoutDefaultItemsNestedInput
+  defaultLocation?: Prisma.LocationUpdateOneWithoutDefaultItemsNestedInput
+  hiddenSystemItems?: Prisma.HiddenSystemItemUpdateManyWithoutItemNestedInput
 }
 
 export type ItemUncheckedUpdateInput = {
@@ -290,8 +355,12 @@ export type ItemUncheckedUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   defaultWeight?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tags?: Prisma.ItemUpdatetagsInput | string[]
+  defaultBagTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  defaultLocationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   listItems?: Prisma.ListItemUncheckedUpdateManyWithoutItemNestedInput
-  categories?: Prisma.CategoryUncheckedUpdateManyWithoutItemsNestedInput
+  hiddenSystemItems?: Prisma.HiddenSystemItemUncheckedUpdateManyWithoutItemNestedInput
 }
 
 export type ItemCreateManyInput = {
@@ -299,12 +368,17 @@ export type ItemCreateManyInput = {
   name: string
   defaultWeight?: number | null
   userId?: string | null
+  categoryId?: string | null
+  tags?: Prisma.ItemCreatetagsInput | string[]
+  defaultBagTypeId?: string | null
+  defaultLocationId?: string | null
 }
 
 export type ItemUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   defaultWeight?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  tags?: Prisma.ItemUpdatetagsInput | string[]
 }
 
 export type ItemUncheckedUpdateManyInput = {
@@ -312,6 +386,10 @@ export type ItemUncheckedUpdateManyInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   defaultWeight?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tags?: Prisma.ItemUpdatetagsInput | string[]
+  defaultBagTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  defaultLocationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ItemListRelationFilter = {
@@ -324,11 +402,23 @@ export type ItemOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
+export type StringNullableListFilter<$PrismaModel = never> = {
+  equals?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel> | null
+  has?: string | Prisma.StringFieldRefInput<$PrismaModel> | null
+  hasEvery?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
+  hasSome?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
+  isEmpty?: boolean
+}
+
 export type ItemCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   defaultWeight?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  categoryId?: Prisma.SortOrder
+  tags?: Prisma.SortOrder
+  defaultBagTypeId?: Prisma.SortOrder
+  defaultLocationId?: Prisma.SortOrder
 }
 
 export type ItemAvgOrderByAggregateInput = {
@@ -340,6 +430,9 @@ export type ItemMaxOrderByAggregateInput = {
   name?: Prisma.SortOrder
   defaultWeight?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  categoryId?: Prisma.SortOrder
+  defaultBagTypeId?: Prisma.SortOrder
+  defaultLocationId?: Prisma.SortOrder
 }
 
 export type ItemMinOrderByAggregateInput = {
@@ -347,6 +440,9 @@ export type ItemMinOrderByAggregateInput = {
   name?: Prisma.SortOrder
   defaultWeight?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  categoryId?: Prisma.SortOrder
+  defaultBagTypeId?: Prisma.SortOrder
+  defaultLocationId?: Prisma.SortOrder
 }
 
 export type ItemSumOrderByAggregateInput = {
@@ -400,42 +496,92 @@ export type ItemUncheckedUpdateManyWithoutUserNestedInput = {
   deleteMany?: Prisma.ItemScalarWhereInput | Prisma.ItemScalarWhereInput[]
 }
 
-export type ItemCreateNestedManyWithoutCategoriesInput = {
-  create?: Prisma.XOR<Prisma.ItemCreateWithoutCategoriesInput, Prisma.ItemUncheckedCreateWithoutCategoriesInput> | Prisma.ItemCreateWithoutCategoriesInput[] | Prisma.ItemUncheckedCreateWithoutCategoriesInput[]
-  connectOrCreate?: Prisma.ItemCreateOrConnectWithoutCategoriesInput | Prisma.ItemCreateOrConnectWithoutCategoriesInput[]
+export type ItemCreateNestedManyWithoutCategoryInput = {
+  create?: Prisma.XOR<Prisma.ItemCreateWithoutCategoryInput, Prisma.ItemUncheckedCreateWithoutCategoryInput> | Prisma.ItemCreateWithoutCategoryInput[] | Prisma.ItemUncheckedCreateWithoutCategoryInput[]
+  connectOrCreate?: Prisma.ItemCreateOrConnectWithoutCategoryInput | Prisma.ItemCreateOrConnectWithoutCategoryInput[]
+  createMany?: Prisma.ItemCreateManyCategoryInputEnvelope
   connect?: Prisma.ItemWhereUniqueInput | Prisma.ItemWhereUniqueInput[]
 }
 
-export type ItemUncheckedCreateNestedManyWithoutCategoriesInput = {
-  create?: Prisma.XOR<Prisma.ItemCreateWithoutCategoriesInput, Prisma.ItemUncheckedCreateWithoutCategoriesInput> | Prisma.ItemCreateWithoutCategoriesInput[] | Prisma.ItemUncheckedCreateWithoutCategoriesInput[]
-  connectOrCreate?: Prisma.ItemCreateOrConnectWithoutCategoriesInput | Prisma.ItemCreateOrConnectWithoutCategoriesInput[]
+export type ItemUncheckedCreateNestedManyWithoutCategoryInput = {
+  create?: Prisma.XOR<Prisma.ItemCreateWithoutCategoryInput, Prisma.ItemUncheckedCreateWithoutCategoryInput> | Prisma.ItemCreateWithoutCategoryInput[] | Prisma.ItemUncheckedCreateWithoutCategoryInput[]
+  connectOrCreate?: Prisma.ItemCreateOrConnectWithoutCategoryInput | Prisma.ItemCreateOrConnectWithoutCategoryInput[]
+  createMany?: Prisma.ItemCreateManyCategoryInputEnvelope
   connect?: Prisma.ItemWhereUniqueInput | Prisma.ItemWhereUniqueInput[]
 }
 
-export type ItemUpdateManyWithoutCategoriesNestedInput = {
-  create?: Prisma.XOR<Prisma.ItemCreateWithoutCategoriesInput, Prisma.ItemUncheckedCreateWithoutCategoriesInput> | Prisma.ItemCreateWithoutCategoriesInput[] | Prisma.ItemUncheckedCreateWithoutCategoriesInput[]
-  connectOrCreate?: Prisma.ItemCreateOrConnectWithoutCategoriesInput | Prisma.ItemCreateOrConnectWithoutCategoriesInput[]
-  upsert?: Prisma.ItemUpsertWithWhereUniqueWithoutCategoriesInput | Prisma.ItemUpsertWithWhereUniqueWithoutCategoriesInput[]
+export type ItemUpdateManyWithoutCategoryNestedInput = {
+  create?: Prisma.XOR<Prisma.ItemCreateWithoutCategoryInput, Prisma.ItemUncheckedCreateWithoutCategoryInput> | Prisma.ItemCreateWithoutCategoryInput[] | Prisma.ItemUncheckedCreateWithoutCategoryInput[]
+  connectOrCreate?: Prisma.ItemCreateOrConnectWithoutCategoryInput | Prisma.ItemCreateOrConnectWithoutCategoryInput[]
+  upsert?: Prisma.ItemUpsertWithWhereUniqueWithoutCategoryInput | Prisma.ItemUpsertWithWhereUniqueWithoutCategoryInput[]
+  createMany?: Prisma.ItemCreateManyCategoryInputEnvelope
   set?: Prisma.ItemWhereUniqueInput | Prisma.ItemWhereUniqueInput[]
   disconnect?: Prisma.ItemWhereUniqueInput | Prisma.ItemWhereUniqueInput[]
   delete?: Prisma.ItemWhereUniqueInput | Prisma.ItemWhereUniqueInput[]
   connect?: Prisma.ItemWhereUniqueInput | Prisma.ItemWhereUniqueInput[]
-  update?: Prisma.ItemUpdateWithWhereUniqueWithoutCategoriesInput | Prisma.ItemUpdateWithWhereUniqueWithoutCategoriesInput[]
-  updateMany?: Prisma.ItemUpdateManyWithWhereWithoutCategoriesInput | Prisma.ItemUpdateManyWithWhereWithoutCategoriesInput[]
+  update?: Prisma.ItemUpdateWithWhereUniqueWithoutCategoryInput | Prisma.ItemUpdateWithWhereUniqueWithoutCategoryInput[]
+  updateMany?: Prisma.ItemUpdateManyWithWhereWithoutCategoryInput | Prisma.ItemUpdateManyWithWhereWithoutCategoryInput[]
   deleteMany?: Prisma.ItemScalarWhereInput | Prisma.ItemScalarWhereInput[]
 }
 
-export type ItemUncheckedUpdateManyWithoutCategoriesNestedInput = {
-  create?: Prisma.XOR<Prisma.ItemCreateWithoutCategoriesInput, Prisma.ItemUncheckedCreateWithoutCategoriesInput> | Prisma.ItemCreateWithoutCategoriesInput[] | Prisma.ItemUncheckedCreateWithoutCategoriesInput[]
-  connectOrCreate?: Prisma.ItemCreateOrConnectWithoutCategoriesInput | Prisma.ItemCreateOrConnectWithoutCategoriesInput[]
-  upsert?: Prisma.ItemUpsertWithWhereUniqueWithoutCategoriesInput | Prisma.ItemUpsertWithWhereUniqueWithoutCategoriesInput[]
+export type ItemUncheckedUpdateManyWithoutCategoryNestedInput = {
+  create?: Prisma.XOR<Prisma.ItemCreateWithoutCategoryInput, Prisma.ItemUncheckedCreateWithoutCategoryInput> | Prisma.ItemCreateWithoutCategoryInput[] | Prisma.ItemUncheckedCreateWithoutCategoryInput[]
+  connectOrCreate?: Prisma.ItemCreateOrConnectWithoutCategoryInput | Prisma.ItemCreateOrConnectWithoutCategoryInput[]
+  upsert?: Prisma.ItemUpsertWithWhereUniqueWithoutCategoryInput | Prisma.ItemUpsertWithWhereUniqueWithoutCategoryInput[]
+  createMany?: Prisma.ItemCreateManyCategoryInputEnvelope
   set?: Prisma.ItemWhereUniqueInput | Prisma.ItemWhereUniqueInput[]
   disconnect?: Prisma.ItemWhereUniqueInput | Prisma.ItemWhereUniqueInput[]
   delete?: Prisma.ItemWhereUniqueInput | Prisma.ItemWhereUniqueInput[]
   connect?: Prisma.ItemWhereUniqueInput | Prisma.ItemWhereUniqueInput[]
-  update?: Prisma.ItemUpdateWithWhereUniqueWithoutCategoriesInput | Prisma.ItemUpdateWithWhereUniqueWithoutCategoriesInput[]
-  updateMany?: Prisma.ItemUpdateManyWithWhereWithoutCategoriesInput | Prisma.ItemUpdateManyWithWhereWithoutCategoriesInput[]
+  update?: Prisma.ItemUpdateWithWhereUniqueWithoutCategoryInput | Prisma.ItemUpdateWithWhereUniqueWithoutCategoryInput[]
+  updateMany?: Prisma.ItemUpdateManyWithWhereWithoutCategoryInput | Prisma.ItemUpdateManyWithWhereWithoutCategoryInput[]
   deleteMany?: Prisma.ItemScalarWhereInput | Prisma.ItemScalarWhereInput[]
+}
+
+export type ItemCreateNestedManyWithoutDefaultBagTypeInput = {
+  create?: Prisma.XOR<Prisma.ItemCreateWithoutDefaultBagTypeInput, Prisma.ItemUncheckedCreateWithoutDefaultBagTypeInput> | Prisma.ItemCreateWithoutDefaultBagTypeInput[] | Prisma.ItemUncheckedCreateWithoutDefaultBagTypeInput[]
+  connectOrCreate?: Prisma.ItemCreateOrConnectWithoutDefaultBagTypeInput | Prisma.ItemCreateOrConnectWithoutDefaultBagTypeInput[]
+  createMany?: Prisma.ItemCreateManyDefaultBagTypeInputEnvelope
+  connect?: Prisma.ItemWhereUniqueInput | Prisma.ItemWhereUniqueInput[]
+}
+
+export type ItemUncheckedCreateNestedManyWithoutDefaultBagTypeInput = {
+  create?: Prisma.XOR<Prisma.ItemCreateWithoutDefaultBagTypeInput, Prisma.ItemUncheckedCreateWithoutDefaultBagTypeInput> | Prisma.ItemCreateWithoutDefaultBagTypeInput[] | Prisma.ItemUncheckedCreateWithoutDefaultBagTypeInput[]
+  connectOrCreate?: Prisma.ItemCreateOrConnectWithoutDefaultBagTypeInput | Prisma.ItemCreateOrConnectWithoutDefaultBagTypeInput[]
+  createMany?: Prisma.ItemCreateManyDefaultBagTypeInputEnvelope
+  connect?: Prisma.ItemWhereUniqueInput | Prisma.ItemWhereUniqueInput[]
+}
+
+export type ItemUpdateManyWithoutDefaultBagTypeNestedInput = {
+  create?: Prisma.XOR<Prisma.ItemCreateWithoutDefaultBagTypeInput, Prisma.ItemUncheckedCreateWithoutDefaultBagTypeInput> | Prisma.ItemCreateWithoutDefaultBagTypeInput[] | Prisma.ItemUncheckedCreateWithoutDefaultBagTypeInput[]
+  connectOrCreate?: Prisma.ItemCreateOrConnectWithoutDefaultBagTypeInput | Prisma.ItemCreateOrConnectWithoutDefaultBagTypeInput[]
+  upsert?: Prisma.ItemUpsertWithWhereUniqueWithoutDefaultBagTypeInput | Prisma.ItemUpsertWithWhereUniqueWithoutDefaultBagTypeInput[]
+  createMany?: Prisma.ItemCreateManyDefaultBagTypeInputEnvelope
+  set?: Prisma.ItemWhereUniqueInput | Prisma.ItemWhereUniqueInput[]
+  disconnect?: Prisma.ItemWhereUniqueInput | Prisma.ItemWhereUniqueInput[]
+  delete?: Prisma.ItemWhereUniqueInput | Prisma.ItemWhereUniqueInput[]
+  connect?: Prisma.ItemWhereUniqueInput | Prisma.ItemWhereUniqueInput[]
+  update?: Prisma.ItemUpdateWithWhereUniqueWithoutDefaultBagTypeInput | Prisma.ItemUpdateWithWhereUniqueWithoutDefaultBagTypeInput[]
+  updateMany?: Prisma.ItemUpdateManyWithWhereWithoutDefaultBagTypeInput | Prisma.ItemUpdateManyWithWhereWithoutDefaultBagTypeInput[]
+  deleteMany?: Prisma.ItemScalarWhereInput | Prisma.ItemScalarWhereInput[]
+}
+
+export type ItemUncheckedUpdateManyWithoutDefaultBagTypeNestedInput = {
+  create?: Prisma.XOR<Prisma.ItemCreateWithoutDefaultBagTypeInput, Prisma.ItemUncheckedCreateWithoutDefaultBagTypeInput> | Prisma.ItemCreateWithoutDefaultBagTypeInput[] | Prisma.ItemUncheckedCreateWithoutDefaultBagTypeInput[]
+  connectOrCreate?: Prisma.ItemCreateOrConnectWithoutDefaultBagTypeInput | Prisma.ItemCreateOrConnectWithoutDefaultBagTypeInput[]
+  upsert?: Prisma.ItemUpsertWithWhereUniqueWithoutDefaultBagTypeInput | Prisma.ItemUpsertWithWhereUniqueWithoutDefaultBagTypeInput[]
+  createMany?: Prisma.ItemCreateManyDefaultBagTypeInputEnvelope
+  set?: Prisma.ItemWhereUniqueInput | Prisma.ItemWhereUniqueInput[]
+  disconnect?: Prisma.ItemWhereUniqueInput | Prisma.ItemWhereUniqueInput[]
+  delete?: Prisma.ItemWhereUniqueInput | Prisma.ItemWhereUniqueInput[]
+  connect?: Prisma.ItemWhereUniqueInput | Prisma.ItemWhereUniqueInput[]
+  update?: Prisma.ItemUpdateWithWhereUniqueWithoutDefaultBagTypeInput | Prisma.ItemUpdateWithWhereUniqueWithoutDefaultBagTypeInput[]
+  updateMany?: Prisma.ItemUpdateManyWithWhereWithoutDefaultBagTypeInput | Prisma.ItemUpdateManyWithWhereWithoutDefaultBagTypeInput[]
+  deleteMany?: Prisma.ItemScalarWhereInput | Prisma.ItemScalarWhereInput[]
+}
+
+export type ItemCreatetagsInput = {
+  set: string[]
 }
 
 export type NullableFloatFieldUpdateOperationsInput = {
@@ -444,6 +590,25 @@ export type NullableFloatFieldUpdateOperationsInput = {
   decrement?: number
   multiply?: number
   divide?: number
+}
+
+export type ItemUpdatetagsInput = {
+  set?: string[]
+  push?: string | string[]
+}
+
+export type ItemCreateNestedOneWithoutHiddenSystemItemsInput = {
+  create?: Prisma.XOR<Prisma.ItemCreateWithoutHiddenSystemItemsInput, Prisma.ItemUncheckedCreateWithoutHiddenSystemItemsInput>
+  connectOrCreate?: Prisma.ItemCreateOrConnectWithoutHiddenSystemItemsInput
+  connect?: Prisma.ItemWhereUniqueInput
+}
+
+export type ItemUpdateOneRequiredWithoutHiddenSystemItemsNestedInput = {
+  create?: Prisma.XOR<Prisma.ItemCreateWithoutHiddenSystemItemsInput, Prisma.ItemUncheckedCreateWithoutHiddenSystemItemsInput>
+  connectOrCreate?: Prisma.ItemCreateOrConnectWithoutHiddenSystemItemsInput
+  upsert?: Prisma.ItemUpsertWithoutHiddenSystemItemsInput
+  connect?: Prisma.ItemWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ItemUpdateToOneWithWhereWithoutHiddenSystemItemsInput, Prisma.ItemUpdateWithoutHiddenSystemItemsInput>, Prisma.ItemUncheckedUpdateWithoutHiddenSystemItemsInput>
 }
 
 export type ItemCreateNestedOneWithoutListItemsInput = {
@@ -460,20 +625,70 @@ export type ItemUpdateOneRequiredWithoutListItemsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ItemUpdateToOneWithWhereWithoutListItemsInput, Prisma.ItemUpdateWithoutListItemsInput>, Prisma.ItemUncheckedUpdateWithoutListItemsInput>
 }
 
+export type ItemCreateNestedManyWithoutDefaultLocationInput = {
+  create?: Prisma.XOR<Prisma.ItemCreateWithoutDefaultLocationInput, Prisma.ItemUncheckedCreateWithoutDefaultLocationInput> | Prisma.ItemCreateWithoutDefaultLocationInput[] | Prisma.ItemUncheckedCreateWithoutDefaultLocationInput[]
+  connectOrCreate?: Prisma.ItemCreateOrConnectWithoutDefaultLocationInput | Prisma.ItemCreateOrConnectWithoutDefaultLocationInput[]
+  createMany?: Prisma.ItemCreateManyDefaultLocationInputEnvelope
+  connect?: Prisma.ItemWhereUniqueInput | Prisma.ItemWhereUniqueInput[]
+}
+
+export type ItemUncheckedCreateNestedManyWithoutDefaultLocationInput = {
+  create?: Prisma.XOR<Prisma.ItemCreateWithoutDefaultLocationInput, Prisma.ItemUncheckedCreateWithoutDefaultLocationInput> | Prisma.ItemCreateWithoutDefaultLocationInput[] | Prisma.ItemUncheckedCreateWithoutDefaultLocationInput[]
+  connectOrCreate?: Prisma.ItemCreateOrConnectWithoutDefaultLocationInput | Prisma.ItemCreateOrConnectWithoutDefaultLocationInput[]
+  createMany?: Prisma.ItemCreateManyDefaultLocationInputEnvelope
+  connect?: Prisma.ItemWhereUniqueInput | Prisma.ItemWhereUniqueInput[]
+}
+
+export type ItemUpdateManyWithoutDefaultLocationNestedInput = {
+  create?: Prisma.XOR<Prisma.ItemCreateWithoutDefaultLocationInput, Prisma.ItemUncheckedCreateWithoutDefaultLocationInput> | Prisma.ItemCreateWithoutDefaultLocationInput[] | Prisma.ItemUncheckedCreateWithoutDefaultLocationInput[]
+  connectOrCreate?: Prisma.ItemCreateOrConnectWithoutDefaultLocationInput | Prisma.ItemCreateOrConnectWithoutDefaultLocationInput[]
+  upsert?: Prisma.ItemUpsertWithWhereUniqueWithoutDefaultLocationInput | Prisma.ItemUpsertWithWhereUniqueWithoutDefaultLocationInput[]
+  createMany?: Prisma.ItemCreateManyDefaultLocationInputEnvelope
+  set?: Prisma.ItemWhereUniqueInput | Prisma.ItemWhereUniqueInput[]
+  disconnect?: Prisma.ItemWhereUniqueInput | Prisma.ItemWhereUniqueInput[]
+  delete?: Prisma.ItemWhereUniqueInput | Prisma.ItemWhereUniqueInput[]
+  connect?: Prisma.ItemWhereUniqueInput | Prisma.ItemWhereUniqueInput[]
+  update?: Prisma.ItemUpdateWithWhereUniqueWithoutDefaultLocationInput | Prisma.ItemUpdateWithWhereUniqueWithoutDefaultLocationInput[]
+  updateMany?: Prisma.ItemUpdateManyWithWhereWithoutDefaultLocationInput | Prisma.ItemUpdateManyWithWhereWithoutDefaultLocationInput[]
+  deleteMany?: Prisma.ItemScalarWhereInput | Prisma.ItemScalarWhereInput[]
+}
+
+export type ItemUncheckedUpdateManyWithoutDefaultLocationNestedInput = {
+  create?: Prisma.XOR<Prisma.ItemCreateWithoutDefaultLocationInput, Prisma.ItemUncheckedCreateWithoutDefaultLocationInput> | Prisma.ItemCreateWithoutDefaultLocationInput[] | Prisma.ItemUncheckedCreateWithoutDefaultLocationInput[]
+  connectOrCreate?: Prisma.ItemCreateOrConnectWithoutDefaultLocationInput | Prisma.ItemCreateOrConnectWithoutDefaultLocationInput[]
+  upsert?: Prisma.ItemUpsertWithWhereUniqueWithoutDefaultLocationInput | Prisma.ItemUpsertWithWhereUniqueWithoutDefaultLocationInput[]
+  createMany?: Prisma.ItemCreateManyDefaultLocationInputEnvelope
+  set?: Prisma.ItemWhereUniqueInput | Prisma.ItemWhereUniqueInput[]
+  disconnect?: Prisma.ItemWhereUniqueInput | Prisma.ItemWhereUniqueInput[]
+  delete?: Prisma.ItemWhereUniqueInput | Prisma.ItemWhereUniqueInput[]
+  connect?: Prisma.ItemWhereUniqueInput | Prisma.ItemWhereUniqueInput[]
+  update?: Prisma.ItemUpdateWithWhereUniqueWithoutDefaultLocationInput | Prisma.ItemUpdateWithWhereUniqueWithoutDefaultLocationInput[]
+  updateMany?: Prisma.ItemUpdateManyWithWhereWithoutDefaultLocationInput | Prisma.ItemUpdateManyWithWhereWithoutDefaultLocationInput[]
+  deleteMany?: Prisma.ItemScalarWhereInput | Prisma.ItemScalarWhereInput[]
+}
+
 export type ItemCreateWithoutUserInput = {
   id?: string
   name: string
   defaultWeight?: number | null
+  tags?: Prisma.ItemCreatetagsInput | string[]
   listItems?: Prisma.ListItemCreateNestedManyWithoutItemInput
-  categories?: Prisma.CategoryCreateNestedManyWithoutItemsInput
+  category?: Prisma.CategoryCreateNestedOneWithoutItemsInput
+  defaultBagType?: Prisma.BagTypeCreateNestedOneWithoutDefaultItemsInput
+  defaultLocation?: Prisma.LocationCreateNestedOneWithoutDefaultItemsInput
+  hiddenSystemItems?: Prisma.HiddenSystemItemCreateNestedManyWithoutItemInput
 }
 
 export type ItemUncheckedCreateWithoutUserInput = {
   id?: string
   name: string
   defaultWeight?: number | null
+  categoryId?: string | null
+  tags?: Prisma.ItemCreatetagsInput | string[]
+  defaultBagTypeId?: string | null
+  defaultLocationId?: string | null
   listItems?: Prisma.ListItemUncheckedCreateNestedManyWithoutItemInput
-  categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutItemsInput
+  hiddenSystemItems?: Prisma.HiddenSystemItemUncheckedCreateNestedManyWithoutItemInput
 }
 
 export type ItemCreateOrConnectWithoutUserInput = {
@@ -510,51 +725,186 @@ export type ItemScalarWhereInput = {
   name?: Prisma.StringFilter<"Item"> | string
   defaultWeight?: Prisma.FloatNullableFilter<"Item"> | number | null
   userId?: Prisma.StringNullableFilter<"Item"> | string | null
+  categoryId?: Prisma.StringNullableFilter<"Item"> | string | null
+  tags?: Prisma.StringNullableListFilter<"Item">
+  defaultBagTypeId?: Prisma.StringNullableFilter<"Item"> | string | null
+  defaultLocationId?: Prisma.StringNullableFilter<"Item"> | string | null
 }
 
-export type ItemCreateWithoutCategoriesInput = {
+export type ItemCreateWithoutCategoryInput = {
   id?: string
   name: string
   defaultWeight?: number | null
+  tags?: Prisma.ItemCreatetagsInput | string[]
   user?: Prisma.UserCreateNestedOneWithoutItemsInput
   listItems?: Prisma.ListItemCreateNestedManyWithoutItemInput
+  defaultBagType?: Prisma.BagTypeCreateNestedOneWithoutDefaultItemsInput
+  defaultLocation?: Prisma.LocationCreateNestedOneWithoutDefaultItemsInput
+  hiddenSystemItems?: Prisma.HiddenSystemItemCreateNestedManyWithoutItemInput
 }
 
-export type ItemUncheckedCreateWithoutCategoriesInput = {
+export type ItemUncheckedCreateWithoutCategoryInput = {
   id?: string
   name: string
   defaultWeight?: number | null
   userId?: string | null
+  tags?: Prisma.ItemCreatetagsInput | string[]
+  defaultBagTypeId?: string | null
+  defaultLocationId?: string | null
+  listItems?: Prisma.ListItemUncheckedCreateNestedManyWithoutItemInput
+  hiddenSystemItems?: Prisma.HiddenSystemItemUncheckedCreateNestedManyWithoutItemInput
+}
+
+export type ItemCreateOrConnectWithoutCategoryInput = {
+  where: Prisma.ItemWhereUniqueInput
+  create: Prisma.XOR<Prisma.ItemCreateWithoutCategoryInput, Prisma.ItemUncheckedCreateWithoutCategoryInput>
+}
+
+export type ItemCreateManyCategoryInputEnvelope = {
+  data: Prisma.ItemCreateManyCategoryInput | Prisma.ItemCreateManyCategoryInput[]
+  skipDuplicates?: boolean
+}
+
+export type ItemUpsertWithWhereUniqueWithoutCategoryInput = {
+  where: Prisma.ItemWhereUniqueInput
+  update: Prisma.XOR<Prisma.ItemUpdateWithoutCategoryInput, Prisma.ItemUncheckedUpdateWithoutCategoryInput>
+  create: Prisma.XOR<Prisma.ItemCreateWithoutCategoryInput, Prisma.ItemUncheckedCreateWithoutCategoryInput>
+}
+
+export type ItemUpdateWithWhereUniqueWithoutCategoryInput = {
+  where: Prisma.ItemWhereUniqueInput
+  data: Prisma.XOR<Prisma.ItemUpdateWithoutCategoryInput, Prisma.ItemUncheckedUpdateWithoutCategoryInput>
+}
+
+export type ItemUpdateManyWithWhereWithoutCategoryInput = {
+  where: Prisma.ItemScalarWhereInput
+  data: Prisma.XOR<Prisma.ItemUpdateManyMutationInput, Prisma.ItemUncheckedUpdateManyWithoutCategoryInput>
+}
+
+export type ItemCreateWithoutDefaultBagTypeInput = {
+  id?: string
+  name: string
+  defaultWeight?: number | null
+  tags?: Prisma.ItemCreatetagsInput | string[]
+  user?: Prisma.UserCreateNestedOneWithoutItemsInput
+  listItems?: Prisma.ListItemCreateNestedManyWithoutItemInput
+  category?: Prisma.CategoryCreateNestedOneWithoutItemsInput
+  defaultLocation?: Prisma.LocationCreateNestedOneWithoutDefaultItemsInput
+  hiddenSystemItems?: Prisma.HiddenSystemItemCreateNestedManyWithoutItemInput
+}
+
+export type ItemUncheckedCreateWithoutDefaultBagTypeInput = {
+  id?: string
+  name: string
+  defaultWeight?: number | null
+  userId?: string | null
+  categoryId?: string | null
+  tags?: Prisma.ItemCreatetagsInput | string[]
+  defaultLocationId?: string | null
+  listItems?: Prisma.ListItemUncheckedCreateNestedManyWithoutItemInput
+  hiddenSystemItems?: Prisma.HiddenSystemItemUncheckedCreateNestedManyWithoutItemInput
+}
+
+export type ItemCreateOrConnectWithoutDefaultBagTypeInput = {
+  where: Prisma.ItemWhereUniqueInput
+  create: Prisma.XOR<Prisma.ItemCreateWithoutDefaultBagTypeInput, Prisma.ItemUncheckedCreateWithoutDefaultBagTypeInput>
+}
+
+export type ItemCreateManyDefaultBagTypeInputEnvelope = {
+  data: Prisma.ItemCreateManyDefaultBagTypeInput | Prisma.ItemCreateManyDefaultBagTypeInput[]
+  skipDuplicates?: boolean
+}
+
+export type ItemUpsertWithWhereUniqueWithoutDefaultBagTypeInput = {
+  where: Prisma.ItemWhereUniqueInput
+  update: Prisma.XOR<Prisma.ItemUpdateWithoutDefaultBagTypeInput, Prisma.ItemUncheckedUpdateWithoutDefaultBagTypeInput>
+  create: Prisma.XOR<Prisma.ItemCreateWithoutDefaultBagTypeInput, Prisma.ItemUncheckedCreateWithoutDefaultBagTypeInput>
+}
+
+export type ItemUpdateWithWhereUniqueWithoutDefaultBagTypeInput = {
+  where: Prisma.ItemWhereUniqueInput
+  data: Prisma.XOR<Prisma.ItemUpdateWithoutDefaultBagTypeInput, Prisma.ItemUncheckedUpdateWithoutDefaultBagTypeInput>
+}
+
+export type ItemUpdateManyWithWhereWithoutDefaultBagTypeInput = {
+  where: Prisma.ItemScalarWhereInput
+  data: Prisma.XOR<Prisma.ItemUpdateManyMutationInput, Prisma.ItemUncheckedUpdateManyWithoutDefaultBagTypeInput>
+}
+
+export type ItemCreateWithoutHiddenSystemItemsInput = {
+  id?: string
+  name: string
+  defaultWeight?: number | null
+  tags?: Prisma.ItemCreatetagsInput | string[]
+  user?: Prisma.UserCreateNestedOneWithoutItemsInput
+  listItems?: Prisma.ListItemCreateNestedManyWithoutItemInput
+  category?: Prisma.CategoryCreateNestedOneWithoutItemsInput
+  defaultBagType?: Prisma.BagTypeCreateNestedOneWithoutDefaultItemsInput
+  defaultLocation?: Prisma.LocationCreateNestedOneWithoutDefaultItemsInput
+}
+
+export type ItemUncheckedCreateWithoutHiddenSystemItemsInput = {
+  id?: string
+  name: string
+  defaultWeight?: number | null
+  userId?: string | null
+  categoryId?: string | null
+  tags?: Prisma.ItemCreatetagsInput | string[]
+  defaultBagTypeId?: string | null
+  defaultLocationId?: string | null
   listItems?: Prisma.ListItemUncheckedCreateNestedManyWithoutItemInput
 }
 
-export type ItemCreateOrConnectWithoutCategoriesInput = {
+export type ItemCreateOrConnectWithoutHiddenSystemItemsInput = {
   where: Prisma.ItemWhereUniqueInput
-  create: Prisma.XOR<Prisma.ItemCreateWithoutCategoriesInput, Prisma.ItemUncheckedCreateWithoutCategoriesInput>
+  create: Prisma.XOR<Prisma.ItemCreateWithoutHiddenSystemItemsInput, Prisma.ItemUncheckedCreateWithoutHiddenSystemItemsInput>
 }
 
-export type ItemUpsertWithWhereUniqueWithoutCategoriesInput = {
-  where: Prisma.ItemWhereUniqueInput
-  update: Prisma.XOR<Prisma.ItemUpdateWithoutCategoriesInput, Prisma.ItemUncheckedUpdateWithoutCategoriesInput>
-  create: Prisma.XOR<Prisma.ItemCreateWithoutCategoriesInput, Prisma.ItemUncheckedCreateWithoutCategoriesInput>
+export type ItemUpsertWithoutHiddenSystemItemsInput = {
+  update: Prisma.XOR<Prisma.ItemUpdateWithoutHiddenSystemItemsInput, Prisma.ItemUncheckedUpdateWithoutHiddenSystemItemsInput>
+  create: Prisma.XOR<Prisma.ItemCreateWithoutHiddenSystemItemsInput, Prisma.ItemUncheckedCreateWithoutHiddenSystemItemsInput>
+  where?: Prisma.ItemWhereInput
 }
 
-export type ItemUpdateWithWhereUniqueWithoutCategoriesInput = {
-  where: Prisma.ItemWhereUniqueInput
-  data: Prisma.XOR<Prisma.ItemUpdateWithoutCategoriesInput, Prisma.ItemUncheckedUpdateWithoutCategoriesInput>
+export type ItemUpdateToOneWithWhereWithoutHiddenSystemItemsInput = {
+  where?: Prisma.ItemWhereInput
+  data: Prisma.XOR<Prisma.ItemUpdateWithoutHiddenSystemItemsInput, Prisma.ItemUncheckedUpdateWithoutHiddenSystemItemsInput>
 }
 
-export type ItemUpdateManyWithWhereWithoutCategoriesInput = {
-  where: Prisma.ItemScalarWhereInput
-  data: Prisma.XOR<Prisma.ItemUpdateManyMutationInput, Prisma.ItemUncheckedUpdateManyWithoutCategoriesInput>
+export type ItemUpdateWithoutHiddenSystemItemsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  defaultWeight?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  tags?: Prisma.ItemUpdatetagsInput | string[]
+  user?: Prisma.UserUpdateOneWithoutItemsNestedInput
+  listItems?: Prisma.ListItemUpdateManyWithoutItemNestedInput
+  category?: Prisma.CategoryUpdateOneWithoutItemsNestedInput
+  defaultBagType?: Prisma.BagTypeUpdateOneWithoutDefaultItemsNestedInput
+  defaultLocation?: Prisma.LocationUpdateOneWithoutDefaultItemsNestedInput
+}
+
+export type ItemUncheckedUpdateWithoutHiddenSystemItemsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  defaultWeight?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tags?: Prisma.ItemUpdatetagsInput | string[]
+  defaultBagTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  defaultLocationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  listItems?: Prisma.ListItemUncheckedUpdateManyWithoutItemNestedInput
 }
 
 export type ItemCreateWithoutListItemsInput = {
   id?: string
   name: string
   defaultWeight?: number | null
+  tags?: Prisma.ItemCreatetagsInput | string[]
   user?: Prisma.UserCreateNestedOneWithoutItemsInput
-  categories?: Prisma.CategoryCreateNestedManyWithoutItemsInput
+  category?: Prisma.CategoryCreateNestedOneWithoutItemsInput
+  defaultBagType?: Prisma.BagTypeCreateNestedOneWithoutDefaultItemsInput
+  defaultLocation?: Prisma.LocationCreateNestedOneWithoutDefaultItemsInput
+  hiddenSystemItems?: Prisma.HiddenSystemItemCreateNestedManyWithoutItemInput
 }
 
 export type ItemUncheckedCreateWithoutListItemsInput = {
@@ -562,7 +912,11 @@ export type ItemUncheckedCreateWithoutListItemsInput = {
   name: string
   defaultWeight?: number | null
   userId?: string | null
-  categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutItemsInput
+  categoryId?: string | null
+  tags?: Prisma.ItemCreatetagsInput | string[]
+  defaultBagTypeId?: string | null
+  defaultLocationId?: string | null
+  hiddenSystemItems?: Prisma.HiddenSystemItemUncheckedCreateNestedManyWithoutItemInput
 }
 
 export type ItemCreateOrConnectWithoutListItemsInput = {
@@ -585,8 +939,12 @@ export type ItemUpdateWithoutListItemsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   defaultWeight?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  tags?: Prisma.ItemUpdatetagsInput | string[]
   user?: Prisma.UserUpdateOneWithoutItemsNestedInput
-  categories?: Prisma.CategoryUpdateManyWithoutItemsNestedInput
+  category?: Prisma.CategoryUpdateOneWithoutItemsNestedInput
+  defaultBagType?: Prisma.BagTypeUpdateOneWithoutDefaultItemsNestedInput
+  defaultLocation?: Prisma.LocationUpdateOneWithoutDefaultItemsNestedInput
+  hiddenSystemItems?: Prisma.HiddenSystemItemUpdateManyWithoutItemNestedInput
 }
 
 export type ItemUncheckedUpdateWithoutListItemsInput = {
@@ -594,58 +952,237 @@ export type ItemUncheckedUpdateWithoutListItemsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   defaultWeight?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  categories?: Prisma.CategoryUncheckedUpdateManyWithoutItemsNestedInput
+  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tags?: Prisma.ItemUpdatetagsInput | string[]
+  defaultBagTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  defaultLocationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hiddenSystemItems?: Prisma.HiddenSystemItemUncheckedUpdateManyWithoutItemNestedInput
+}
+
+export type ItemCreateWithoutDefaultLocationInput = {
+  id?: string
+  name: string
+  defaultWeight?: number | null
+  tags?: Prisma.ItemCreatetagsInput | string[]
+  user?: Prisma.UserCreateNestedOneWithoutItemsInput
+  listItems?: Prisma.ListItemCreateNestedManyWithoutItemInput
+  category?: Prisma.CategoryCreateNestedOneWithoutItemsInput
+  defaultBagType?: Prisma.BagTypeCreateNestedOneWithoutDefaultItemsInput
+  hiddenSystemItems?: Prisma.HiddenSystemItemCreateNestedManyWithoutItemInput
+}
+
+export type ItemUncheckedCreateWithoutDefaultLocationInput = {
+  id?: string
+  name: string
+  defaultWeight?: number | null
+  userId?: string | null
+  categoryId?: string | null
+  tags?: Prisma.ItemCreatetagsInput | string[]
+  defaultBagTypeId?: string | null
+  listItems?: Prisma.ListItemUncheckedCreateNestedManyWithoutItemInput
+  hiddenSystemItems?: Prisma.HiddenSystemItemUncheckedCreateNestedManyWithoutItemInput
+}
+
+export type ItemCreateOrConnectWithoutDefaultLocationInput = {
+  where: Prisma.ItemWhereUniqueInput
+  create: Prisma.XOR<Prisma.ItemCreateWithoutDefaultLocationInput, Prisma.ItemUncheckedCreateWithoutDefaultLocationInput>
+}
+
+export type ItemCreateManyDefaultLocationInputEnvelope = {
+  data: Prisma.ItemCreateManyDefaultLocationInput | Prisma.ItemCreateManyDefaultLocationInput[]
+  skipDuplicates?: boolean
+}
+
+export type ItemUpsertWithWhereUniqueWithoutDefaultLocationInput = {
+  where: Prisma.ItemWhereUniqueInput
+  update: Prisma.XOR<Prisma.ItemUpdateWithoutDefaultLocationInput, Prisma.ItemUncheckedUpdateWithoutDefaultLocationInput>
+  create: Prisma.XOR<Prisma.ItemCreateWithoutDefaultLocationInput, Prisma.ItemUncheckedCreateWithoutDefaultLocationInput>
+}
+
+export type ItemUpdateWithWhereUniqueWithoutDefaultLocationInput = {
+  where: Prisma.ItemWhereUniqueInput
+  data: Prisma.XOR<Prisma.ItemUpdateWithoutDefaultLocationInput, Prisma.ItemUncheckedUpdateWithoutDefaultLocationInput>
+}
+
+export type ItemUpdateManyWithWhereWithoutDefaultLocationInput = {
+  where: Prisma.ItemScalarWhereInput
+  data: Prisma.XOR<Prisma.ItemUpdateManyMutationInput, Prisma.ItemUncheckedUpdateManyWithoutDefaultLocationInput>
 }
 
 export type ItemCreateManyUserInput = {
   id?: string
   name: string
   defaultWeight?: number | null
+  categoryId?: string | null
+  tags?: Prisma.ItemCreatetagsInput | string[]
+  defaultBagTypeId?: string | null
+  defaultLocationId?: string | null
 }
 
 export type ItemUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   defaultWeight?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  tags?: Prisma.ItemUpdatetagsInput | string[]
   listItems?: Prisma.ListItemUpdateManyWithoutItemNestedInput
-  categories?: Prisma.CategoryUpdateManyWithoutItemsNestedInput
+  category?: Prisma.CategoryUpdateOneWithoutItemsNestedInput
+  defaultBagType?: Prisma.BagTypeUpdateOneWithoutDefaultItemsNestedInput
+  defaultLocation?: Prisma.LocationUpdateOneWithoutDefaultItemsNestedInput
+  hiddenSystemItems?: Prisma.HiddenSystemItemUpdateManyWithoutItemNestedInput
 }
 
 export type ItemUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   defaultWeight?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tags?: Prisma.ItemUpdatetagsInput | string[]
+  defaultBagTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  defaultLocationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   listItems?: Prisma.ListItemUncheckedUpdateManyWithoutItemNestedInput
-  categories?: Prisma.CategoryUncheckedUpdateManyWithoutItemsNestedInput
+  hiddenSystemItems?: Prisma.HiddenSystemItemUncheckedUpdateManyWithoutItemNestedInput
 }
 
 export type ItemUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   defaultWeight?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tags?: Prisma.ItemUpdatetagsInput | string[]
+  defaultBagTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  defaultLocationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
-export type ItemUpdateWithoutCategoriesInput = {
+export type ItemCreateManyCategoryInput = {
+  id?: string
+  name: string
+  defaultWeight?: number | null
+  userId?: string | null
+  tags?: Prisma.ItemCreatetagsInput | string[]
+  defaultBagTypeId?: string | null
+  defaultLocationId?: string | null
+}
+
+export type ItemUpdateWithoutCategoryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   defaultWeight?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  tags?: Prisma.ItemUpdatetagsInput | string[]
   user?: Prisma.UserUpdateOneWithoutItemsNestedInput
   listItems?: Prisma.ListItemUpdateManyWithoutItemNestedInput
+  defaultBagType?: Prisma.BagTypeUpdateOneWithoutDefaultItemsNestedInput
+  defaultLocation?: Prisma.LocationUpdateOneWithoutDefaultItemsNestedInput
+  hiddenSystemItems?: Prisma.HiddenSystemItemUpdateManyWithoutItemNestedInput
 }
 
-export type ItemUncheckedUpdateWithoutCategoriesInput = {
+export type ItemUncheckedUpdateWithoutCategoryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   defaultWeight?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tags?: Prisma.ItemUpdatetagsInput | string[]
+  defaultBagTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  defaultLocationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   listItems?: Prisma.ListItemUncheckedUpdateManyWithoutItemNestedInput
+  hiddenSystemItems?: Prisma.HiddenSystemItemUncheckedUpdateManyWithoutItemNestedInput
 }
 
-export type ItemUncheckedUpdateManyWithoutCategoriesInput = {
+export type ItemUncheckedUpdateManyWithoutCategoryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   defaultWeight?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tags?: Prisma.ItemUpdatetagsInput | string[]
+  defaultBagTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  defaultLocationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type ItemCreateManyDefaultBagTypeInput = {
+  id?: string
+  name: string
+  defaultWeight?: number | null
+  userId?: string | null
+  categoryId?: string | null
+  tags?: Prisma.ItemCreatetagsInput | string[]
+  defaultLocationId?: string | null
+}
+
+export type ItemUpdateWithoutDefaultBagTypeInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  defaultWeight?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  tags?: Prisma.ItemUpdatetagsInput | string[]
+  user?: Prisma.UserUpdateOneWithoutItemsNestedInput
+  listItems?: Prisma.ListItemUpdateManyWithoutItemNestedInput
+  category?: Prisma.CategoryUpdateOneWithoutItemsNestedInput
+  defaultLocation?: Prisma.LocationUpdateOneWithoutDefaultItemsNestedInput
+  hiddenSystemItems?: Prisma.HiddenSystemItemUpdateManyWithoutItemNestedInput
+}
+
+export type ItemUncheckedUpdateWithoutDefaultBagTypeInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  defaultWeight?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tags?: Prisma.ItemUpdatetagsInput | string[]
+  defaultLocationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  listItems?: Prisma.ListItemUncheckedUpdateManyWithoutItemNestedInput
+  hiddenSystemItems?: Prisma.HiddenSystemItemUncheckedUpdateManyWithoutItemNestedInput
+}
+
+export type ItemUncheckedUpdateManyWithoutDefaultBagTypeInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  defaultWeight?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tags?: Prisma.ItemUpdatetagsInput | string[]
+  defaultLocationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type ItemCreateManyDefaultLocationInput = {
+  id?: string
+  name: string
+  defaultWeight?: number | null
+  userId?: string | null
+  categoryId?: string | null
+  tags?: Prisma.ItemCreatetagsInput | string[]
+  defaultBagTypeId?: string | null
+}
+
+export type ItemUpdateWithoutDefaultLocationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  defaultWeight?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  tags?: Prisma.ItemUpdatetagsInput | string[]
+  user?: Prisma.UserUpdateOneWithoutItemsNestedInput
+  listItems?: Prisma.ListItemUpdateManyWithoutItemNestedInput
+  category?: Prisma.CategoryUpdateOneWithoutItemsNestedInput
+  defaultBagType?: Prisma.BagTypeUpdateOneWithoutDefaultItemsNestedInput
+  hiddenSystemItems?: Prisma.HiddenSystemItemUpdateManyWithoutItemNestedInput
+}
+
+export type ItemUncheckedUpdateWithoutDefaultLocationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  defaultWeight?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tags?: Prisma.ItemUpdatetagsInput | string[]
+  defaultBagTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  listItems?: Prisma.ListItemUncheckedUpdateManyWithoutItemNestedInput
+  hiddenSystemItems?: Prisma.HiddenSystemItemUncheckedUpdateManyWithoutItemNestedInput
+}
+
+export type ItemUncheckedUpdateManyWithoutDefaultLocationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  defaultWeight?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tags?: Prisma.ItemUpdatetagsInput | string[]
+  defaultBagTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -655,12 +1192,12 @@ export type ItemUncheckedUpdateManyWithoutCategoriesInput = {
 
 export type ItemCountOutputType = {
   listItems: number
-  categories: number
+  hiddenSystemItems: number
 }
 
 export type ItemCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   listItems?: boolean | ItemCountOutputTypeCountListItemsArgs
-  categories?: boolean | ItemCountOutputTypeCountCategoriesArgs
+  hiddenSystemItems?: boolean | ItemCountOutputTypeCountHiddenSystemItemsArgs
 }
 
 /**
@@ -683,8 +1220,8 @@ export type ItemCountOutputTypeCountListItemsArgs<ExtArgs extends runtime.Types.
 /**
  * ItemCountOutputType without action
  */
-export type ItemCountOutputTypeCountCategoriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.CategoryWhereInput
+export type ItemCountOutputTypeCountHiddenSystemItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.HiddenSystemItemWhereInput
 }
 
 
@@ -693,9 +1230,16 @@ export type ItemSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   name?: boolean
   defaultWeight?: boolean
   userId?: boolean
+  categoryId?: boolean
+  tags?: boolean
+  defaultBagTypeId?: boolean
+  defaultLocationId?: boolean
   user?: boolean | Prisma.Item$userArgs<ExtArgs>
   listItems?: boolean | Prisma.Item$listItemsArgs<ExtArgs>
-  categories?: boolean | Prisma.Item$categoriesArgs<ExtArgs>
+  category?: boolean | Prisma.Item$categoryArgs<ExtArgs>
+  defaultBagType?: boolean | Prisma.Item$defaultBagTypeArgs<ExtArgs>
+  defaultLocation?: boolean | Prisma.Item$defaultLocationArgs<ExtArgs>
+  hiddenSystemItems?: boolean | Prisma.Item$hiddenSystemItemsArgs<ExtArgs>
   _count?: boolean | Prisma.ItemCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["item"]>
 
@@ -704,7 +1248,14 @@ export type ItemSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   name?: boolean
   defaultWeight?: boolean
   userId?: boolean
+  categoryId?: boolean
+  tags?: boolean
+  defaultBagTypeId?: boolean
+  defaultLocationId?: boolean
   user?: boolean | Prisma.Item$userArgs<ExtArgs>
+  category?: boolean | Prisma.Item$categoryArgs<ExtArgs>
+  defaultBagType?: boolean | Prisma.Item$defaultBagTypeArgs<ExtArgs>
+  defaultLocation?: boolean | Prisma.Item$defaultLocationArgs<ExtArgs>
 }, ExtArgs["result"]["item"]>
 
 export type ItemSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -712,7 +1263,14 @@ export type ItemSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   name?: boolean
   defaultWeight?: boolean
   userId?: boolean
+  categoryId?: boolean
+  tags?: boolean
+  defaultBagTypeId?: boolean
+  defaultLocationId?: boolean
   user?: boolean | Prisma.Item$userArgs<ExtArgs>
+  category?: boolean | Prisma.Item$categoryArgs<ExtArgs>
+  defaultBagType?: boolean | Prisma.Item$defaultBagTypeArgs<ExtArgs>
+  defaultLocation?: boolean | Prisma.Item$defaultLocationArgs<ExtArgs>
 }, ExtArgs["result"]["item"]>
 
 export type ItemSelectScalar = {
@@ -720,20 +1278,33 @@ export type ItemSelectScalar = {
   name?: boolean
   defaultWeight?: boolean
   userId?: boolean
+  categoryId?: boolean
+  tags?: boolean
+  defaultBagTypeId?: boolean
+  defaultLocationId?: boolean
 }
 
-export type ItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "defaultWeight" | "userId", ExtArgs["result"]["item"]>
+export type ItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "defaultWeight" | "userId" | "categoryId" | "tags" | "defaultBagTypeId" | "defaultLocationId", ExtArgs["result"]["item"]>
 export type ItemInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.Item$userArgs<ExtArgs>
   listItems?: boolean | Prisma.Item$listItemsArgs<ExtArgs>
-  categories?: boolean | Prisma.Item$categoriesArgs<ExtArgs>
+  category?: boolean | Prisma.Item$categoryArgs<ExtArgs>
+  defaultBagType?: boolean | Prisma.Item$defaultBagTypeArgs<ExtArgs>
+  defaultLocation?: boolean | Prisma.Item$defaultLocationArgs<ExtArgs>
+  hiddenSystemItems?: boolean | Prisma.Item$hiddenSystemItemsArgs<ExtArgs>
   _count?: boolean | Prisma.ItemCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ItemIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.Item$userArgs<ExtArgs>
+  category?: boolean | Prisma.Item$categoryArgs<ExtArgs>
+  defaultBagType?: boolean | Prisma.Item$defaultBagTypeArgs<ExtArgs>
+  defaultLocation?: boolean | Prisma.Item$defaultLocationArgs<ExtArgs>
 }
 export type ItemIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.Item$userArgs<ExtArgs>
+  category?: boolean | Prisma.Item$categoryArgs<ExtArgs>
+  defaultBagType?: boolean | Prisma.Item$defaultBagTypeArgs<ExtArgs>
+  defaultLocation?: boolean | Prisma.Item$defaultLocationArgs<ExtArgs>
 }
 
 export type $ItemPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -741,13 +1312,20 @@ export type $ItemPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   objects: {
     user: Prisma.$UserPayload<ExtArgs> | null
     listItems: Prisma.$ListItemPayload<ExtArgs>[]
-    categories: Prisma.$CategoryPayload<ExtArgs>[]
+    category: Prisma.$CategoryPayload<ExtArgs> | null
+    defaultBagType: Prisma.$BagTypePayload<ExtArgs> | null
+    defaultLocation: Prisma.$LocationPayload<ExtArgs> | null
+    hiddenSystemItems: Prisma.$HiddenSystemItemPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     name: string
     defaultWeight: number | null
     userId: string | null
+    categoryId: string | null
+    tags: string[]
+    defaultBagTypeId: string | null
+    defaultLocationId: string | null
   }, ExtArgs["result"]["item"]>
   composites: {}
 }
@@ -1144,7 +1722,10 @@ export interface Prisma__ItemClient<T, Null = never, ExtArgs extends runtime.Typ
   readonly [Symbol.toStringTag]: "PrismaPromise"
   user<T extends Prisma.Item$userArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Item$userArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   listItems<T extends Prisma.Item$listItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Item$listItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ListItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  categories<T extends Prisma.Item$categoriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Item$categoriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  category<T extends Prisma.Item$categoryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Item$categoryArgs<ExtArgs>>): Prisma.Prisma__CategoryClient<runtime.Types.Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  defaultBagType<T extends Prisma.Item$defaultBagTypeArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Item$defaultBagTypeArgs<ExtArgs>>): Prisma.Prisma__BagTypeClient<runtime.Types.Result.GetResult<Prisma.$BagTypePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  defaultLocation<T extends Prisma.Item$defaultLocationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Item$defaultLocationArgs<ExtArgs>>): Prisma.Prisma__LocationClient<runtime.Types.Result.GetResult<Prisma.$LocationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  hiddenSystemItems<T extends Prisma.Item$hiddenSystemItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Item$hiddenSystemItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$HiddenSystemItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1178,6 +1759,10 @@ export interface ItemFieldRefs {
   readonly name: Prisma.FieldRef<"Item", 'String'>
   readonly defaultWeight: Prisma.FieldRef<"Item", 'Float'>
   readonly userId: Prisma.FieldRef<"Item", 'String'>
+  readonly categoryId: Prisma.FieldRef<"Item", 'String'>
+  readonly tags: Prisma.FieldRef<"Item", 'String[]'>
+  readonly defaultBagTypeId: Prisma.FieldRef<"Item", 'String'>
+  readonly defaultLocationId: Prisma.FieldRef<"Item", 'String'>
 }
     
 
@@ -1622,9 +2207,9 @@ export type Item$listItemsArgs<ExtArgs extends runtime.Types.Extensions.Internal
 }
 
 /**
- * Item.categories
+ * Item.category
  */
-export type Item$categoriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Item$categoryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the Category
    */
@@ -1638,11 +2223,68 @@ export type Item$categoriesArgs<ExtArgs extends runtime.Types.Extensions.Interna
    */
   include?: Prisma.CategoryInclude<ExtArgs> | null
   where?: Prisma.CategoryWhereInput
-  orderBy?: Prisma.CategoryOrderByWithRelationInput | Prisma.CategoryOrderByWithRelationInput[]
-  cursor?: Prisma.CategoryWhereUniqueInput
+}
+
+/**
+ * Item.defaultBagType
+ */
+export type Item$defaultBagTypeArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the BagType
+   */
+  select?: Prisma.BagTypeSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the BagType
+   */
+  omit?: Prisma.BagTypeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BagTypeInclude<ExtArgs> | null
+  where?: Prisma.BagTypeWhereInput
+}
+
+/**
+ * Item.defaultLocation
+ */
+export type Item$defaultLocationArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Location
+   */
+  select?: Prisma.LocationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Location
+   */
+  omit?: Prisma.LocationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LocationInclude<ExtArgs> | null
+  where?: Prisma.LocationWhereInput
+}
+
+/**
+ * Item.hiddenSystemItems
+ */
+export type Item$hiddenSystemItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the HiddenSystemItem
+   */
+  select?: Prisma.HiddenSystemItemSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the HiddenSystemItem
+   */
+  omit?: Prisma.HiddenSystemItemOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.HiddenSystemItemInclude<ExtArgs> | null
+  where?: Prisma.HiddenSystemItemWhereInput
+  orderBy?: Prisma.HiddenSystemItemOrderByWithRelationInput | Prisma.HiddenSystemItemOrderByWithRelationInput[]
+  cursor?: Prisma.HiddenSystemItemWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.CategoryScalarFieldEnum | Prisma.CategoryScalarFieldEnum[]
+  distinct?: Prisma.HiddenSystemItemScalarFieldEnum | Prisma.HiddenSystemItemScalarFieldEnum[]
 }
 
 /**

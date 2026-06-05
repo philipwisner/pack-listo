@@ -185,6 +185,7 @@ export type BagTypeWhereInput = {
   user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   listItems?: Prisma.ListItemListRelationFilter
   lists?: Prisma.BagTypeOrderListRelationFilter
+  defaultItems?: Prisma.ItemListRelationFilter
 }
 
 export type BagTypeOrderByWithRelationInput = {
@@ -196,6 +197,7 @@ export type BagTypeOrderByWithRelationInput = {
   user?: Prisma.UserOrderByWithRelationInput
   listItems?: Prisma.ListItemOrderByRelationAggregateInput
   lists?: Prisma.BagTypeOrderOrderByRelationAggregateInput
+  defaultItems?: Prisma.ItemOrderByRelationAggregateInput
 }
 
 export type BagTypeWhereUniqueInput = Prisma.AtLeast<{
@@ -211,6 +213,7 @@ export type BagTypeWhereUniqueInput = Prisma.AtLeast<{
   user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   listItems?: Prisma.ListItemListRelationFilter
   lists?: Prisma.BagTypeOrderListRelationFilter
+  defaultItems?: Prisma.ItemListRelationFilter
 }, "id" | "name_userId">
 
 export type BagTypeOrderByWithAggregationInput = {
@@ -241,8 +244,9 @@ export type BagTypeCreateInput = {
   icon?: string | null
   color?: string | null
   user?: Prisma.UserCreateNestedOneWithoutBagTypesInput
-  listItems?: Prisma.ListItemCreateNestedManyWithoutBagTypeRefInput
+  listItems?: Prisma.ListItemCreateNestedManyWithoutBagTypeInput
   lists?: Prisma.BagTypeOrderCreateNestedManyWithoutBagTypeInput
+  defaultItems?: Prisma.ItemCreateNestedManyWithoutDefaultBagTypeInput
 }
 
 export type BagTypeUncheckedCreateInput = {
@@ -251,8 +255,9 @@ export type BagTypeUncheckedCreateInput = {
   icon?: string | null
   color?: string | null
   userId?: string | null
-  listItems?: Prisma.ListItemUncheckedCreateNestedManyWithoutBagTypeRefInput
+  listItems?: Prisma.ListItemUncheckedCreateNestedManyWithoutBagTypeInput
   lists?: Prisma.BagTypeOrderUncheckedCreateNestedManyWithoutBagTypeInput
+  defaultItems?: Prisma.ItemUncheckedCreateNestedManyWithoutDefaultBagTypeInput
 }
 
 export type BagTypeUpdateInput = {
@@ -261,8 +266,9 @@ export type BagTypeUpdateInput = {
   icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user?: Prisma.UserUpdateOneWithoutBagTypesNestedInput
-  listItems?: Prisma.ListItemUpdateManyWithoutBagTypeRefNestedInput
+  listItems?: Prisma.ListItemUpdateManyWithoutBagTypeNestedInput
   lists?: Prisma.BagTypeOrderUpdateManyWithoutBagTypeNestedInput
+  defaultItems?: Prisma.ItemUpdateManyWithoutDefaultBagTypeNestedInput
 }
 
 export type BagTypeUncheckedUpdateInput = {
@@ -271,8 +277,9 @@ export type BagTypeUncheckedUpdateInput = {
   icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  listItems?: Prisma.ListItemUncheckedUpdateManyWithoutBagTypeRefNestedInput
+  listItems?: Prisma.ListItemUncheckedUpdateManyWithoutBagTypeNestedInput
   lists?: Prisma.BagTypeOrderUncheckedUpdateManyWithoutBagTypeNestedInput
+  defaultItems?: Prisma.ItemUncheckedUpdateManyWithoutDefaultBagTypeNestedInput
 }
 
 export type BagTypeCreateManyInput = {
@@ -403,6 +410,22 @@ export type BagTypeUpdateOneRequiredWithoutListsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.BagTypeUpdateToOneWithWhereWithoutListsInput, Prisma.BagTypeUpdateWithoutListsInput>, Prisma.BagTypeUncheckedUpdateWithoutListsInput>
 }
 
+export type BagTypeCreateNestedOneWithoutDefaultItemsInput = {
+  create?: Prisma.XOR<Prisma.BagTypeCreateWithoutDefaultItemsInput, Prisma.BagTypeUncheckedCreateWithoutDefaultItemsInput>
+  connectOrCreate?: Prisma.BagTypeCreateOrConnectWithoutDefaultItemsInput
+  connect?: Prisma.BagTypeWhereUniqueInput
+}
+
+export type BagTypeUpdateOneWithoutDefaultItemsNestedInput = {
+  create?: Prisma.XOR<Prisma.BagTypeCreateWithoutDefaultItemsInput, Prisma.BagTypeUncheckedCreateWithoutDefaultItemsInput>
+  connectOrCreate?: Prisma.BagTypeCreateOrConnectWithoutDefaultItemsInput
+  upsert?: Prisma.BagTypeUpsertWithoutDefaultItemsInput
+  disconnect?: Prisma.BagTypeWhereInput | boolean
+  delete?: Prisma.BagTypeWhereInput | boolean
+  connect?: Prisma.BagTypeWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.BagTypeUpdateToOneWithWhereWithoutDefaultItemsInput, Prisma.BagTypeUpdateWithoutDefaultItemsInput>, Prisma.BagTypeUncheckedUpdateWithoutDefaultItemsInput>
+}
+
 export type BagTypeCreateNestedOneWithoutListItemsInput = {
   create?: Prisma.XOR<Prisma.BagTypeCreateWithoutListItemsInput, Prisma.BagTypeUncheckedCreateWithoutListItemsInput>
   connectOrCreate?: Prisma.BagTypeCreateOrConnectWithoutListItemsInput
@@ -424,8 +447,9 @@ export type BagTypeCreateWithoutUserInput = {
   name: string
   icon?: string | null
   color?: string | null
-  listItems?: Prisma.ListItemCreateNestedManyWithoutBagTypeRefInput
+  listItems?: Prisma.ListItemCreateNestedManyWithoutBagTypeInput
   lists?: Prisma.BagTypeOrderCreateNestedManyWithoutBagTypeInput
+  defaultItems?: Prisma.ItemCreateNestedManyWithoutDefaultBagTypeInput
 }
 
 export type BagTypeUncheckedCreateWithoutUserInput = {
@@ -433,8 +457,9 @@ export type BagTypeUncheckedCreateWithoutUserInput = {
   name: string
   icon?: string | null
   color?: string | null
-  listItems?: Prisma.ListItemUncheckedCreateNestedManyWithoutBagTypeRefInput
+  listItems?: Prisma.ListItemUncheckedCreateNestedManyWithoutBagTypeInput
   lists?: Prisma.BagTypeOrderUncheckedCreateNestedManyWithoutBagTypeInput
+  defaultItems?: Prisma.ItemUncheckedCreateNestedManyWithoutDefaultBagTypeInput
 }
 
 export type BagTypeCreateOrConnectWithoutUserInput = {
@@ -480,7 +505,8 @@ export type BagTypeCreateWithoutListsInput = {
   icon?: string | null
   color?: string | null
   user?: Prisma.UserCreateNestedOneWithoutBagTypesInput
-  listItems?: Prisma.ListItemCreateNestedManyWithoutBagTypeRefInput
+  listItems?: Prisma.ListItemCreateNestedManyWithoutBagTypeInput
+  defaultItems?: Prisma.ItemCreateNestedManyWithoutDefaultBagTypeInput
 }
 
 export type BagTypeUncheckedCreateWithoutListsInput = {
@@ -489,7 +515,8 @@ export type BagTypeUncheckedCreateWithoutListsInput = {
   icon?: string | null
   color?: string | null
   userId?: string | null
-  listItems?: Prisma.ListItemUncheckedCreateNestedManyWithoutBagTypeRefInput
+  listItems?: Prisma.ListItemUncheckedCreateNestedManyWithoutBagTypeInput
+  defaultItems?: Prisma.ItemUncheckedCreateNestedManyWithoutDefaultBagTypeInput
 }
 
 export type BagTypeCreateOrConnectWithoutListsInput = {
@@ -514,7 +541,8 @@ export type BagTypeUpdateWithoutListsInput = {
   icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user?: Prisma.UserUpdateOneWithoutBagTypesNestedInput
-  listItems?: Prisma.ListItemUpdateManyWithoutBagTypeRefNestedInput
+  listItems?: Prisma.ListItemUpdateManyWithoutBagTypeNestedInput
+  defaultItems?: Prisma.ItemUpdateManyWithoutDefaultBagTypeNestedInput
 }
 
 export type BagTypeUncheckedUpdateWithoutListsInput = {
@@ -523,7 +551,64 @@ export type BagTypeUncheckedUpdateWithoutListsInput = {
   icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  listItems?: Prisma.ListItemUncheckedUpdateManyWithoutBagTypeRefNestedInput
+  listItems?: Prisma.ListItemUncheckedUpdateManyWithoutBagTypeNestedInput
+  defaultItems?: Prisma.ItemUncheckedUpdateManyWithoutDefaultBagTypeNestedInput
+}
+
+export type BagTypeCreateWithoutDefaultItemsInput = {
+  id?: string
+  name: string
+  icon?: string | null
+  color?: string | null
+  user?: Prisma.UserCreateNestedOneWithoutBagTypesInput
+  listItems?: Prisma.ListItemCreateNestedManyWithoutBagTypeInput
+  lists?: Prisma.BagTypeOrderCreateNestedManyWithoutBagTypeInput
+}
+
+export type BagTypeUncheckedCreateWithoutDefaultItemsInput = {
+  id?: string
+  name: string
+  icon?: string | null
+  color?: string | null
+  userId?: string | null
+  listItems?: Prisma.ListItemUncheckedCreateNestedManyWithoutBagTypeInput
+  lists?: Prisma.BagTypeOrderUncheckedCreateNestedManyWithoutBagTypeInput
+}
+
+export type BagTypeCreateOrConnectWithoutDefaultItemsInput = {
+  where: Prisma.BagTypeWhereUniqueInput
+  create: Prisma.XOR<Prisma.BagTypeCreateWithoutDefaultItemsInput, Prisma.BagTypeUncheckedCreateWithoutDefaultItemsInput>
+}
+
+export type BagTypeUpsertWithoutDefaultItemsInput = {
+  update: Prisma.XOR<Prisma.BagTypeUpdateWithoutDefaultItemsInput, Prisma.BagTypeUncheckedUpdateWithoutDefaultItemsInput>
+  create: Prisma.XOR<Prisma.BagTypeCreateWithoutDefaultItemsInput, Prisma.BagTypeUncheckedCreateWithoutDefaultItemsInput>
+  where?: Prisma.BagTypeWhereInput
+}
+
+export type BagTypeUpdateToOneWithWhereWithoutDefaultItemsInput = {
+  where?: Prisma.BagTypeWhereInput
+  data: Prisma.XOR<Prisma.BagTypeUpdateWithoutDefaultItemsInput, Prisma.BagTypeUncheckedUpdateWithoutDefaultItemsInput>
+}
+
+export type BagTypeUpdateWithoutDefaultItemsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  user?: Prisma.UserUpdateOneWithoutBagTypesNestedInput
+  listItems?: Prisma.ListItemUpdateManyWithoutBagTypeNestedInput
+  lists?: Prisma.BagTypeOrderUpdateManyWithoutBagTypeNestedInput
+}
+
+export type BagTypeUncheckedUpdateWithoutDefaultItemsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  listItems?: Prisma.ListItemUncheckedUpdateManyWithoutBagTypeNestedInput
+  lists?: Prisma.BagTypeOrderUncheckedUpdateManyWithoutBagTypeNestedInput
 }
 
 export type BagTypeCreateWithoutListItemsInput = {
@@ -533,6 +618,7 @@ export type BagTypeCreateWithoutListItemsInput = {
   color?: string | null
   user?: Prisma.UserCreateNestedOneWithoutBagTypesInput
   lists?: Prisma.BagTypeOrderCreateNestedManyWithoutBagTypeInput
+  defaultItems?: Prisma.ItemCreateNestedManyWithoutDefaultBagTypeInput
 }
 
 export type BagTypeUncheckedCreateWithoutListItemsInput = {
@@ -542,6 +628,7 @@ export type BagTypeUncheckedCreateWithoutListItemsInput = {
   color?: string | null
   userId?: string | null
   lists?: Prisma.BagTypeOrderUncheckedCreateNestedManyWithoutBagTypeInput
+  defaultItems?: Prisma.ItemUncheckedCreateNestedManyWithoutDefaultBagTypeInput
 }
 
 export type BagTypeCreateOrConnectWithoutListItemsInput = {
@@ -567,6 +654,7 @@ export type BagTypeUpdateWithoutListItemsInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user?: Prisma.UserUpdateOneWithoutBagTypesNestedInput
   lists?: Prisma.BagTypeOrderUpdateManyWithoutBagTypeNestedInput
+  defaultItems?: Prisma.ItemUpdateManyWithoutDefaultBagTypeNestedInput
 }
 
 export type BagTypeUncheckedUpdateWithoutListItemsInput = {
@@ -576,6 +664,7 @@ export type BagTypeUncheckedUpdateWithoutListItemsInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lists?: Prisma.BagTypeOrderUncheckedUpdateManyWithoutBagTypeNestedInput
+  defaultItems?: Prisma.ItemUncheckedUpdateManyWithoutDefaultBagTypeNestedInput
 }
 
 export type BagTypeCreateManyUserInput = {
@@ -590,8 +679,9 @@ export type BagTypeUpdateWithoutUserInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  listItems?: Prisma.ListItemUpdateManyWithoutBagTypeRefNestedInput
+  listItems?: Prisma.ListItemUpdateManyWithoutBagTypeNestedInput
   lists?: Prisma.BagTypeOrderUpdateManyWithoutBagTypeNestedInput
+  defaultItems?: Prisma.ItemUpdateManyWithoutDefaultBagTypeNestedInput
 }
 
 export type BagTypeUncheckedUpdateWithoutUserInput = {
@@ -599,8 +689,9 @@ export type BagTypeUncheckedUpdateWithoutUserInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  listItems?: Prisma.ListItemUncheckedUpdateManyWithoutBagTypeRefNestedInput
+  listItems?: Prisma.ListItemUncheckedUpdateManyWithoutBagTypeNestedInput
   lists?: Prisma.BagTypeOrderUncheckedUpdateManyWithoutBagTypeNestedInput
+  defaultItems?: Prisma.ItemUncheckedUpdateManyWithoutDefaultBagTypeNestedInput
 }
 
 export type BagTypeUncheckedUpdateManyWithoutUserInput = {
@@ -618,11 +709,13 @@ export type BagTypeUncheckedUpdateManyWithoutUserInput = {
 export type BagTypeCountOutputType = {
   listItems: number
   lists: number
+  defaultItems: number
 }
 
 export type BagTypeCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   listItems?: boolean | BagTypeCountOutputTypeCountListItemsArgs
   lists?: boolean | BagTypeCountOutputTypeCountListsArgs
+  defaultItems?: boolean | BagTypeCountOutputTypeCountDefaultItemsArgs
 }
 
 /**
@@ -649,6 +742,13 @@ export type BagTypeCountOutputTypeCountListsArgs<ExtArgs extends runtime.Types.E
   where?: Prisma.BagTypeOrderWhereInput
 }
 
+/**
+ * BagTypeCountOutputType without action
+ */
+export type BagTypeCountOutputTypeCountDefaultItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ItemWhereInput
+}
+
 
 export type BagTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -659,6 +759,7 @@ export type BagTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   user?: boolean | Prisma.BagType$userArgs<ExtArgs>
   listItems?: boolean | Prisma.BagType$listItemsArgs<ExtArgs>
   lists?: boolean | Prisma.BagType$listsArgs<ExtArgs>
+  defaultItems?: boolean | Prisma.BagType$defaultItemsArgs<ExtArgs>
   _count?: boolean | Prisma.BagTypeCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["bagType"]>
 
@@ -693,6 +794,7 @@ export type BagTypeInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs
   user?: boolean | Prisma.BagType$userArgs<ExtArgs>
   listItems?: boolean | Prisma.BagType$listItemsArgs<ExtArgs>
   lists?: boolean | Prisma.BagType$listsArgs<ExtArgs>
+  defaultItems?: boolean | Prisma.BagType$defaultItemsArgs<ExtArgs>
   _count?: boolean | Prisma.BagTypeCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type BagTypeIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -708,6 +810,7 @@ export type $BagTypePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     user: Prisma.$UserPayload<ExtArgs> | null
     listItems: Prisma.$ListItemPayload<ExtArgs>[]
     lists: Prisma.$BagTypeOrderPayload<ExtArgs>[]
+    defaultItems: Prisma.$ItemPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1112,6 +1215,7 @@ export interface Prisma__BagTypeClient<T, Null = never, ExtArgs extends runtime.
   user<T extends Prisma.BagType$userArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.BagType$userArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   listItems<T extends Prisma.BagType$listItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.BagType$listItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ListItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   lists<T extends Prisma.BagType$listsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.BagType$listsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BagTypeOrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  defaultItems<T extends Prisma.BagType$defaultItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.BagType$defaultItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1611,6 +1715,30 @@ export type BagType$listsArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   distinct?: Prisma.BagTypeOrderScalarFieldEnum | Prisma.BagTypeOrderScalarFieldEnum[]
+}
+
+/**
+ * BagType.defaultItems
+ */
+export type BagType$defaultItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Item
+   */
+  select?: Prisma.ItemSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Item
+   */
+  omit?: Prisma.ItemOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ItemInclude<ExtArgs> | null
+  where?: Prisma.ItemWhereInput
+  orderBy?: Prisma.ItemOrderByWithRelationInput | Prisma.ItemOrderByWithRelationInput[]
+  cursor?: Prisma.ItemWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ItemScalarFieldEnum | Prisma.ItemScalarFieldEnum[]
 }
 
 /**

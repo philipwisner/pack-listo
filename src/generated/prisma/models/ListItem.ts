@@ -45,10 +45,9 @@ export type ListItemMinAggregateOutputType = {
   isEssential: boolean | null
   notes: string | null
   categoryId: string | null
-  bagType: string | null
   bagTypeId: string | null
-  bagLocation: string | null
   sortOrder: number | null
+  locationId: string | null
 }
 
 export type ListItemMaxAggregateOutputType = {
@@ -60,10 +59,9 @@ export type ListItemMaxAggregateOutputType = {
   isEssential: boolean | null
   notes: string | null
   categoryId: string | null
-  bagType: string | null
   bagTypeId: string | null
-  bagLocation: string | null
   sortOrder: number | null
+  locationId: string | null
 }
 
 export type ListItemCountAggregateOutputType = {
@@ -75,10 +73,9 @@ export type ListItemCountAggregateOutputType = {
   isEssential: number
   notes: number
   categoryId: number
-  bagType: number
   bagTypeId: number
-  bagLocation: number
   sortOrder: number
+  locationId: number
   _all: number
 }
 
@@ -102,10 +99,9 @@ export type ListItemMinAggregateInputType = {
   isEssential?: true
   notes?: true
   categoryId?: true
-  bagType?: true
   bagTypeId?: true
-  bagLocation?: true
   sortOrder?: true
+  locationId?: true
 }
 
 export type ListItemMaxAggregateInputType = {
@@ -117,10 +113,9 @@ export type ListItemMaxAggregateInputType = {
   isEssential?: true
   notes?: true
   categoryId?: true
-  bagType?: true
   bagTypeId?: true
-  bagLocation?: true
   sortOrder?: true
+  locationId?: true
 }
 
 export type ListItemCountAggregateInputType = {
@@ -132,10 +127,9 @@ export type ListItemCountAggregateInputType = {
   isEssential?: true
   notes?: true
   categoryId?: true
-  bagType?: true
   bagTypeId?: true
-  bagLocation?: true
   sortOrder?: true
+  locationId?: true
   _all?: true
 }
 
@@ -234,10 +228,9 @@ export type ListItemGroupByOutputType = {
   isEssential: boolean
   notes: string | null
   categoryId: string | null
-  bagType: string | null
   bagTypeId: string | null
-  bagLocation: string | null
   sortOrder: number
+  locationId: string | null
   _count: ListItemCountAggregateOutputType | null
   _avg: ListItemAvgAggregateOutputType | null
   _sum: ListItemSumAggregateOutputType | null
@@ -272,14 +265,14 @@ export type ListItemWhereInput = {
   isEssential?: Prisma.BoolFilter<"ListItem"> | boolean
   notes?: Prisma.StringNullableFilter<"ListItem"> | string | null
   categoryId?: Prisma.StringNullableFilter<"ListItem"> | string | null
-  bagType?: Prisma.StringNullableFilter<"ListItem"> | string | null
   bagTypeId?: Prisma.StringNullableFilter<"ListItem"> | string | null
-  bagLocation?: Prisma.StringNullableFilter<"ListItem"> | string | null
   sortOrder?: Prisma.IntFilter<"ListItem"> | number
+  locationId?: Prisma.StringNullableFilter<"ListItem"> | string | null
   category?: Prisma.XOR<Prisma.CategoryNullableScalarRelationFilter, Prisma.CategoryWhereInput> | null
-  bagTypeRef?: Prisma.XOR<Prisma.BagTypeNullableScalarRelationFilter, Prisma.BagTypeWhereInput> | null
+  bagType?: Prisma.XOR<Prisma.BagTypeNullableScalarRelationFilter, Prisma.BagTypeWhereInput> | null
   item?: Prisma.XOR<Prisma.ItemScalarRelationFilter, Prisma.ItemWhereInput>
   list?: Prisma.XOR<Prisma.ListScalarRelationFilter, Prisma.ListWhereInput>
+  location?: Prisma.XOR<Prisma.LocationNullableScalarRelationFilter, Prisma.LocationWhereInput> | null
 }
 
 export type ListItemOrderByWithRelationInput = {
@@ -291,14 +284,14 @@ export type ListItemOrderByWithRelationInput = {
   isEssential?: Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
   categoryId?: Prisma.SortOrderInput | Prisma.SortOrder
-  bagType?: Prisma.SortOrderInput | Prisma.SortOrder
   bagTypeId?: Prisma.SortOrderInput | Prisma.SortOrder
-  bagLocation?: Prisma.SortOrderInput | Prisma.SortOrder
   sortOrder?: Prisma.SortOrder
+  locationId?: Prisma.SortOrderInput | Prisma.SortOrder
   category?: Prisma.CategoryOrderByWithRelationInput
-  bagTypeRef?: Prisma.BagTypeOrderByWithRelationInput
+  bagType?: Prisma.BagTypeOrderByWithRelationInput
   item?: Prisma.ItemOrderByWithRelationInput
   list?: Prisma.ListOrderByWithRelationInput
+  location?: Prisma.LocationOrderByWithRelationInput
 }
 
 export type ListItemWhereUniqueInput = Prisma.AtLeast<{
@@ -314,14 +307,14 @@ export type ListItemWhereUniqueInput = Prisma.AtLeast<{
   isEssential?: Prisma.BoolFilter<"ListItem"> | boolean
   notes?: Prisma.StringNullableFilter<"ListItem"> | string | null
   categoryId?: Prisma.StringNullableFilter<"ListItem"> | string | null
-  bagType?: Prisma.StringNullableFilter<"ListItem"> | string | null
   bagTypeId?: Prisma.StringNullableFilter<"ListItem"> | string | null
-  bagLocation?: Prisma.StringNullableFilter<"ListItem"> | string | null
   sortOrder?: Prisma.IntFilter<"ListItem"> | number
+  locationId?: Prisma.StringNullableFilter<"ListItem"> | string | null
   category?: Prisma.XOR<Prisma.CategoryNullableScalarRelationFilter, Prisma.CategoryWhereInput> | null
-  bagTypeRef?: Prisma.XOR<Prisma.BagTypeNullableScalarRelationFilter, Prisma.BagTypeWhereInput> | null
+  bagType?: Prisma.XOR<Prisma.BagTypeNullableScalarRelationFilter, Prisma.BagTypeWhereInput> | null
   item?: Prisma.XOR<Prisma.ItemScalarRelationFilter, Prisma.ItemWhereInput>
   list?: Prisma.XOR<Prisma.ListScalarRelationFilter, Prisma.ListWhereInput>
+  location?: Prisma.XOR<Prisma.LocationNullableScalarRelationFilter, Prisma.LocationWhereInput> | null
 }, "id" | "listId_itemId">
 
 export type ListItemOrderByWithAggregationInput = {
@@ -333,10 +326,9 @@ export type ListItemOrderByWithAggregationInput = {
   isEssential?: Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
   categoryId?: Prisma.SortOrderInput | Prisma.SortOrder
-  bagType?: Prisma.SortOrderInput | Prisma.SortOrder
   bagTypeId?: Prisma.SortOrderInput | Prisma.SortOrder
-  bagLocation?: Prisma.SortOrderInput | Prisma.SortOrder
   sortOrder?: Prisma.SortOrder
+  locationId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.ListItemCountOrderByAggregateInput
   _avg?: Prisma.ListItemAvgOrderByAggregateInput
   _max?: Prisma.ListItemMaxOrderByAggregateInput
@@ -356,10 +348,9 @@ export type ListItemScalarWhereWithAggregatesInput = {
   isEssential?: Prisma.BoolWithAggregatesFilter<"ListItem"> | boolean
   notes?: Prisma.StringNullableWithAggregatesFilter<"ListItem"> | string | null
   categoryId?: Prisma.StringNullableWithAggregatesFilter<"ListItem"> | string | null
-  bagType?: Prisma.StringNullableWithAggregatesFilter<"ListItem"> | string | null
   bagTypeId?: Prisma.StringNullableWithAggregatesFilter<"ListItem"> | string | null
-  bagLocation?: Prisma.StringNullableWithAggregatesFilter<"ListItem"> | string | null
   sortOrder?: Prisma.IntWithAggregatesFilter<"ListItem"> | number
+  locationId?: Prisma.StringNullableWithAggregatesFilter<"ListItem"> | string | null
 }
 
 export type ListItemCreateInput = {
@@ -368,13 +359,12 @@ export type ListItemCreateInput = {
   isPacked?: boolean
   isEssential?: boolean
   notes?: string | null
-  bagType?: string | null
-  bagLocation?: string | null
   sortOrder?: number
   category?: Prisma.CategoryCreateNestedOneWithoutListItemsInput
-  bagTypeRef?: Prisma.BagTypeCreateNestedOneWithoutListItemsInput
+  bagType?: Prisma.BagTypeCreateNestedOneWithoutListItemsInput
   item: Prisma.ItemCreateNestedOneWithoutListItemsInput
   list: Prisma.ListCreateNestedOneWithoutItemsInput
+  location?: Prisma.LocationCreateNestedOneWithoutListItemsInput
 }
 
 export type ListItemUncheckedCreateInput = {
@@ -386,10 +376,9 @@ export type ListItemUncheckedCreateInput = {
   isEssential?: boolean
   notes?: string | null
   categoryId?: string | null
-  bagType?: string | null
   bagTypeId?: string | null
-  bagLocation?: string | null
   sortOrder?: number
+  locationId?: string | null
 }
 
 export type ListItemUpdateInput = {
@@ -398,13 +387,12 @@ export type ListItemUpdateInput = {
   isPacked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isEssential?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  bagType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  bagLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   category?: Prisma.CategoryUpdateOneWithoutListItemsNestedInput
-  bagTypeRef?: Prisma.BagTypeUpdateOneWithoutListItemsNestedInput
+  bagType?: Prisma.BagTypeUpdateOneWithoutListItemsNestedInput
   item?: Prisma.ItemUpdateOneRequiredWithoutListItemsNestedInput
   list?: Prisma.ListUpdateOneRequiredWithoutItemsNestedInput
+  location?: Prisma.LocationUpdateOneWithoutListItemsNestedInput
 }
 
 export type ListItemUncheckedUpdateInput = {
@@ -416,10 +404,9 @@ export type ListItemUncheckedUpdateInput = {
   isEssential?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  bagType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bagTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  bagLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  locationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ListItemCreateManyInput = {
@@ -431,10 +418,9 @@ export type ListItemCreateManyInput = {
   isEssential?: boolean
   notes?: string | null
   categoryId?: string | null
-  bagType?: string | null
   bagTypeId?: string | null
-  bagLocation?: string | null
   sortOrder?: number
+  locationId?: string | null
 }
 
 export type ListItemUpdateManyMutationInput = {
@@ -443,8 +429,6 @@ export type ListItemUpdateManyMutationInput = {
   isPacked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isEssential?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  bagType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  bagLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
@@ -457,10 +441,9 @@ export type ListItemUncheckedUpdateManyInput = {
   isEssential?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  bagType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bagTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  bagLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  locationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ListItemListRelationFilter = {
@@ -487,10 +470,9 @@ export type ListItemCountOrderByAggregateInput = {
   isEssential?: Prisma.SortOrder
   notes?: Prisma.SortOrder
   categoryId?: Prisma.SortOrder
-  bagType?: Prisma.SortOrder
   bagTypeId?: Prisma.SortOrder
-  bagLocation?: Prisma.SortOrder
   sortOrder?: Prisma.SortOrder
+  locationId?: Prisma.SortOrder
 }
 
 export type ListItemAvgOrderByAggregateInput = {
@@ -507,10 +489,9 @@ export type ListItemMaxOrderByAggregateInput = {
   isEssential?: Prisma.SortOrder
   notes?: Prisma.SortOrder
   categoryId?: Prisma.SortOrder
-  bagType?: Prisma.SortOrder
   bagTypeId?: Prisma.SortOrder
-  bagLocation?: Prisma.SortOrder
   sortOrder?: Prisma.SortOrder
+  locationId?: Prisma.SortOrder
 }
 
 export type ListItemMinOrderByAggregateInput = {
@@ -522,10 +503,9 @@ export type ListItemMinOrderByAggregateInput = {
   isEssential?: Prisma.SortOrder
   notes?: Prisma.SortOrder
   categoryId?: Prisma.SortOrder
-  bagType?: Prisma.SortOrder
   bagTypeId?: Prisma.SortOrder
-  bagLocation?: Prisma.SortOrder
   sortOrder?: Prisma.SortOrder
+  locationId?: Prisma.SortOrder
 }
 
 export type ListItemSumOrderByAggregateInput = {
@@ -575,45 +555,45 @@ export type ListItemUncheckedUpdateManyWithoutCategoryNestedInput = {
   deleteMany?: Prisma.ListItemScalarWhereInput | Prisma.ListItemScalarWhereInput[]
 }
 
-export type ListItemCreateNestedManyWithoutBagTypeRefInput = {
-  create?: Prisma.XOR<Prisma.ListItemCreateWithoutBagTypeRefInput, Prisma.ListItemUncheckedCreateWithoutBagTypeRefInput> | Prisma.ListItemCreateWithoutBagTypeRefInput[] | Prisma.ListItemUncheckedCreateWithoutBagTypeRefInput[]
-  connectOrCreate?: Prisma.ListItemCreateOrConnectWithoutBagTypeRefInput | Prisma.ListItemCreateOrConnectWithoutBagTypeRefInput[]
-  createMany?: Prisma.ListItemCreateManyBagTypeRefInputEnvelope
+export type ListItemCreateNestedManyWithoutBagTypeInput = {
+  create?: Prisma.XOR<Prisma.ListItemCreateWithoutBagTypeInput, Prisma.ListItemUncheckedCreateWithoutBagTypeInput> | Prisma.ListItemCreateWithoutBagTypeInput[] | Prisma.ListItemUncheckedCreateWithoutBagTypeInput[]
+  connectOrCreate?: Prisma.ListItemCreateOrConnectWithoutBagTypeInput | Prisma.ListItemCreateOrConnectWithoutBagTypeInput[]
+  createMany?: Prisma.ListItemCreateManyBagTypeInputEnvelope
   connect?: Prisma.ListItemWhereUniqueInput | Prisma.ListItemWhereUniqueInput[]
 }
 
-export type ListItemUncheckedCreateNestedManyWithoutBagTypeRefInput = {
-  create?: Prisma.XOR<Prisma.ListItemCreateWithoutBagTypeRefInput, Prisma.ListItemUncheckedCreateWithoutBagTypeRefInput> | Prisma.ListItemCreateWithoutBagTypeRefInput[] | Prisma.ListItemUncheckedCreateWithoutBagTypeRefInput[]
-  connectOrCreate?: Prisma.ListItemCreateOrConnectWithoutBagTypeRefInput | Prisma.ListItemCreateOrConnectWithoutBagTypeRefInput[]
-  createMany?: Prisma.ListItemCreateManyBagTypeRefInputEnvelope
+export type ListItemUncheckedCreateNestedManyWithoutBagTypeInput = {
+  create?: Prisma.XOR<Prisma.ListItemCreateWithoutBagTypeInput, Prisma.ListItemUncheckedCreateWithoutBagTypeInput> | Prisma.ListItemCreateWithoutBagTypeInput[] | Prisma.ListItemUncheckedCreateWithoutBagTypeInput[]
+  connectOrCreate?: Prisma.ListItemCreateOrConnectWithoutBagTypeInput | Prisma.ListItemCreateOrConnectWithoutBagTypeInput[]
+  createMany?: Prisma.ListItemCreateManyBagTypeInputEnvelope
   connect?: Prisma.ListItemWhereUniqueInput | Prisma.ListItemWhereUniqueInput[]
 }
 
-export type ListItemUpdateManyWithoutBagTypeRefNestedInput = {
-  create?: Prisma.XOR<Prisma.ListItemCreateWithoutBagTypeRefInput, Prisma.ListItemUncheckedCreateWithoutBagTypeRefInput> | Prisma.ListItemCreateWithoutBagTypeRefInput[] | Prisma.ListItemUncheckedCreateWithoutBagTypeRefInput[]
-  connectOrCreate?: Prisma.ListItemCreateOrConnectWithoutBagTypeRefInput | Prisma.ListItemCreateOrConnectWithoutBagTypeRefInput[]
-  upsert?: Prisma.ListItemUpsertWithWhereUniqueWithoutBagTypeRefInput | Prisma.ListItemUpsertWithWhereUniqueWithoutBagTypeRefInput[]
-  createMany?: Prisma.ListItemCreateManyBagTypeRefInputEnvelope
+export type ListItemUpdateManyWithoutBagTypeNestedInput = {
+  create?: Prisma.XOR<Prisma.ListItemCreateWithoutBagTypeInput, Prisma.ListItemUncheckedCreateWithoutBagTypeInput> | Prisma.ListItemCreateWithoutBagTypeInput[] | Prisma.ListItemUncheckedCreateWithoutBagTypeInput[]
+  connectOrCreate?: Prisma.ListItemCreateOrConnectWithoutBagTypeInput | Prisma.ListItemCreateOrConnectWithoutBagTypeInput[]
+  upsert?: Prisma.ListItemUpsertWithWhereUniqueWithoutBagTypeInput | Prisma.ListItemUpsertWithWhereUniqueWithoutBagTypeInput[]
+  createMany?: Prisma.ListItemCreateManyBagTypeInputEnvelope
   set?: Prisma.ListItemWhereUniqueInput | Prisma.ListItemWhereUniqueInput[]
   disconnect?: Prisma.ListItemWhereUniqueInput | Prisma.ListItemWhereUniqueInput[]
   delete?: Prisma.ListItemWhereUniqueInput | Prisma.ListItemWhereUniqueInput[]
   connect?: Prisma.ListItemWhereUniqueInput | Prisma.ListItemWhereUniqueInput[]
-  update?: Prisma.ListItemUpdateWithWhereUniqueWithoutBagTypeRefInput | Prisma.ListItemUpdateWithWhereUniqueWithoutBagTypeRefInput[]
-  updateMany?: Prisma.ListItemUpdateManyWithWhereWithoutBagTypeRefInput | Prisma.ListItemUpdateManyWithWhereWithoutBagTypeRefInput[]
+  update?: Prisma.ListItemUpdateWithWhereUniqueWithoutBagTypeInput | Prisma.ListItemUpdateWithWhereUniqueWithoutBagTypeInput[]
+  updateMany?: Prisma.ListItemUpdateManyWithWhereWithoutBagTypeInput | Prisma.ListItemUpdateManyWithWhereWithoutBagTypeInput[]
   deleteMany?: Prisma.ListItemScalarWhereInput | Prisma.ListItemScalarWhereInput[]
 }
 
-export type ListItemUncheckedUpdateManyWithoutBagTypeRefNestedInput = {
-  create?: Prisma.XOR<Prisma.ListItemCreateWithoutBagTypeRefInput, Prisma.ListItemUncheckedCreateWithoutBagTypeRefInput> | Prisma.ListItemCreateWithoutBagTypeRefInput[] | Prisma.ListItemUncheckedCreateWithoutBagTypeRefInput[]
-  connectOrCreate?: Prisma.ListItemCreateOrConnectWithoutBagTypeRefInput | Prisma.ListItemCreateOrConnectWithoutBagTypeRefInput[]
-  upsert?: Prisma.ListItemUpsertWithWhereUniqueWithoutBagTypeRefInput | Prisma.ListItemUpsertWithWhereUniqueWithoutBagTypeRefInput[]
-  createMany?: Prisma.ListItemCreateManyBagTypeRefInputEnvelope
+export type ListItemUncheckedUpdateManyWithoutBagTypeNestedInput = {
+  create?: Prisma.XOR<Prisma.ListItemCreateWithoutBagTypeInput, Prisma.ListItemUncheckedCreateWithoutBagTypeInput> | Prisma.ListItemCreateWithoutBagTypeInput[] | Prisma.ListItemUncheckedCreateWithoutBagTypeInput[]
+  connectOrCreate?: Prisma.ListItemCreateOrConnectWithoutBagTypeInput | Prisma.ListItemCreateOrConnectWithoutBagTypeInput[]
+  upsert?: Prisma.ListItemUpsertWithWhereUniqueWithoutBagTypeInput | Prisma.ListItemUpsertWithWhereUniqueWithoutBagTypeInput[]
+  createMany?: Prisma.ListItemCreateManyBagTypeInputEnvelope
   set?: Prisma.ListItemWhereUniqueInput | Prisma.ListItemWhereUniqueInput[]
   disconnect?: Prisma.ListItemWhereUniqueInput | Prisma.ListItemWhereUniqueInput[]
   delete?: Prisma.ListItemWhereUniqueInput | Prisma.ListItemWhereUniqueInput[]
   connect?: Prisma.ListItemWhereUniqueInput | Prisma.ListItemWhereUniqueInput[]
-  update?: Prisma.ListItemUpdateWithWhereUniqueWithoutBagTypeRefInput | Prisma.ListItemUpdateWithWhereUniqueWithoutBagTypeRefInput[]
-  updateMany?: Prisma.ListItemUpdateManyWithWhereWithoutBagTypeRefInput | Prisma.ListItemUpdateManyWithWhereWithoutBagTypeRefInput[]
+  update?: Prisma.ListItemUpdateWithWhereUniqueWithoutBagTypeInput | Prisma.ListItemUpdateWithWhereUniqueWithoutBagTypeInput[]
+  updateMany?: Prisma.ListItemUpdateManyWithWhereWithoutBagTypeInput | Prisma.ListItemUpdateManyWithWhereWithoutBagTypeInput[]
   deleteMany?: Prisma.ListItemScalarWhereInput | Prisma.ListItemScalarWhereInput[]
 }
 
@@ -701,18 +681,59 @@ export type ListItemUncheckedUpdateManyWithoutListNestedInput = {
   deleteMany?: Prisma.ListItemScalarWhereInput | Prisma.ListItemScalarWhereInput[]
 }
 
+export type ListItemCreateNestedManyWithoutLocationInput = {
+  create?: Prisma.XOR<Prisma.ListItemCreateWithoutLocationInput, Prisma.ListItemUncheckedCreateWithoutLocationInput> | Prisma.ListItemCreateWithoutLocationInput[] | Prisma.ListItemUncheckedCreateWithoutLocationInput[]
+  connectOrCreate?: Prisma.ListItemCreateOrConnectWithoutLocationInput | Prisma.ListItemCreateOrConnectWithoutLocationInput[]
+  createMany?: Prisma.ListItemCreateManyLocationInputEnvelope
+  connect?: Prisma.ListItemWhereUniqueInput | Prisma.ListItemWhereUniqueInput[]
+}
+
+export type ListItemUncheckedCreateNestedManyWithoutLocationInput = {
+  create?: Prisma.XOR<Prisma.ListItemCreateWithoutLocationInput, Prisma.ListItemUncheckedCreateWithoutLocationInput> | Prisma.ListItemCreateWithoutLocationInput[] | Prisma.ListItemUncheckedCreateWithoutLocationInput[]
+  connectOrCreate?: Prisma.ListItemCreateOrConnectWithoutLocationInput | Prisma.ListItemCreateOrConnectWithoutLocationInput[]
+  createMany?: Prisma.ListItemCreateManyLocationInputEnvelope
+  connect?: Prisma.ListItemWhereUniqueInput | Prisma.ListItemWhereUniqueInput[]
+}
+
+export type ListItemUpdateManyWithoutLocationNestedInput = {
+  create?: Prisma.XOR<Prisma.ListItemCreateWithoutLocationInput, Prisma.ListItemUncheckedCreateWithoutLocationInput> | Prisma.ListItemCreateWithoutLocationInput[] | Prisma.ListItemUncheckedCreateWithoutLocationInput[]
+  connectOrCreate?: Prisma.ListItemCreateOrConnectWithoutLocationInput | Prisma.ListItemCreateOrConnectWithoutLocationInput[]
+  upsert?: Prisma.ListItemUpsertWithWhereUniqueWithoutLocationInput | Prisma.ListItemUpsertWithWhereUniqueWithoutLocationInput[]
+  createMany?: Prisma.ListItemCreateManyLocationInputEnvelope
+  set?: Prisma.ListItemWhereUniqueInput | Prisma.ListItemWhereUniqueInput[]
+  disconnect?: Prisma.ListItemWhereUniqueInput | Prisma.ListItemWhereUniqueInput[]
+  delete?: Prisma.ListItemWhereUniqueInput | Prisma.ListItemWhereUniqueInput[]
+  connect?: Prisma.ListItemWhereUniqueInput | Prisma.ListItemWhereUniqueInput[]
+  update?: Prisma.ListItemUpdateWithWhereUniqueWithoutLocationInput | Prisma.ListItemUpdateWithWhereUniqueWithoutLocationInput[]
+  updateMany?: Prisma.ListItemUpdateManyWithWhereWithoutLocationInput | Prisma.ListItemUpdateManyWithWhereWithoutLocationInput[]
+  deleteMany?: Prisma.ListItemScalarWhereInput | Prisma.ListItemScalarWhereInput[]
+}
+
+export type ListItemUncheckedUpdateManyWithoutLocationNestedInput = {
+  create?: Prisma.XOR<Prisma.ListItemCreateWithoutLocationInput, Prisma.ListItemUncheckedCreateWithoutLocationInput> | Prisma.ListItemCreateWithoutLocationInput[] | Prisma.ListItemUncheckedCreateWithoutLocationInput[]
+  connectOrCreate?: Prisma.ListItemCreateOrConnectWithoutLocationInput | Prisma.ListItemCreateOrConnectWithoutLocationInput[]
+  upsert?: Prisma.ListItemUpsertWithWhereUniqueWithoutLocationInput | Prisma.ListItemUpsertWithWhereUniqueWithoutLocationInput[]
+  createMany?: Prisma.ListItemCreateManyLocationInputEnvelope
+  set?: Prisma.ListItemWhereUniqueInput | Prisma.ListItemWhereUniqueInput[]
+  disconnect?: Prisma.ListItemWhereUniqueInput | Prisma.ListItemWhereUniqueInput[]
+  delete?: Prisma.ListItemWhereUniqueInput | Prisma.ListItemWhereUniqueInput[]
+  connect?: Prisma.ListItemWhereUniqueInput | Prisma.ListItemWhereUniqueInput[]
+  update?: Prisma.ListItemUpdateWithWhereUniqueWithoutLocationInput | Prisma.ListItemUpdateWithWhereUniqueWithoutLocationInput[]
+  updateMany?: Prisma.ListItemUpdateManyWithWhereWithoutLocationInput | Prisma.ListItemUpdateManyWithWhereWithoutLocationInput[]
+  deleteMany?: Prisma.ListItemScalarWhereInput | Prisma.ListItemScalarWhereInput[]
+}
+
 export type ListItemCreateWithoutCategoryInput = {
   id?: string
   quantity?: number
   isPacked?: boolean
   isEssential?: boolean
   notes?: string | null
-  bagType?: string | null
-  bagLocation?: string | null
   sortOrder?: number
-  bagTypeRef?: Prisma.BagTypeCreateNestedOneWithoutListItemsInput
+  bagType?: Prisma.BagTypeCreateNestedOneWithoutListItemsInput
   item: Prisma.ItemCreateNestedOneWithoutListItemsInput
   list: Prisma.ListCreateNestedOneWithoutItemsInput
+  location?: Prisma.LocationCreateNestedOneWithoutListItemsInput
 }
 
 export type ListItemUncheckedCreateWithoutCategoryInput = {
@@ -723,10 +744,9 @@ export type ListItemUncheckedCreateWithoutCategoryInput = {
   isPacked?: boolean
   isEssential?: boolean
   notes?: string | null
-  bagType?: string | null
   bagTypeId?: string | null
-  bagLocation?: string | null
   sortOrder?: number
+  locationId?: string | null
 }
 
 export type ListItemCreateOrConnectWithoutCategoryInput = {
@@ -767,27 +787,25 @@ export type ListItemScalarWhereInput = {
   isEssential?: Prisma.BoolFilter<"ListItem"> | boolean
   notes?: Prisma.StringNullableFilter<"ListItem"> | string | null
   categoryId?: Prisma.StringNullableFilter<"ListItem"> | string | null
-  bagType?: Prisma.StringNullableFilter<"ListItem"> | string | null
   bagTypeId?: Prisma.StringNullableFilter<"ListItem"> | string | null
-  bagLocation?: Prisma.StringNullableFilter<"ListItem"> | string | null
   sortOrder?: Prisma.IntFilter<"ListItem"> | number
+  locationId?: Prisma.StringNullableFilter<"ListItem"> | string | null
 }
 
-export type ListItemCreateWithoutBagTypeRefInput = {
+export type ListItemCreateWithoutBagTypeInput = {
   id?: string
   quantity?: number
   isPacked?: boolean
   isEssential?: boolean
   notes?: string | null
-  bagType?: string | null
-  bagLocation?: string | null
   sortOrder?: number
   category?: Prisma.CategoryCreateNestedOneWithoutListItemsInput
   item: Prisma.ItemCreateNestedOneWithoutListItemsInput
   list: Prisma.ListCreateNestedOneWithoutItemsInput
+  location?: Prisma.LocationCreateNestedOneWithoutListItemsInput
 }
 
-export type ListItemUncheckedCreateWithoutBagTypeRefInput = {
+export type ListItemUncheckedCreateWithoutBagTypeInput = {
   id?: string
   listId: string
   itemId: string
@@ -796,35 +814,34 @@ export type ListItemUncheckedCreateWithoutBagTypeRefInput = {
   isEssential?: boolean
   notes?: string | null
   categoryId?: string | null
-  bagType?: string | null
-  bagLocation?: string | null
   sortOrder?: number
+  locationId?: string | null
 }
 
-export type ListItemCreateOrConnectWithoutBagTypeRefInput = {
+export type ListItemCreateOrConnectWithoutBagTypeInput = {
   where: Prisma.ListItemWhereUniqueInput
-  create: Prisma.XOR<Prisma.ListItemCreateWithoutBagTypeRefInput, Prisma.ListItemUncheckedCreateWithoutBagTypeRefInput>
+  create: Prisma.XOR<Prisma.ListItemCreateWithoutBagTypeInput, Prisma.ListItemUncheckedCreateWithoutBagTypeInput>
 }
 
-export type ListItemCreateManyBagTypeRefInputEnvelope = {
-  data: Prisma.ListItemCreateManyBagTypeRefInput | Prisma.ListItemCreateManyBagTypeRefInput[]
+export type ListItemCreateManyBagTypeInputEnvelope = {
+  data: Prisma.ListItemCreateManyBagTypeInput | Prisma.ListItemCreateManyBagTypeInput[]
   skipDuplicates?: boolean
 }
 
-export type ListItemUpsertWithWhereUniqueWithoutBagTypeRefInput = {
+export type ListItemUpsertWithWhereUniqueWithoutBagTypeInput = {
   where: Prisma.ListItemWhereUniqueInput
-  update: Prisma.XOR<Prisma.ListItemUpdateWithoutBagTypeRefInput, Prisma.ListItemUncheckedUpdateWithoutBagTypeRefInput>
-  create: Prisma.XOR<Prisma.ListItemCreateWithoutBagTypeRefInput, Prisma.ListItemUncheckedCreateWithoutBagTypeRefInput>
+  update: Prisma.XOR<Prisma.ListItemUpdateWithoutBagTypeInput, Prisma.ListItemUncheckedUpdateWithoutBagTypeInput>
+  create: Prisma.XOR<Prisma.ListItemCreateWithoutBagTypeInput, Prisma.ListItemUncheckedCreateWithoutBagTypeInput>
 }
 
-export type ListItemUpdateWithWhereUniqueWithoutBagTypeRefInput = {
+export type ListItemUpdateWithWhereUniqueWithoutBagTypeInput = {
   where: Prisma.ListItemWhereUniqueInput
-  data: Prisma.XOR<Prisma.ListItemUpdateWithoutBagTypeRefInput, Prisma.ListItemUncheckedUpdateWithoutBagTypeRefInput>
+  data: Prisma.XOR<Prisma.ListItemUpdateWithoutBagTypeInput, Prisma.ListItemUncheckedUpdateWithoutBagTypeInput>
 }
 
-export type ListItemUpdateManyWithWhereWithoutBagTypeRefInput = {
+export type ListItemUpdateManyWithWhereWithoutBagTypeInput = {
   where: Prisma.ListItemScalarWhereInput
-  data: Prisma.XOR<Prisma.ListItemUpdateManyMutationInput, Prisma.ListItemUncheckedUpdateManyWithoutBagTypeRefInput>
+  data: Prisma.XOR<Prisma.ListItemUpdateManyMutationInput, Prisma.ListItemUncheckedUpdateManyWithoutBagTypeInput>
 }
 
 export type ListItemCreateWithoutItemInput = {
@@ -833,12 +850,11 @@ export type ListItemCreateWithoutItemInput = {
   isPacked?: boolean
   isEssential?: boolean
   notes?: string | null
-  bagType?: string | null
-  bagLocation?: string | null
   sortOrder?: number
   category?: Prisma.CategoryCreateNestedOneWithoutListItemsInput
-  bagTypeRef?: Prisma.BagTypeCreateNestedOneWithoutListItemsInput
+  bagType?: Prisma.BagTypeCreateNestedOneWithoutListItemsInput
   list: Prisma.ListCreateNestedOneWithoutItemsInput
+  location?: Prisma.LocationCreateNestedOneWithoutListItemsInput
 }
 
 export type ListItemUncheckedCreateWithoutItemInput = {
@@ -849,10 +865,9 @@ export type ListItemUncheckedCreateWithoutItemInput = {
   isEssential?: boolean
   notes?: string | null
   categoryId?: string | null
-  bagType?: string | null
   bagTypeId?: string | null
-  bagLocation?: string | null
   sortOrder?: number
+  locationId?: string | null
 }
 
 export type ListItemCreateOrConnectWithoutItemInput = {
@@ -887,12 +902,11 @@ export type ListItemCreateWithoutListInput = {
   isPacked?: boolean
   isEssential?: boolean
   notes?: string | null
-  bagType?: string | null
-  bagLocation?: string | null
   sortOrder?: number
   category?: Prisma.CategoryCreateNestedOneWithoutListItemsInput
-  bagTypeRef?: Prisma.BagTypeCreateNestedOneWithoutListItemsInput
+  bagType?: Prisma.BagTypeCreateNestedOneWithoutListItemsInput
   item: Prisma.ItemCreateNestedOneWithoutListItemsInput
+  location?: Prisma.LocationCreateNestedOneWithoutListItemsInput
 }
 
 export type ListItemUncheckedCreateWithoutListInput = {
@@ -903,10 +917,9 @@ export type ListItemUncheckedCreateWithoutListInput = {
   isEssential?: boolean
   notes?: string | null
   categoryId?: string | null
-  bagType?: string | null
   bagTypeId?: string | null
-  bagLocation?: string | null
   sortOrder?: number
+  locationId?: string | null
 }
 
 export type ListItemCreateOrConnectWithoutListInput = {
@@ -935,6 +948,58 @@ export type ListItemUpdateManyWithWhereWithoutListInput = {
   data: Prisma.XOR<Prisma.ListItemUpdateManyMutationInput, Prisma.ListItemUncheckedUpdateManyWithoutListInput>
 }
 
+export type ListItemCreateWithoutLocationInput = {
+  id?: string
+  quantity?: number
+  isPacked?: boolean
+  isEssential?: boolean
+  notes?: string | null
+  sortOrder?: number
+  category?: Prisma.CategoryCreateNestedOneWithoutListItemsInput
+  bagType?: Prisma.BagTypeCreateNestedOneWithoutListItemsInput
+  item: Prisma.ItemCreateNestedOneWithoutListItemsInput
+  list: Prisma.ListCreateNestedOneWithoutItemsInput
+}
+
+export type ListItemUncheckedCreateWithoutLocationInput = {
+  id?: string
+  listId: string
+  itemId: string
+  quantity?: number
+  isPacked?: boolean
+  isEssential?: boolean
+  notes?: string | null
+  categoryId?: string | null
+  bagTypeId?: string | null
+  sortOrder?: number
+}
+
+export type ListItemCreateOrConnectWithoutLocationInput = {
+  where: Prisma.ListItemWhereUniqueInput
+  create: Prisma.XOR<Prisma.ListItemCreateWithoutLocationInput, Prisma.ListItemUncheckedCreateWithoutLocationInput>
+}
+
+export type ListItemCreateManyLocationInputEnvelope = {
+  data: Prisma.ListItemCreateManyLocationInput | Prisma.ListItemCreateManyLocationInput[]
+  skipDuplicates?: boolean
+}
+
+export type ListItemUpsertWithWhereUniqueWithoutLocationInput = {
+  where: Prisma.ListItemWhereUniqueInput
+  update: Prisma.XOR<Prisma.ListItemUpdateWithoutLocationInput, Prisma.ListItemUncheckedUpdateWithoutLocationInput>
+  create: Prisma.XOR<Prisma.ListItemCreateWithoutLocationInput, Prisma.ListItemUncheckedCreateWithoutLocationInput>
+}
+
+export type ListItemUpdateWithWhereUniqueWithoutLocationInput = {
+  where: Prisma.ListItemWhereUniqueInput
+  data: Prisma.XOR<Prisma.ListItemUpdateWithoutLocationInput, Prisma.ListItemUncheckedUpdateWithoutLocationInput>
+}
+
+export type ListItemUpdateManyWithWhereWithoutLocationInput = {
+  where: Prisma.ListItemScalarWhereInput
+  data: Prisma.XOR<Prisma.ListItemUpdateManyMutationInput, Prisma.ListItemUncheckedUpdateManyWithoutLocationInput>
+}
+
 export type ListItemCreateManyCategoryInput = {
   id?: string
   listId: string
@@ -943,10 +1008,9 @@ export type ListItemCreateManyCategoryInput = {
   isPacked?: boolean
   isEssential?: boolean
   notes?: string | null
-  bagType?: string | null
   bagTypeId?: string | null
-  bagLocation?: string | null
   sortOrder?: number
+  locationId?: string | null
 }
 
 export type ListItemUpdateWithoutCategoryInput = {
@@ -955,12 +1019,11 @@ export type ListItemUpdateWithoutCategoryInput = {
   isPacked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isEssential?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  bagType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  bagLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
-  bagTypeRef?: Prisma.BagTypeUpdateOneWithoutListItemsNestedInput
+  bagType?: Prisma.BagTypeUpdateOneWithoutListItemsNestedInput
   item?: Prisma.ItemUpdateOneRequiredWithoutListItemsNestedInput
   list?: Prisma.ListUpdateOneRequiredWithoutItemsNestedInput
+  location?: Prisma.LocationUpdateOneWithoutListItemsNestedInput
 }
 
 export type ListItemUncheckedUpdateWithoutCategoryInput = {
@@ -971,10 +1034,9 @@ export type ListItemUncheckedUpdateWithoutCategoryInput = {
   isPacked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isEssential?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  bagType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bagTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  bagLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  locationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ListItemUncheckedUpdateManyWithoutCategoryInput = {
@@ -985,13 +1047,12 @@ export type ListItemUncheckedUpdateManyWithoutCategoryInput = {
   isPacked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isEssential?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  bagType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bagTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  bagLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  locationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
-export type ListItemCreateManyBagTypeRefInput = {
+export type ListItemCreateManyBagTypeInput = {
   id?: string
   listId: string
   itemId: string
@@ -1000,26 +1061,24 @@ export type ListItemCreateManyBagTypeRefInput = {
   isEssential?: boolean
   notes?: string | null
   categoryId?: string | null
-  bagType?: string | null
-  bagLocation?: string | null
   sortOrder?: number
+  locationId?: string | null
 }
 
-export type ListItemUpdateWithoutBagTypeRefInput = {
+export type ListItemUpdateWithoutBagTypeInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
   isPacked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isEssential?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  bagType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  bagLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   category?: Prisma.CategoryUpdateOneWithoutListItemsNestedInput
   item?: Prisma.ItemUpdateOneRequiredWithoutListItemsNestedInput
   list?: Prisma.ListUpdateOneRequiredWithoutItemsNestedInput
+  location?: Prisma.LocationUpdateOneWithoutListItemsNestedInput
 }
 
-export type ListItemUncheckedUpdateWithoutBagTypeRefInput = {
+export type ListItemUncheckedUpdateWithoutBagTypeInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   listId?: Prisma.StringFieldUpdateOperationsInput | string
   itemId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1028,12 +1087,11 @@ export type ListItemUncheckedUpdateWithoutBagTypeRefInput = {
   isEssential?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  bagType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  bagLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  locationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
-export type ListItemUncheckedUpdateManyWithoutBagTypeRefInput = {
+export type ListItemUncheckedUpdateManyWithoutBagTypeInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   listId?: Prisma.StringFieldUpdateOperationsInput | string
   itemId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1042,9 +1100,8 @@ export type ListItemUncheckedUpdateManyWithoutBagTypeRefInput = {
   isEssential?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  bagType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  bagLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  locationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ListItemCreateManyItemInput = {
@@ -1055,10 +1112,9 @@ export type ListItemCreateManyItemInput = {
   isEssential?: boolean
   notes?: string | null
   categoryId?: string | null
-  bagType?: string | null
   bagTypeId?: string | null
-  bagLocation?: string | null
   sortOrder?: number
+  locationId?: string | null
 }
 
 export type ListItemUpdateWithoutItemInput = {
@@ -1067,12 +1123,11 @@ export type ListItemUpdateWithoutItemInput = {
   isPacked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isEssential?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  bagType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  bagLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   category?: Prisma.CategoryUpdateOneWithoutListItemsNestedInput
-  bagTypeRef?: Prisma.BagTypeUpdateOneWithoutListItemsNestedInput
+  bagType?: Prisma.BagTypeUpdateOneWithoutListItemsNestedInput
   list?: Prisma.ListUpdateOneRequiredWithoutItemsNestedInput
+  location?: Prisma.LocationUpdateOneWithoutListItemsNestedInput
 }
 
 export type ListItemUncheckedUpdateWithoutItemInput = {
@@ -1083,10 +1138,9 @@ export type ListItemUncheckedUpdateWithoutItemInput = {
   isEssential?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  bagType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bagTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  bagLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  locationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ListItemUncheckedUpdateManyWithoutItemInput = {
@@ -1097,10 +1151,9 @@ export type ListItemUncheckedUpdateManyWithoutItemInput = {
   isEssential?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  bagType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bagTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  bagLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  locationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ListItemCreateManyListInput = {
@@ -1111,10 +1164,9 @@ export type ListItemCreateManyListInput = {
   isEssential?: boolean
   notes?: string | null
   categoryId?: string | null
-  bagType?: string | null
   bagTypeId?: string | null
-  bagLocation?: string | null
   sortOrder?: number
+  locationId?: string | null
 }
 
 export type ListItemUpdateWithoutListInput = {
@@ -1123,12 +1175,11 @@ export type ListItemUpdateWithoutListInput = {
   isPacked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isEssential?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  bagType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  bagLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   category?: Prisma.CategoryUpdateOneWithoutListItemsNestedInput
-  bagTypeRef?: Prisma.BagTypeUpdateOneWithoutListItemsNestedInput
+  bagType?: Prisma.BagTypeUpdateOneWithoutListItemsNestedInput
   item?: Prisma.ItemUpdateOneRequiredWithoutListItemsNestedInput
+  location?: Prisma.LocationUpdateOneWithoutListItemsNestedInput
 }
 
 export type ListItemUncheckedUpdateWithoutListInput = {
@@ -1139,10 +1190,9 @@ export type ListItemUncheckedUpdateWithoutListInput = {
   isEssential?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  bagType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bagTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  bagLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  locationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ListItemUncheckedUpdateManyWithoutListInput = {
@@ -1153,9 +1203,60 @@ export type ListItemUncheckedUpdateManyWithoutListInput = {
   isEssential?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  bagType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bagTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  bagLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  locationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type ListItemCreateManyLocationInput = {
+  id?: string
+  listId: string
+  itemId: string
+  quantity?: number
+  isPacked?: boolean
+  isEssential?: boolean
+  notes?: string | null
+  categoryId?: string | null
+  bagTypeId?: string | null
+  sortOrder?: number
+}
+
+export type ListItemUpdateWithoutLocationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  isPacked?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isEssential?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  category?: Prisma.CategoryUpdateOneWithoutListItemsNestedInput
+  bagType?: Prisma.BagTypeUpdateOneWithoutListItemsNestedInput
+  item?: Prisma.ItemUpdateOneRequiredWithoutListItemsNestedInput
+  list?: Prisma.ListUpdateOneRequiredWithoutItemsNestedInput
+}
+
+export type ListItemUncheckedUpdateWithoutLocationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  listId?: Prisma.StringFieldUpdateOperationsInput | string
+  itemId?: Prisma.StringFieldUpdateOperationsInput | string
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  isPacked?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isEssential?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bagTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+}
+
+export type ListItemUncheckedUpdateManyWithoutLocationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  listId?: Prisma.StringFieldUpdateOperationsInput | string
+  itemId?: Prisma.StringFieldUpdateOperationsInput | string
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  isPacked?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isEssential?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bagTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
@@ -1170,14 +1271,14 @@ export type ListItemSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   isEssential?: boolean
   notes?: boolean
   categoryId?: boolean
-  bagType?: boolean
   bagTypeId?: boolean
-  bagLocation?: boolean
   sortOrder?: boolean
+  locationId?: boolean
   category?: boolean | Prisma.ListItem$categoryArgs<ExtArgs>
-  bagTypeRef?: boolean | Prisma.ListItem$bagTypeRefArgs<ExtArgs>
+  bagType?: boolean | Prisma.ListItem$bagTypeArgs<ExtArgs>
   item?: boolean | Prisma.ItemDefaultArgs<ExtArgs>
   list?: boolean | Prisma.ListDefaultArgs<ExtArgs>
+  location?: boolean | Prisma.ListItem$locationArgs<ExtArgs>
 }, ExtArgs["result"]["listItem"]>
 
 export type ListItemSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1189,14 +1290,14 @@ export type ListItemSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   isEssential?: boolean
   notes?: boolean
   categoryId?: boolean
-  bagType?: boolean
   bagTypeId?: boolean
-  bagLocation?: boolean
   sortOrder?: boolean
+  locationId?: boolean
   category?: boolean | Prisma.ListItem$categoryArgs<ExtArgs>
-  bagTypeRef?: boolean | Prisma.ListItem$bagTypeRefArgs<ExtArgs>
+  bagType?: boolean | Prisma.ListItem$bagTypeArgs<ExtArgs>
   item?: boolean | Prisma.ItemDefaultArgs<ExtArgs>
   list?: boolean | Prisma.ListDefaultArgs<ExtArgs>
+  location?: boolean | Prisma.ListItem$locationArgs<ExtArgs>
 }, ExtArgs["result"]["listItem"]>
 
 export type ListItemSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1208,14 +1309,14 @@ export type ListItemSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   isEssential?: boolean
   notes?: boolean
   categoryId?: boolean
-  bagType?: boolean
   bagTypeId?: boolean
-  bagLocation?: boolean
   sortOrder?: boolean
+  locationId?: boolean
   category?: boolean | Prisma.ListItem$categoryArgs<ExtArgs>
-  bagTypeRef?: boolean | Prisma.ListItem$bagTypeRefArgs<ExtArgs>
+  bagType?: boolean | Prisma.ListItem$bagTypeArgs<ExtArgs>
   item?: boolean | Prisma.ItemDefaultArgs<ExtArgs>
   list?: boolean | Prisma.ListDefaultArgs<ExtArgs>
+  location?: boolean | Prisma.ListItem$locationArgs<ExtArgs>
 }, ExtArgs["result"]["listItem"]>
 
 export type ListItemSelectScalar = {
@@ -1227,39 +1328,42 @@ export type ListItemSelectScalar = {
   isEssential?: boolean
   notes?: boolean
   categoryId?: boolean
-  bagType?: boolean
   bagTypeId?: boolean
-  bagLocation?: boolean
   sortOrder?: boolean
+  locationId?: boolean
 }
 
-export type ListItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "listId" | "itemId" | "quantity" | "isPacked" | "isEssential" | "notes" | "categoryId" | "bagType" | "bagTypeId" | "bagLocation" | "sortOrder", ExtArgs["result"]["listItem"]>
+export type ListItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "listId" | "itemId" | "quantity" | "isPacked" | "isEssential" | "notes" | "categoryId" | "bagTypeId" | "sortOrder" | "locationId", ExtArgs["result"]["listItem"]>
 export type ListItemInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   category?: boolean | Prisma.ListItem$categoryArgs<ExtArgs>
-  bagTypeRef?: boolean | Prisma.ListItem$bagTypeRefArgs<ExtArgs>
+  bagType?: boolean | Prisma.ListItem$bagTypeArgs<ExtArgs>
   item?: boolean | Prisma.ItemDefaultArgs<ExtArgs>
   list?: boolean | Prisma.ListDefaultArgs<ExtArgs>
+  location?: boolean | Prisma.ListItem$locationArgs<ExtArgs>
 }
 export type ListItemIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   category?: boolean | Prisma.ListItem$categoryArgs<ExtArgs>
-  bagTypeRef?: boolean | Prisma.ListItem$bagTypeRefArgs<ExtArgs>
+  bagType?: boolean | Prisma.ListItem$bagTypeArgs<ExtArgs>
   item?: boolean | Prisma.ItemDefaultArgs<ExtArgs>
   list?: boolean | Prisma.ListDefaultArgs<ExtArgs>
+  location?: boolean | Prisma.ListItem$locationArgs<ExtArgs>
 }
 export type ListItemIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   category?: boolean | Prisma.ListItem$categoryArgs<ExtArgs>
-  bagTypeRef?: boolean | Prisma.ListItem$bagTypeRefArgs<ExtArgs>
+  bagType?: boolean | Prisma.ListItem$bagTypeArgs<ExtArgs>
   item?: boolean | Prisma.ItemDefaultArgs<ExtArgs>
   list?: boolean | Prisma.ListDefaultArgs<ExtArgs>
+  location?: boolean | Prisma.ListItem$locationArgs<ExtArgs>
 }
 
 export type $ListItemPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "ListItem"
   objects: {
     category: Prisma.$CategoryPayload<ExtArgs> | null
-    bagTypeRef: Prisma.$BagTypePayload<ExtArgs> | null
+    bagType: Prisma.$BagTypePayload<ExtArgs> | null
     item: Prisma.$ItemPayload<ExtArgs>
     list: Prisma.$ListPayload<ExtArgs>
+    location: Prisma.$LocationPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1270,10 +1374,9 @@ export type $ListItemPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     isEssential: boolean
     notes: string | null
     categoryId: string | null
-    bagType: string | null
     bagTypeId: string | null
-    bagLocation: string | null
     sortOrder: number
+    locationId: string | null
   }, ExtArgs["result"]["listItem"]>
   composites: {}
 }
@@ -1669,9 +1772,10 @@ readonly fields: ListItemFieldRefs;
 export interface Prisma__ListItemClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   category<T extends Prisma.ListItem$categoryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ListItem$categoryArgs<ExtArgs>>): Prisma.Prisma__CategoryClient<runtime.Types.Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-  bagTypeRef<T extends Prisma.ListItem$bagTypeRefArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ListItem$bagTypeRefArgs<ExtArgs>>): Prisma.Prisma__BagTypeClient<runtime.Types.Result.GetResult<Prisma.$BagTypePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  bagType<T extends Prisma.ListItem$bagTypeArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ListItem$bagTypeArgs<ExtArgs>>): Prisma.Prisma__BagTypeClient<runtime.Types.Result.GetResult<Prisma.$BagTypePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   item<T extends Prisma.ItemDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ItemDefaultArgs<ExtArgs>>): Prisma.Prisma__ItemClient<runtime.Types.Result.GetResult<Prisma.$ItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   list<T extends Prisma.ListDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ListDefaultArgs<ExtArgs>>): Prisma.Prisma__ListClient<runtime.Types.Result.GetResult<Prisma.$ListPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  location<T extends Prisma.ListItem$locationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ListItem$locationArgs<ExtArgs>>): Prisma.Prisma__LocationClient<runtime.Types.Result.GetResult<Prisma.$LocationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1709,10 +1813,9 @@ export interface ListItemFieldRefs {
   readonly isEssential: Prisma.FieldRef<"ListItem", 'Boolean'>
   readonly notes: Prisma.FieldRef<"ListItem", 'String'>
   readonly categoryId: Prisma.FieldRef<"ListItem", 'String'>
-  readonly bagType: Prisma.FieldRef<"ListItem", 'String'>
   readonly bagTypeId: Prisma.FieldRef<"ListItem", 'String'>
-  readonly bagLocation: Prisma.FieldRef<"ListItem", 'String'>
   readonly sortOrder: Prisma.FieldRef<"ListItem", 'Int'>
+  readonly locationId: Prisma.FieldRef<"ListItem", 'String'>
 }
     
 
@@ -2133,9 +2236,9 @@ export type ListItem$categoryArgs<ExtArgs extends runtime.Types.Extensions.Inter
 }
 
 /**
- * ListItem.bagTypeRef
+ * ListItem.bagType
  */
-export type ListItem$bagTypeRefArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type ListItem$bagTypeArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the BagType
    */
@@ -2149,6 +2252,25 @@ export type ListItem$bagTypeRefArgs<ExtArgs extends runtime.Types.Extensions.Int
    */
   include?: Prisma.BagTypeInclude<ExtArgs> | null
   where?: Prisma.BagTypeWhereInput
+}
+
+/**
+ * ListItem.location
+ */
+export type ListItem$locationArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Location
+   */
+  select?: Prisma.LocationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Location
+   */
+  omit?: Prisma.LocationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LocationInclude<ExtArgs> | null
+  where?: Prisma.LocationWhereInput
 }
 
 /**

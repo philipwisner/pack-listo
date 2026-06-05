@@ -40,7 +40,7 @@ export type ListMinAggregateOutputType = {
   destination: string | null
   tripDate: Date | null
   lengthOfStay: number | null
-  status: string | null
+  status: $Enums.ListStatus | null
   isTemplate: boolean | null
   userId: string | null
   createdAt: Date | null
@@ -53,7 +53,7 @@ export type ListMaxAggregateOutputType = {
   destination: string | null
   tripDate: Date | null
   lengthOfStay: number | null
-  status: string | null
+  status: $Enums.ListStatus | null
   isTemplate: boolean | null
   userId: string | null
   createdAt: Date | null
@@ -66,6 +66,7 @@ export type ListCountAggregateOutputType = {
   destination: number
   tripDate: number
   lengthOfStay: number
+  groupingConfig: number
   status: number
   isTemplate: number
   userId: number
@@ -115,6 +116,7 @@ export type ListCountAggregateInputType = {
   destination?: true
   tripDate?: true
   lengthOfStay?: true
+  groupingConfig?: true
   status?: true
   isTemplate?: true
   userId?: true
@@ -215,7 +217,8 @@ export type ListGroupByOutputType = {
   destination: string | null
   tripDate: Date | null
   lengthOfStay: number | null
-  status: string
+  groupingConfig: string[]
+  status: $Enums.ListStatus
   isTemplate: boolean
   userId: string | null
   createdAt: Date
@@ -251,7 +254,8 @@ export type ListWhereInput = {
   destination?: Prisma.StringNullableFilter<"List"> | string | null
   tripDate?: Prisma.DateTimeNullableFilter<"List"> | Date | string | null
   lengthOfStay?: Prisma.IntNullableFilter<"List"> | number | null
-  status?: Prisma.StringFilter<"List"> | string
+  groupingConfig?: Prisma.StringNullableListFilter<"List">
+  status?: Prisma.EnumListStatusFilter<"List"> | $Enums.ListStatus
   isTemplate?: Prisma.BoolFilter<"List"> | boolean
   userId?: Prisma.StringNullableFilter<"List"> | string | null
   createdAt?: Prisma.DateTimeFilter<"List"> | Date | string
@@ -268,6 +272,7 @@ export type ListOrderByWithRelationInput = {
   destination?: Prisma.SortOrderInput | Prisma.SortOrder
   tripDate?: Prisma.SortOrderInput | Prisma.SortOrder
   lengthOfStay?: Prisma.SortOrderInput | Prisma.SortOrder
+  groupingConfig?: Prisma.SortOrder
   status?: Prisma.SortOrder
   isTemplate?: Prisma.SortOrder
   userId?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -288,7 +293,8 @@ export type ListWhereUniqueInput = Prisma.AtLeast<{
   destination?: Prisma.StringNullableFilter<"List"> | string | null
   tripDate?: Prisma.DateTimeNullableFilter<"List"> | Date | string | null
   lengthOfStay?: Prisma.IntNullableFilter<"List"> | number | null
-  status?: Prisma.StringFilter<"List"> | string
+  groupingConfig?: Prisma.StringNullableListFilter<"List">
+  status?: Prisma.EnumListStatusFilter<"List"> | $Enums.ListStatus
   isTemplate?: Prisma.BoolFilter<"List"> | boolean
   userId?: Prisma.StringNullableFilter<"List"> | string | null
   createdAt?: Prisma.DateTimeFilter<"List"> | Date | string
@@ -305,6 +311,7 @@ export type ListOrderByWithAggregationInput = {
   destination?: Prisma.SortOrderInput | Prisma.SortOrder
   tripDate?: Prisma.SortOrderInput | Prisma.SortOrder
   lengthOfStay?: Prisma.SortOrderInput | Prisma.SortOrder
+  groupingConfig?: Prisma.SortOrder
   status?: Prisma.SortOrder
   isTemplate?: Prisma.SortOrder
   userId?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -326,7 +333,8 @@ export type ListScalarWhereWithAggregatesInput = {
   destination?: Prisma.StringNullableWithAggregatesFilter<"List"> | string | null
   tripDate?: Prisma.DateTimeNullableWithAggregatesFilter<"List"> | Date | string | null
   lengthOfStay?: Prisma.IntNullableWithAggregatesFilter<"List"> | number | null
-  status?: Prisma.StringWithAggregatesFilter<"List"> | string
+  groupingConfig?: Prisma.StringNullableListFilter<"List">
+  status?: Prisma.EnumListStatusWithAggregatesFilter<"List"> | $Enums.ListStatus
   isTemplate?: Prisma.BoolWithAggregatesFilter<"List"> | boolean
   userId?: Prisma.StringNullableWithAggregatesFilter<"List"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"List"> | Date | string
@@ -339,7 +347,8 @@ export type ListCreateInput = {
   destination?: string | null
   tripDate?: Date | string | null
   lengthOfStay?: number | null
-  status?: string
+  groupingConfig?: Prisma.ListCreategroupingConfigInput | string[]
+  status?: $Enums.ListStatus
   isTemplate?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -355,7 +364,8 @@ export type ListUncheckedCreateInput = {
   destination?: string | null
   tripDate?: Date | string | null
   lengthOfStay?: number | null
-  status?: string
+  groupingConfig?: Prisma.ListCreategroupingConfigInput | string[]
+  status?: $Enums.ListStatus
   isTemplate?: boolean
   userId?: string | null
   createdAt?: Date | string
@@ -371,7 +381,8 @@ export type ListUpdateInput = {
   destination?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tripDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lengthOfStay?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  groupingConfig?: Prisma.ListUpdategroupingConfigInput | string[]
+  status?: Prisma.EnumListStatusFieldUpdateOperationsInput | $Enums.ListStatus
   isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -387,7 +398,8 @@ export type ListUncheckedUpdateInput = {
   destination?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tripDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lengthOfStay?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  groupingConfig?: Prisma.ListUpdategroupingConfigInput | string[]
+  status?: Prisma.EnumListStatusFieldUpdateOperationsInput | $Enums.ListStatus
   isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -403,7 +415,8 @@ export type ListCreateManyInput = {
   destination?: string | null
   tripDate?: Date | string | null
   lengthOfStay?: number | null
-  status?: string
+  groupingConfig?: Prisma.ListCreategroupingConfigInput | string[]
+  status?: $Enums.ListStatus
   isTemplate?: boolean
   userId?: string | null
   createdAt?: Date | string
@@ -416,7 +429,8 @@ export type ListUpdateManyMutationInput = {
   destination?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tripDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lengthOfStay?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  groupingConfig?: Prisma.ListUpdategroupingConfigInput | string[]
+  status?: Prisma.EnumListStatusFieldUpdateOperationsInput | $Enums.ListStatus
   isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -428,7 +442,8 @@ export type ListUncheckedUpdateManyInput = {
   destination?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tripDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lengthOfStay?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  groupingConfig?: Prisma.ListUpdategroupingConfigInput | string[]
+  status?: Prisma.EnumListStatusFieldUpdateOperationsInput | $Enums.ListStatus
   isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -456,6 +471,7 @@ export type ListCountOrderByAggregateInput = {
   destination?: Prisma.SortOrder
   tripDate?: Prisma.SortOrder
   lengthOfStay?: Prisma.SortOrder
+  groupingConfig?: Prisma.SortOrder
   status?: Prisma.SortOrder
   isTemplate?: Prisma.SortOrder
   userId?: Prisma.SortOrder
@@ -567,6 +583,10 @@ export type ListUpdateOneRequiredWithoutBagTypeOrdersNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ListUpdateToOneWithWhereWithoutBagTypeOrdersInput, Prisma.ListUpdateWithoutBagTypeOrdersInput>, Prisma.ListUncheckedUpdateWithoutBagTypeOrdersInput>
 }
 
+export type ListCreategroupingConfigInput = {
+  set: string[]
+}
+
 export type NullableDateTimeFieldUpdateOperationsInput = {
   set?: Date | string | null
 }
@@ -577,6 +597,15 @@ export type NullableIntFieldUpdateOperationsInput = {
   decrement?: number
   multiply?: number
   divide?: number
+}
+
+export type ListUpdategroupingConfigInput = {
+  set?: string[]
+  push?: string | string[]
+}
+
+export type EnumListStatusFieldUpdateOperationsInput = {
+  set?: $Enums.ListStatus
 }
 
 export type DateTimeFieldUpdateOperationsInput = {
@@ -603,7 +632,8 @@ export type ListCreateWithoutUserInput = {
   destination?: string | null
   tripDate?: Date | string | null
   lengthOfStay?: number | null
-  status?: string
+  groupingConfig?: Prisma.ListCreategroupingConfigInput | string[]
+  status?: $Enums.ListStatus
   isTemplate?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -618,7 +648,8 @@ export type ListUncheckedCreateWithoutUserInput = {
   destination?: string | null
   tripDate?: Date | string | null
   lengthOfStay?: number | null
-  status?: string
+  groupingConfig?: Prisma.ListCreategroupingConfigInput | string[]
+  status?: $Enums.ListStatus
   isTemplate?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -662,7 +693,8 @@ export type ListScalarWhereInput = {
   destination?: Prisma.StringNullableFilter<"List"> | string | null
   tripDate?: Prisma.DateTimeNullableFilter<"List"> | Date | string | null
   lengthOfStay?: Prisma.IntNullableFilter<"List"> | number | null
-  status?: Prisma.StringFilter<"List"> | string
+  groupingConfig?: Prisma.StringNullableListFilter<"List">
+  status?: Prisma.EnumListStatusFilter<"List"> | $Enums.ListStatus
   isTemplate?: Prisma.BoolFilter<"List"> | boolean
   userId?: Prisma.StringNullableFilter<"List"> | string | null
   createdAt?: Prisma.DateTimeFilter<"List"> | Date | string
@@ -675,7 +707,8 @@ export type ListCreateWithoutCategoryOrdersInput = {
   destination?: string | null
   tripDate?: Date | string | null
   lengthOfStay?: number | null
-  status?: string
+  groupingConfig?: Prisma.ListCreategroupingConfigInput | string[]
+  status?: $Enums.ListStatus
   isTemplate?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -690,7 +723,8 @@ export type ListUncheckedCreateWithoutCategoryOrdersInput = {
   destination?: string | null
   tripDate?: Date | string | null
   lengthOfStay?: number | null
-  status?: string
+  groupingConfig?: Prisma.ListCreategroupingConfigInput | string[]
+  status?: $Enums.ListStatus
   isTemplate?: boolean
   userId?: string | null
   createdAt?: Date | string
@@ -721,7 +755,8 @@ export type ListUpdateWithoutCategoryOrdersInput = {
   destination?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tripDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lengthOfStay?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  groupingConfig?: Prisma.ListUpdategroupingConfigInput | string[]
+  status?: Prisma.EnumListStatusFieldUpdateOperationsInput | $Enums.ListStatus
   isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -736,7 +771,8 @@ export type ListUncheckedUpdateWithoutCategoryOrdersInput = {
   destination?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tripDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lengthOfStay?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  groupingConfig?: Prisma.ListUpdategroupingConfigInput | string[]
+  status?: Prisma.EnumListStatusFieldUpdateOperationsInput | $Enums.ListStatus
   isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -751,7 +787,8 @@ export type ListCreateWithoutBagTypeOrdersInput = {
   destination?: string | null
   tripDate?: Date | string | null
   lengthOfStay?: number | null
-  status?: string
+  groupingConfig?: Prisma.ListCreategroupingConfigInput | string[]
+  status?: $Enums.ListStatus
   isTemplate?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -766,7 +803,8 @@ export type ListUncheckedCreateWithoutBagTypeOrdersInput = {
   destination?: string | null
   tripDate?: Date | string | null
   lengthOfStay?: number | null
-  status?: string
+  groupingConfig?: Prisma.ListCreategroupingConfigInput | string[]
+  status?: $Enums.ListStatus
   isTemplate?: boolean
   userId?: string | null
   createdAt?: Date | string
@@ -797,7 +835,8 @@ export type ListUpdateWithoutBagTypeOrdersInput = {
   destination?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tripDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lengthOfStay?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  groupingConfig?: Prisma.ListUpdategroupingConfigInput | string[]
+  status?: Prisma.EnumListStatusFieldUpdateOperationsInput | $Enums.ListStatus
   isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -812,7 +851,8 @@ export type ListUncheckedUpdateWithoutBagTypeOrdersInput = {
   destination?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tripDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lengthOfStay?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  groupingConfig?: Prisma.ListUpdategroupingConfigInput | string[]
+  status?: Prisma.EnumListStatusFieldUpdateOperationsInput | $Enums.ListStatus
   isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -827,7 +867,8 @@ export type ListCreateWithoutItemsInput = {
   destination?: string | null
   tripDate?: Date | string | null
   lengthOfStay?: number | null
-  status?: string
+  groupingConfig?: Prisma.ListCreategroupingConfigInput | string[]
+  status?: $Enums.ListStatus
   isTemplate?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -842,7 +883,8 @@ export type ListUncheckedCreateWithoutItemsInput = {
   destination?: string | null
   tripDate?: Date | string | null
   lengthOfStay?: number | null
-  status?: string
+  groupingConfig?: Prisma.ListCreategroupingConfigInput | string[]
+  status?: $Enums.ListStatus
   isTemplate?: boolean
   userId?: string | null
   createdAt?: Date | string
@@ -873,7 +915,8 @@ export type ListUpdateWithoutItemsInput = {
   destination?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tripDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lengthOfStay?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  groupingConfig?: Prisma.ListUpdategroupingConfigInput | string[]
+  status?: Prisma.EnumListStatusFieldUpdateOperationsInput | $Enums.ListStatus
   isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -888,7 +931,8 @@ export type ListUncheckedUpdateWithoutItemsInput = {
   destination?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tripDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lengthOfStay?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  groupingConfig?: Prisma.ListUpdategroupingConfigInput | string[]
+  status?: Prisma.EnumListStatusFieldUpdateOperationsInput | $Enums.ListStatus
   isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -903,7 +947,8 @@ export type ListCreateManyUserInput = {
   destination?: string | null
   tripDate?: Date | string | null
   lengthOfStay?: number | null
-  status?: string
+  groupingConfig?: Prisma.ListCreategroupingConfigInput | string[]
+  status?: $Enums.ListStatus
   isTemplate?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -915,7 +960,8 @@ export type ListUpdateWithoutUserInput = {
   destination?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tripDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lengthOfStay?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  groupingConfig?: Prisma.ListUpdategroupingConfigInput | string[]
+  status?: Prisma.EnumListStatusFieldUpdateOperationsInput | $Enums.ListStatus
   isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -930,7 +976,8 @@ export type ListUncheckedUpdateWithoutUserInput = {
   destination?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tripDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lengthOfStay?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  groupingConfig?: Prisma.ListUpdategroupingConfigInput | string[]
+  status?: Prisma.EnumListStatusFieldUpdateOperationsInput | $Enums.ListStatus
   isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -945,7 +992,8 @@ export type ListUncheckedUpdateManyWithoutUserInput = {
   destination?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tripDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lengthOfStay?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  groupingConfig?: Prisma.ListUpdategroupingConfigInput | string[]
+  status?: Prisma.EnumListStatusFieldUpdateOperationsInput | $Enums.ListStatus
   isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1006,6 +1054,7 @@ export type ListSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   destination?: boolean
   tripDate?: boolean
   lengthOfStay?: boolean
+  groupingConfig?: boolean
   status?: boolean
   isTemplate?: boolean
   userId?: boolean
@@ -1024,6 +1073,7 @@ export type ListSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   destination?: boolean
   tripDate?: boolean
   lengthOfStay?: boolean
+  groupingConfig?: boolean
   status?: boolean
   isTemplate?: boolean
   userId?: boolean
@@ -1038,6 +1088,7 @@ export type ListSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   destination?: boolean
   tripDate?: boolean
   lengthOfStay?: boolean
+  groupingConfig?: boolean
   status?: boolean
   isTemplate?: boolean
   userId?: boolean
@@ -1052,6 +1103,7 @@ export type ListSelectScalar = {
   destination?: boolean
   tripDate?: boolean
   lengthOfStay?: boolean
+  groupingConfig?: boolean
   status?: boolean
   isTemplate?: boolean
   userId?: boolean
@@ -1059,7 +1111,7 @@ export type ListSelectScalar = {
   updatedAt?: boolean
 }
 
-export type ListOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "destination" | "tripDate" | "lengthOfStay" | "status" | "isTemplate" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["list"]>
+export type ListOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "destination" | "tripDate" | "lengthOfStay" | "groupingConfig" | "status" | "isTemplate" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["list"]>
 export type ListInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.List$userArgs<ExtArgs>
   items?: boolean | Prisma.List$itemsArgs<ExtArgs>
@@ -1088,7 +1140,8 @@ export type $ListPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     destination: string | null
     tripDate: Date | null
     lengthOfStay: number | null
-    status: string
+    groupingConfig: string[]
+    status: $Enums.ListStatus
     isTemplate: boolean
     userId: string | null
     createdAt: Date
@@ -1525,7 +1578,8 @@ export interface ListFieldRefs {
   readonly destination: Prisma.FieldRef<"List", 'String'>
   readonly tripDate: Prisma.FieldRef<"List", 'DateTime'>
   readonly lengthOfStay: Prisma.FieldRef<"List", 'Int'>
-  readonly status: Prisma.FieldRef<"List", 'String'>
+  readonly groupingConfig: Prisma.FieldRef<"List", 'String[]'>
+  readonly status: Prisma.FieldRef<"List", 'ListStatus'>
   readonly isTemplate: Prisma.FieldRef<"List", 'Boolean'>
   readonly userId: Prisma.FieldRef<"List", 'String'>
   readonly createdAt: Prisma.FieldRef<"List", 'DateTime'>

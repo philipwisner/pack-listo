@@ -244,7 +244,7 @@ export type CategoryCreateInput = {
   icon?: string | null
   color?: string | null
   user?: Prisma.UserCreateNestedOneWithoutCategoriesInput
-  items?: Prisma.ItemCreateNestedManyWithoutCategoriesInput
+  items?: Prisma.ItemCreateNestedManyWithoutCategoryInput
   listItems?: Prisma.ListItemCreateNestedManyWithoutCategoryInput
   lists?: Prisma.CategoryOrderCreateNestedManyWithoutCategoryInput
 }
@@ -255,7 +255,7 @@ export type CategoryUncheckedCreateInput = {
   icon?: string | null
   color?: string | null
   userId?: string | null
-  items?: Prisma.ItemUncheckedCreateNestedManyWithoutCategoriesInput
+  items?: Prisma.ItemUncheckedCreateNestedManyWithoutCategoryInput
   listItems?: Prisma.ListItemUncheckedCreateNestedManyWithoutCategoryInput
   lists?: Prisma.CategoryOrderUncheckedCreateNestedManyWithoutCategoryInput
 }
@@ -266,7 +266,7 @@ export type CategoryUpdateInput = {
   icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user?: Prisma.UserUpdateOneWithoutCategoriesNestedInput
-  items?: Prisma.ItemUpdateManyWithoutCategoriesNestedInput
+  items?: Prisma.ItemUpdateManyWithoutCategoryNestedInput
   listItems?: Prisma.ListItemUpdateManyWithoutCategoryNestedInput
   lists?: Prisma.CategoryOrderUpdateManyWithoutCategoryNestedInput
 }
@@ -277,7 +277,7 @@ export type CategoryUncheckedUpdateInput = {
   icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  items?: Prisma.ItemUncheckedUpdateManyWithoutCategoriesNestedInput
+  items?: Prisma.ItemUncheckedUpdateManyWithoutCategoryNestedInput
   listItems?: Prisma.ListItemUncheckedUpdateManyWithoutCategoryNestedInput
   lists?: Prisma.CategoryOrderUncheckedUpdateManyWithoutCategoryNestedInput
 }
@@ -410,42 +410,20 @@ export type CategoryUpdateOneRequiredWithoutListsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.CategoryUpdateToOneWithWhereWithoutListsInput, Prisma.CategoryUpdateWithoutListsInput>, Prisma.CategoryUncheckedUpdateWithoutListsInput>
 }
 
-export type CategoryCreateNestedManyWithoutItemsInput = {
-  create?: Prisma.XOR<Prisma.CategoryCreateWithoutItemsInput, Prisma.CategoryUncheckedCreateWithoutItemsInput> | Prisma.CategoryCreateWithoutItemsInput[] | Prisma.CategoryUncheckedCreateWithoutItemsInput[]
-  connectOrCreate?: Prisma.CategoryCreateOrConnectWithoutItemsInput | Prisma.CategoryCreateOrConnectWithoutItemsInput[]
-  connect?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
+export type CategoryCreateNestedOneWithoutItemsInput = {
+  create?: Prisma.XOR<Prisma.CategoryCreateWithoutItemsInput, Prisma.CategoryUncheckedCreateWithoutItemsInput>
+  connectOrCreate?: Prisma.CategoryCreateOrConnectWithoutItemsInput
+  connect?: Prisma.CategoryWhereUniqueInput
 }
 
-export type CategoryUncheckedCreateNestedManyWithoutItemsInput = {
-  create?: Prisma.XOR<Prisma.CategoryCreateWithoutItemsInput, Prisma.CategoryUncheckedCreateWithoutItemsInput> | Prisma.CategoryCreateWithoutItemsInput[] | Prisma.CategoryUncheckedCreateWithoutItemsInput[]
-  connectOrCreate?: Prisma.CategoryCreateOrConnectWithoutItemsInput | Prisma.CategoryCreateOrConnectWithoutItemsInput[]
-  connect?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
-}
-
-export type CategoryUpdateManyWithoutItemsNestedInput = {
-  create?: Prisma.XOR<Prisma.CategoryCreateWithoutItemsInput, Prisma.CategoryUncheckedCreateWithoutItemsInput> | Prisma.CategoryCreateWithoutItemsInput[] | Prisma.CategoryUncheckedCreateWithoutItemsInput[]
-  connectOrCreate?: Prisma.CategoryCreateOrConnectWithoutItemsInput | Prisma.CategoryCreateOrConnectWithoutItemsInput[]
-  upsert?: Prisma.CategoryUpsertWithWhereUniqueWithoutItemsInput | Prisma.CategoryUpsertWithWhereUniqueWithoutItemsInput[]
-  set?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
-  disconnect?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
-  delete?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
-  connect?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
-  update?: Prisma.CategoryUpdateWithWhereUniqueWithoutItemsInput | Prisma.CategoryUpdateWithWhereUniqueWithoutItemsInput[]
-  updateMany?: Prisma.CategoryUpdateManyWithWhereWithoutItemsInput | Prisma.CategoryUpdateManyWithWhereWithoutItemsInput[]
-  deleteMany?: Prisma.CategoryScalarWhereInput | Prisma.CategoryScalarWhereInput[]
-}
-
-export type CategoryUncheckedUpdateManyWithoutItemsNestedInput = {
-  create?: Prisma.XOR<Prisma.CategoryCreateWithoutItemsInput, Prisma.CategoryUncheckedCreateWithoutItemsInput> | Prisma.CategoryCreateWithoutItemsInput[] | Prisma.CategoryUncheckedCreateWithoutItemsInput[]
-  connectOrCreate?: Prisma.CategoryCreateOrConnectWithoutItemsInput | Prisma.CategoryCreateOrConnectWithoutItemsInput[]
-  upsert?: Prisma.CategoryUpsertWithWhereUniqueWithoutItemsInput | Prisma.CategoryUpsertWithWhereUniqueWithoutItemsInput[]
-  set?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
-  disconnect?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
-  delete?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
-  connect?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
-  update?: Prisma.CategoryUpdateWithWhereUniqueWithoutItemsInput | Prisma.CategoryUpdateWithWhereUniqueWithoutItemsInput[]
-  updateMany?: Prisma.CategoryUpdateManyWithWhereWithoutItemsInput | Prisma.CategoryUpdateManyWithWhereWithoutItemsInput[]
-  deleteMany?: Prisma.CategoryScalarWhereInput | Prisma.CategoryScalarWhereInput[]
+export type CategoryUpdateOneWithoutItemsNestedInput = {
+  create?: Prisma.XOR<Prisma.CategoryCreateWithoutItemsInput, Prisma.CategoryUncheckedCreateWithoutItemsInput>
+  connectOrCreate?: Prisma.CategoryCreateOrConnectWithoutItemsInput
+  upsert?: Prisma.CategoryUpsertWithoutItemsInput
+  disconnect?: Prisma.CategoryWhereInput | boolean
+  delete?: Prisma.CategoryWhereInput | boolean
+  connect?: Prisma.CategoryWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CategoryUpdateToOneWithWhereWithoutItemsInput, Prisma.CategoryUpdateWithoutItemsInput>, Prisma.CategoryUncheckedUpdateWithoutItemsInput>
 }
 
 export type CategoryCreateNestedOneWithoutListItemsInput = {
@@ -469,7 +447,7 @@ export type CategoryCreateWithoutUserInput = {
   name: string
   icon?: string | null
   color?: string | null
-  items?: Prisma.ItemCreateNestedManyWithoutCategoriesInput
+  items?: Prisma.ItemCreateNestedManyWithoutCategoryInput
   listItems?: Prisma.ListItemCreateNestedManyWithoutCategoryInput
   lists?: Prisma.CategoryOrderCreateNestedManyWithoutCategoryInput
 }
@@ -479,7 +457,7 @@ export type CategoryUncheckedCreateWithoutUserInput = {
   name: string
   icon?: string | null
   color?: string | null
-  items?: Prisma.ItemUncheckedCreateNestedManyWithoutCategoriesInput
+  items?: Prisma.ItemUncheckedCreateNestedManyWithoutCategoryInput
   listItems?: Prisma.ListItemUncheckedCreateNestedManyWithoutCategoryInput
   lists?: Prisma.CategoryOrderUncheckedCreateNestedManyWithoutCategoryInput
 }
@@ -527,7 +505,7 @@ export type CategoryCreateWithoutListsInput = {
   icon?: string | null
   color?: string | null
   user?: Prisma.UserCreateNestedOneWithoutCategoriesInput
-  items?: Prisma.ItemCreateNestedManyWithoutCategoriesInput
+  items?: Prisma.ItemCreateNestedManyWithoutCategoryInput
   listItems?: Prisma.ListItemCreateNestedManyWithoutCategoryInput
 }
 
@@ -537,7 +515,7 @@ export type CategoryUncheckedCreateWithoutListsInput = {
   icon?: string | null
   color?: string | null
   userId?: string | null
-  items?: Prisma.ItemUncheckedCreateNestedManyWithoutCategoriesInput
+  items?: Prisma.ItemUncheckedCreateNestedManyWithoutCategoryInput
   listItems?: Prisma.ListItemUncheckedCreateNestedManyWithoutCategoryInput
 }
 
@@ -563,7 +541,7 @@ export type CategoryUpdateWithoutListsInput = {
   icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user?: Prisma.UserUpdateOneWithoutCategoriesNestedInput
-  items?: Prisma.ItemUpdateManyWithoutCategoriesNestedInput
+  items?: Prisma.ItemUpdateManyWithoutCategoryNestedInput
   listItems?: Prisma.ListItemUpdateManyWithoutCategoryNestedInput
 }
 
@@ -573,7 +551,7 @@ export type CategoryUncheckedUpdateWithoutListsInput = {
   icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  items?: Prisma.ItemUncheckedUpdateManyWithoutCategoriesNestedInput
+  items?: Prisma.ItemUncheckedUpdateManyWithoutCategoryNestedInput
   listItems?: Prisma.ListItemUncheckedUpdateManyWithoutCategoryNestedInput
 }
 
@@ -602,20 +580,35 @@ export type CategoryCreateOrConnectWithoutItemsInput = {
   create: Prisma.XOR<Prisma.CategoryCreateWithoutItemsInput, Prisma.CategoryUncheckedCreateWithoutItemsInput>
 }
 
-export type CategoryUpsertWithWhereUniqueWithoutItemsInput = {
-  where: Prisma.CategoryWhereUniqueInput
+export type CategoryUpsertWithoutItemsInput = {
   update: Prisma.XOR<Prisma.CategoryUpdateWithoutItemsInput, Prisma.CategoryUncheckedUpdateWithoutItemsInput>
   create: Prisma.XOR<Prisma.CategoryCreateWithoutItemsInput, Prisma.CategoryUncheckedCreateWithoutItemsInput>
+  where?: Prisma.CategoryWhereInput
 }
 
-export type CategoryUpdateWithWhereUniqueWithoutItemsInput = {
-  where: Prisma.CategoryWhereUniqueInput
+export type CategoryUpdateToOneWithWhereWithoutItemsInput = {
+  where?: Prisma.CategoryWhereInput
   data: Prisma.XOR<Prisma.CategoryUpdateWithoutItemsInput, Prisma.CategoryUncheckedUpdateWithoutItemsInput>
 }
 
-export type CategoryUpdateManyWithWhereWithoutItemsInput = {
-  where: Prisma.CategoryScalarWhereInput
-  data: Prisma.XOR<Prisma.CategoryUpdateManyMutationInput, Prisma.CategoryUncheckedUpdateManyWithoutItemsInput>
+export type CategoryUpdateWithoutItemsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  user?: Prisma.UserUpdateOneWithoutCategoriesNestedInput
+  listItems?: Prisma.ListItemUpdateManyWithoutCategoryNestedInput
+  lists?: Prisma.CategoryOrderUpdateManyWithoutCategoryNestedInput
+}
+
+export type CategoryUncheckedUpdateWithoutItemsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  listItems?: Prisma.ListItemUncheckedUpdateManyWithoutCategoryNestedInput
+  lists?: Prisma.CategoryOrderUncheckedUpdateManyWithoutCategoryNestedInput
 }
 
 export type CategoryCreateWithoutListItemsInput = {
@@ -624,7 +617,7 @@ export type CategoryCreateWithoutListItemsInput = {
   icon?: string | null
   color?: string | null
   user?: Prisma.UserCreateNestedOneWithoutCategoriesInput
-  items?: Prisma.ItemCreateNestedManyWithoutCategoriesInput
+  items?: Prisma.ItemCreateNestedManyWithoutCategoryInput
   lists?: Prisma.CategoryOrderCreateNestedManyWithoutCategoryInput
 }
 
@@ -634,7 +627,7 @@ export type CategoryUncheckedCreateWithoutListItemsInput = {
   icon?: string | null
   color?: string | null
   userId?: string | null
-  items?: Prisma.ItemUncheckedCreateNestedManyWithoutCategoriesInput
+  items?: Prisma.ItemUncheckedCreateNestedManyWithoutCategoryInput
   lists?: Prisma.CategoryOrderUncheckedCreateNestedManyWithoutCategoryInput
 }
 
@@ -660,7 +653,7 @@ export type CategoryUpdateWithoutListItemsInput = {
   icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user?: Prisma.UserUpdateOneWithoutCategoriesNestedInput
-  items?: Prisma.ItemUpdateManyWithoutCategoriesNestedInput
+  items?: Prisma.ItemUpdateManyWithoutCategoryNestedInput
   lists?: Prisma.CategoryOrderUpdateManyWithoutCategoryNestedInput
 }
 
@@ -670,7 +663,7 @@ export type CategoryUncheckedUpdateWithoutListItemsInput = {
   icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  items?: Prisma.ItemUncheckedUpdateManyWithoutCategoriesNestedInput
+  items?: Prisma.ItemUncheckedUpdateManyWithoutCategoryNestedInput
   lists?: Prisma.CategoryOrderUncheckedUpdateManyWithoutCategoryNestedInput
 }
 
@@ -686,7 +679,7 @@ export type CategoryUpdateWithoutUserInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  items?: Prisma.ItemUpdateManyWithoutCategoriesNestedInput
+  items?: Prisma.ItemUpdateManyWithoutCategoryNestedInput
   listItems?: Prisma.ListItemUpdateManyWithoutCategoryNestedInput
   lists?: Prisma.CategoryOrderUpdateManyWithoutCategoryNestedInput
 }
@@ -696,7 +689,7 @@ export type CategoryUncheckedUpdateWithoutUserInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  items?: Prisma.ItemUncheckedUpdateManyWithoutCategoriesNestedInput
+  items?: Prisma.ItemUncheckedUpdateManyWithoutCategoryNestedInput
   listItems?: Prisma.ListItemUncheckedUpdateManyWithoutCategoryNestedInput
   lists?: Prisma.CategoryOrderUncheckedUpdateManyWithoutCategoryNestedInput
 }
@@ -706,34 +699,6 @@ export type CategoryUncheckedUpdateManyWithoutUserInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-}
-
-export type CategoryUpdateWithoutItemsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  user?: Prisma.UserUpdateOneWithoutCategoriesNestedInput
-  listItems?: Prisma.ListItemUpdateManyWithoutCategoryNestedInput
-  lists?: Prisma.CategoryOrderUpdateManyWithoutCategoryNestedInput
-}
-
-export type CategoryUncheckedUpdateWithoutItemsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  listItems?: Prisma.ListItemUncheckedUpdateManyWithoutCategoryNestedInput
-  lists?: Prisma.CategoryOrderUncheckedUpdateManyWithoutCategoryNestedInput
-}
-
-export type CategoryUncheckedUpdateManyWithoutItemsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 

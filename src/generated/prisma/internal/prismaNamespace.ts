@@ -390,8 +390,13 @@ export const ModelName = {
   BagType: 'BagType',
   BagTypeOrder: 'BagTypeOrder',
   Item: 'Item',
+  HiddenSystemItem: 'HiddenSystemItem',
   List: 'List',
-  ListItem: 'ListItem'
+  ListItem: 'ListItem',
+  Location: 'Location',
+  HiddenSystemCategory: 'HiddenSystemCategory',
+  HiddenSystemBagType: 'HiddenSystemBagType',
+  HiddenSystemLocation: 'HiddenSystemLocation'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -407,7 +412,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "category" | "categoryOrder" | "bagType" | "bagTypeOrder" | "item" | "list" | "listItem"
+    modelProps: "user" | "category" | "categoryOrder" | "bagType" | "bagTypeOrder" | "item" | "hiddenSystemItem" | "list" | "listItem" | "location" | "hiddenSystemCategory" | "hiddenSystemBagType" | "hiddenSystemLocation"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -855,6 +860,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    HiddenSystemItem: {
+      payload: Prisma.$HiddenSystemItemPayload<ExtArgs>
+      fields: Prisma.HiddenSystemItemFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.HiddenSystemItemFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HiddenSystemItemPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.HiddenSystemItemFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HiddenSystemItemPayload>
+        }
+        findFirst: {
+          args: Prisma.HiddenSystemItemFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HiddenSystemItemPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.HiddenSystemItemFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HiddenSystemItemPayload>
+        }
+        findMany: {
+          args: Prisma.HiddenSystemItemFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HiddenSystemItemPayload>[]
+        }
+        create: {
+          args: Prisma.HiddenSystemItemCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HiddenSystemItemPayload>
+        }
+        createMany: {
+          args: Prisma.HiddenSystemItemCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.HiddenSystemItemCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HiddenSystemItemPayload>[]
+        }
+        delete: {
+          args: Prisma.HiddenSystemItemDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HiddenSystemItemPayload>
+        }
+        update: {
+          args: Prisma.HiddenSystemItemUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HiddenSystemItemPayload>
+        }
+        deleteMany: {
+          args: Prisma.HiddenSystemItemDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.HiddenSystemItemUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.HiddenSystemItemUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HiddenSystemItemPayload>[]
+        }
+        upsert: {
+          args: Prisma.HiddenSystemItemUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HiddenSystemItemPayload>
+        }
+        aggregate: {
+          args: Prisma.HiddenSystemItemAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateHiddenSystemItem>
+        }
+        groupBy: {
+          args: Prisma.HiddenSystemItemGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.HiddenSystemItemGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.HiddenSystemItemCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.HiddenSystemItemCountAggregateOutputType> | number
+        }
+      }
+    }
     List: {
       payload: Prisma.$ListPayload<ExtArgs>
       fields: Prisma.ListFieldRefs
@@ -1003,6 +1082,302 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Location: {
+      payload: Prisma.$LocationPayload<ExtArgs>
+      fields: Prisma.LocationFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.LocationFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LocationPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.LocationFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LocationPayload>
+        }
+        findFirst: {
+          args: Prisma.LocationFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LocationPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.LocationFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LocationPayload>
+        }
+        findMany: {
+          args: Prisma.LocationFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LocationPayload>[]
+        }
+        create: {
+          args: Prisma.LocationCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LocationPayload>
+        }
+        createMany: {
+          args: Prisma.LocationCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.LocationCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LocationPayload>[]
+        }
+        delete: {
+          args: Prisma.LocationDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LocationPayload>
+        }
+        update: {
+          args: Prisma.LocationUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LocationPayload>
+        }
+        deleteMany: {
+          args: Prisma.LocationDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.LocationUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.LocationUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LocationPayload>[]
+        }
+        upsert: {
+          args: Prisma.LocationUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LocationPayload>
+        }
+        aggregate: {
+          args: Prisma.LocationAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateLocation>
+        }
+        groupBy: {
+          args: Prisma.LocationGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LocationGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.LocationCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LocationCountAggregateOutputType> | number
+        }
+      }
+    }
+    HiddenSystemCategory: {
+      payload: Prisma.$HiddenSystemCategoryPayload<ExtArgs>
+      fields: Prisma.HiddenSystemCategoryFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.HiddenSystemCategoryFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HiddenSystemCategoryPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.HiddenSystemCategoryFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HiddenSystemCategoryPayload>
+        }
+        findFirst: {
+          args: Prisma.HiddenSystemCategoryFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HiddenSystemCategoryPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.HiddenSystemCategoryFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HiddenSystemCategoryPayload>
+        }
+        findMany: {
+          args: Prisma.HiddenSystemCategoryFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HiddenSystemCategoryPayload>[]
+        }
+        create: {
+          args: Prisma.HiddenSystemCategoryCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HiddenSystemCategoryPayload>
+        }
+        createMany: {
+          args: Prisma.HiddenSystemCategoryCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.HiddenSystemCategoryCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HiddenSystemCategoryPayload>[]
+        }
+        delete: {
+          args: Prisma.HiddenSystemCategoryDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HiddenSystemCategoryPayload>
+        }
+        update: {
+          args: Prisma.HiddenSystemCategoryUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HiddenSystemCategoryPayload>
+        }
+        deleteMany: {
+          args: Prisma.HiddenSystemCategoryDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.HiddenSystemCategoryUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.HiddenSystemCategoryUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HiddenSystemCategoryPayload>[]
+        }
+        upsert: {
+          args: Prisma.HiddenSystemCategoryUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HiddenSystemCategoryPayload>
+        }
+        aggregate: {
+          args: Prisma.HiddenSystemCategoryAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateHiddenSystemCategory>
+        }
+        groupBy: {
+          args: Prisma.HiddenSystemCategoryGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.HiddenSystemCategoryGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.HiddenSystemCategoryCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.HiddenSystemCategoryCountAggregateOutputType> | number
+        }
+      }
+    }
+    HiddenSystemBagType: {
+      payload: Prisma.$HiddenSystemBagTypePayload<ExtArgs>
+      fields: Prisma.HiddenSystemBagTypeFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.HiddenSystemBagTypeFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HiddenSystemBagTypePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.HiddenSystemBagTypeFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HiddenSystemBagTypePayload>
+        }
+        findFirst: {
+          args: Prisma.HiddenSystemBagTypeFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HiddenSystemBagTypePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.HiddenSystemBagTypeFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HiddenSystemBagTypePayload>
+        }
+        findMany: {
+          args: Prisma.HiddenSystemBagTypeFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HiddenSystemBagTypePayload>[]
+        }
+        create: {
+          args: Prisma.HiddenSystemBagTypeCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HiddenSystemBagTypePayload>
+        }
+        createMany: {
+          args: Prisma.HiddenSystemBagTypeCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.HiddenSystemBagTypeCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HiddenSystemBagTypePayload>[]
+        }
+        delete: {
+          args: Prisma.HiddenSystemBagTypeDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HiddenSystemBagTypePayload>
+        }
+        update: {
+          args: Prisma.HiddenSystemBagTypeUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HiddenSystemBagTypePayload>
+        }
+        deleteMany: {
+          args: Prisma.HiddenSystemBagTypeDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.HiddenSystemBagTypeUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.HiddenSystemBagTypeUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HiddenSystemBagTypePayload>[]
+        }
+        upsert: {
+          args: Prisma.HiddenSystemBagTypeUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HiddenSystemBagTypePayload>
+        }
+        aggregate: {
+          args: Prisma.HiddenSystemBagTypeAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateHiddenSystemBagType>
+        }
+        groupBy: {
+          args: Prisma.HiddenSystemBagTypeGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.HiddenSystemBagTypeGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.HiddenSystemBagTypeCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.HiddenSystemBagTypeCountAggregateOutputType> | number
+        }
+      }
+    }
+    HiddenSystemLocation: {
+      payload: Prisma.$HiddenSystemLocationPayload<ExtArgs>
+      fields: Prisma.HiddenSystemLocationFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.HiddenSystemLocationFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HiddenSystemLocationPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.HiddenSystemLocationFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HiddenSystemLocationPayload>
+        }
+        findFirst: {
+          args: Prisma.HiddenSystemLocationFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HiddenSystemLocationPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.HiddenSystemLocationFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HiddenSystemLocationPayload>
+        }
+        findMany: {
+          args: Prisma.HiddenSystemLocationFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HiddenSystemLocationPayload>[]
+        }
+        create: {
+          args: Prisma.HiddenSystemLocationCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HiddenSystemLocationPayload>
+        }
+        createMany: {
+          args: Prisma.HiddenSystemLocationCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.HiddenSystemLocationCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HiddenSystemLocationPayload>[]
+        }
+        delete: {
+          args: Prisma.HiddenSystemLocationDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HiddenSystemLocationPayload>
+        }
+        update: {
+          args: Prisma.HiddenSystemLocationUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HiddenSystemLocationPayload>
+        }
+        deleteMany: {
+          args: Prisma.HiddenSystemLocationDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.HiddenSystemLocationUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.HiddenSystemLocationUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HiddenSystemLocationPayload>[]
+        }
+        upsert: {
+          args: Prisma.HiddenSystemLocationUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HiddenSystemLocationPayload>
+        }
+        aggregate: {
+          args: Prisma.HiddenSystemLocationAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateHiddenSystemLocation>
+        }
+        groupBy: {
+          args: Prisma.HiddenSystemLocationGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.HiddenSystemLocationGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.HiddenSystemLocationCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.HiddenSystemLocationCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1096,10 +1471,22 @@ export const ItemScalarFieldEnum = {
   id: 'id',
   name: 'name',
   defaultWeight: 'defaultWeight',
-  userId: 'userId'
+  userId: 'userId',
+  categoryId: 'categoryId',
+  tags: 'tags',
+  defaultBagTypeId: 'defaultBagTypeId',
+  defaultLocationId: 'defaultLocationId'
 } as const
 
 export type ItemScalarFieldEnum = (typeof ItemScalarFieldEnum)[keyof typeof ItemScalarFieldEnum]
+
+
+export const HiddenSystemItemScalarFieldEnum = {
+  userId: 'userId',
+  itemId: 'itemId'
+} as const
+
+export type HiddenSystemItemScalarFieldEnum = (typeof HiddenSystemItemScalarFieldEnum)[keyof typeof HiddenSystemItemScalarFieldEnum]
 
 
 export const ListScalarFieldEnum = {
@@ -1108,6 +1495,7 @@ export const ListScalarFieldEnum = {
   destination: 'destination',
   tripDate: 'tripDate',
   lengthOfStay: 'lengthOfStay',
+  groupingConfig: 'groupingConfig',
   status: 'status',
   isTemplate: 'isTemplate',
   userId: 'userId',
@@ -1127,13 +1515,47 @@ export const ListItemScalarFieldEnum = {
   isEssential: 'isEssential',
   notes: 'notes',
   categoryId: 'categoryId',
-  bagType: 'bagType',
   bagTypeId: 'bagTypeId',
-  bagLocation: 'bagLocation',
-  sortOrder: 'sortOrder'
+  sortOrder: 'sortOrder',
+  locationId: 'locationId'
 } as const
 
 export type ListItemScalarFieldEnum = (typeof ListItemScalarFieldEnum)[keyof typeof ListItemScalarFieldEnum]
+
+
+export const LocationScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  color: 'color',
+  icon: 'icon',
+  userId: 'userId'
+} as const
+
+export type LocationScalarFieldEnum = (typeof LocationScalarFieldEnum)[keyof typeof LocationScalarFieldEnum]
+
+
+export const HiddenSystemCategoryScalarFieldEnum = {
+  userId: 'userId',
+  categoryId: 'categoryId'
+} as const
+
+export type HiddenSystemCategoryScalarFieldEnum = (typeof HiddenSystemCategoryScalarFieldEnum)[keyof typeof HiddenSystemCategoryScalarFieldEnum]
+
+
+export const HiddenSystemBagTypeScalarFieldEnum = {
+  userId: 'userId',
+  bagTypeId: 'bagTypeId'
+} as const
+
+export type HiddenSystemBagTypeScalarFieldEnum = (typeof HiddenSystemBagTypeScalarFieldEnum)[keyof typeof HiddenSystemBagTypeScalarFieldEnum]
+
+
+export const HiddenSystemLocationScalarFieldEnum = {
+  userId: 'userId',
+  locationId: 'locationId'
+} as const
+
+export type HiddenSystemLocationScalarFieldEnum = (typeof HiddenSystemLocationScalarFieldEnum)[keyof typeof HiddenSystemLocationScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1226,6 +1648,20 @@ export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel
  * Reference to a field of type 'DateTime[]'
  */
 export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+/**
+ * Reference to a field of type 'ListStatus'
+ */
+export type EnumListStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ListStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'ListStatus[]'
+ */
+export type ListEnumListStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ListStatus[]'>
     
 
 /**
@@ -1329,8 +1765,13 @@ export type GlobalOmitConfig = {
   bagType?: Prisma.BagTypeOmit
   bagTypeOrder?: Prisma.BagTypeOrderOmit
   item?: Prisma.ItemOmit
+  hiddenSystemItem?: Prisma.HiddenSystemItemOmit
   list?: Prisma.ListOmit
   listItem?: Prisma.ListItemOmit
+  location?: Prisma.LocationOmit
+  hiddenSystemCategory?: Prisma.HiddenSystemCategoryOmit
+  hiddenSystemBagType?: Prisma.HiddenSystemBagTypeOmit
+  hiddenSystemLocation?: Prisma.HiddenSystemLocationOmit
 }
 
 /* Types for Logging */

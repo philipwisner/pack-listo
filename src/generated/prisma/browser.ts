@@ -48,6 +48,11 @@ export type BagTypeOrder = Prisma.BagTypeOrderModel
  */
 export type Item = Prisma.ItemModel
 /**
+ * Model HiddenSystemItem
+ * 
+ */
+export type HiddenSystemItem = Prisma.HiddenSystemItemModel
+/**
  * Model List
  * 
  */
@@ -57,3 +62,23 @@ export type List = Prisma.ListModel
  * 
  */
 export type ListItem = Prisma.ListItemModel
+/**
+ * Model Location
+ * 
+ */
+export type Location = Prisma.LocationModel
+/**
+ * Model HiddenSystemCategory
+ * 
+ */
+export type HiddenSystemCategory = Prisma.HiddenSystemCategoryModel
+/**
+ * Model HiddenSystemBagType
+ * 
+ */
+export type HiddenSystemBagType = Prisma.HiddenSystemBagTypeModel
+/**
+ * Model HiddenSystemLocation
+ * 
+ */
+export type HiddenSystemLocation = Prisma.HiddenSystemLocationModel

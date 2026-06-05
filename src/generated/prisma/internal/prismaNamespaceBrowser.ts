@@ -57,8 +57,13 @@ export const ModelName = {
   BagType: 'BagType',
   BagTypeOrder: 'BagTypeOrder',
   Item: 'Item',
+  HiddenSystemItem: 'HiddenSystemItem',
   List: 'List',
-  ListItem: 'ListItem'
+  ListItem: 'ListItem',
+  Location: 'Location',
+  HiddenSystemCategory: 'HiddenSystemCategory',
+  HiddenSystemBagType: 'HiddenSystemBagType',
+  HiddenSystemLocation: 'HiddenSystemLocation'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -131,10 +136,22 @@ export const ItemScalarFieldEnum = {
   id: 'id',
   name: 'name',
   defaultWeight: 'defaultWeight',
-  userId: 'userId'
+  userId: 'userId',
+  categoryId: 'categoryId',
+  tags: 'tags',
+  defaultBagTypeId: 'defaultBagTypeId',
+  defaultLocationId: 'defaultLocationId'
 } as const
 
 export type ItemScalarFieldEnum = (typeof ItemScalarFieldEnum)[keyof typeof ItemScalarFieldEnum]
+
+
+export const HiddenSystemItemScalarFieldEnum = {
+  userId: 'userId',
+  itemId: 'itemId'
+} as const
+
+export type HiddenSystemItemScalarFieldEnum = (typeof HiddenSystemItemScalarFieldEnum)[keyof typeof HiddenSystemItemScalarFieldEnum]
 
 
 export const ListScalarFieldEnum = {
@@ -143,6 +160,7 @@ export const ListScalarFieldEnum = {
   destination: 'destination',
   tripDate: 'tripDate',
   lengthOfStay: 'lengthOfStay',
+  groupingConfig: 'groupingConfig',
   status: 'status',
   isTemplate: 'isTemplate',
   userId: 'userId',
@@ -162,13 +180,47 @@ export const ListItemScalarFieldEnum = {
   isEssential: 'isEssential',
   notes: 'notes',
   categoryId: 'categoryId',
-  bagType: 'bagType',
   bagTypeId: 'bagTypeId',
-  bagLocation: 'bagLocation',
-  sortOrder: 'sortOrder'
+  sortOrder: 'sortOrder',
+  locationId: 'locationId'
 } as const
 
 export type ListItemScalarFieldEnum = (typeof ListItemScalarFieldEnum)[keyof typeof ListItemScalarFieldEnum]
+
+
+export const LocationScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  color: 'color',
+  icon: 'icon',
+  userId: 'userId'
+} as const
+
+export type LocationScalarFieldEnum = (typeof LocationScalarFieldEnum)[keyof typeof LocationScalarFieldEnum]
+
+
+export const HiddenSystemCategoryScalarFieldEnum = {
+  userId: 'userId',
+  categoryId: 'categoryId'
+} as const
+
+export type HiddenSystemCategoryScalarFieldEnum = (typeof HiddenSystemCategoryScalarFieldEnum)[keyof typeof HiddenSystemCategoryScalarFieldEnum]
+
+
+export const HiddenSystemBagTypeScalarFieldEnum = {
+  userId: 'userId',
+  bagTypeId: 'bagTypeId'
+} as const
+
+export type HiddenSystemBagTypeScalarFieldEnum = (typeof HiddenSystemBagTypeScalarFieldEnum)[keyof typeof HiddenSystemBagTypeScalarFieldEnum]
+
+
+export const HiddenSystemLocationScalarFieldEnum = {
+  userId: 'userId',
+  locationId: 'locationId'
+} as const
+
+export type HiddenSystemLocationScalarFieldEnum = (typeof HiddenSystemLocationScalarFieldEnum)[keyof typeof HiddenSystemLocationScalarFieldEnum]
 
 
 export const SortOrder = {

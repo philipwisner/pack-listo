@@ -5,7 +5,11 @@ export const listService = {
   async getAll(userId: string) {
     return prisma.list.findMany({
       where: { userId },
-      include: { _count: { select: { items: true } } },
+      include: {
+        items: {
+          include: { item: true }, // Include necessary relations
+        },
+      },
       orderBy: { createdAt: "desc" },
     });
   },

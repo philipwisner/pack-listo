@@ -18,5 +18,5 @@ export const ItemSchema = z.object({
   id: z.string().optional(),
   name: z.string().min(1, "Name is required"),
   defaultWeight: z.coerce.number().nullable(),
-  categoryIds: z.array(z.string()).default([]),
+  categoryId: z.string().nullable(),
 });

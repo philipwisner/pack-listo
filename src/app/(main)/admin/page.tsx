@@ -398,7 +398,7 @@ export default async function AdminPage() {
             await createItemAction({
               name: formData.get("name") as string,
               defaultWeight: rawWeight ? parseFloat(rawWeight) : null,
-              categoryIds: formData.getAll("categoryIds") as string[],
+              categoryId: formData.get("categoryId") as string | null,
             });
           }}
           className={grid({ columns: { base: 1, md: 3 }, gap: "4", mb: "6" })}
@@ -477,7 +477,7 @@ export default async function AdminPage() {
                       id: formData.get("id") as string,
                       name: formData.get("name") as string,
                       defaultWeight: rawWeight ? parseFloat(rawWeight) : null,
-                      categoryIds: formData.getAll("categoryIds") as string[],
+                      categoryId: formData.get("categoryId") as string | null,
                     });
                   }}
                   className={grid({ columns: { base: 1 }, gap: "4" })}

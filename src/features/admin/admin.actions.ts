@@ -54,29 +54,30 @@ export const deleteCategoryAction = adminClient
   });
 
 export const createItemAction = adminClient
-  .inputSchema(ItemSchema) // 👈 Updated
-  .action(async ({ parsedInput: { name, defaultWeight, categoryIds } }) => {
+  .inputSchema(ItemSchema)
+  .action(async ({ parsedInput: { name, defaultWeight, categoryId } }) => {
+    // Assuming categoryId is a single string now
     await prisma.item.create({
       data: {
         name,
         defaultWeight,
         userId: null,
-        categories: { connect: categoryIds.map((id) => ({ id })) },
+        categoryId: categoryId ?? null,
       },
     });
     redirect("/admin");
   });
 
 export const updateItemAction = adminClient
-  .inputSchema(ItemSchema) // 👈 Updated
-  .action(async ({ parsedInput: { id, name, defaultWeight, categoryIds } }) => {
+  .inputSchema(ItemSchema)
+  .action(async ({ parsedInput: { id, name, defaultWeight, categoryId } }) => {
     if (!id) throw new Error("ID required");
     await prisma.item.update({
       where: { id },
       data: {
         name,
         defaultWeight,
-        categories: { set: categoryIds.map((id) => ({ id })) },
+        categoryId: categoryId ?? null,
       },
     });
     redirect("/admin");

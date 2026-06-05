@@ -25,13 +25,14 @@ export default async function ListDetailPage({
 
   const list = await listService.getById(id, userId);
   const items = await itemService.getAll(userId);
+  console.log("list:", list);
 
   if (!list) {
     notFound();
   }
 
   // Transform data to match client component needs
-  const transformedItems = list.items.map((li: any) => ({
+  const transformedItems = list?.items.map((li: any) => ({
     id: li.id,
     quantity: li.quantity,
     isPacked: li.isPacked,

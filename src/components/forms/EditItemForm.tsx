@@ -12,7 +12,8 @@ interface EditItemFormProps {
     id: string;
     name: string;
     defaultWeight?: number | null;
-    categories: { id: string; name: string; color?: string | null }[];
+    category: { id: string; name: string; color?: string | null } | null;
+    tags: string[];
   };
   allCategories: { id: string; name: string; color?: string | null }[];
   onSuccess: () => void;
@@ -30,15 +31,19 @@ export function EditItemForm({
   const [deleting, setDeleting] = useState(false);
   const router = useRouter();
 
-  const existingCategoryIds = new Set(item.categories.map((c) => c.id));
-
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
     setError(null);
 
     const formData = new FormData(e.currentTarget);
-    const categoryIds = formData.getAll("categoryIds") as string[];
+
+    // Process tags from comma-separated string to array
+    const tagsInput = formData.get("tags") as string;
+    const tags = tagsInput
+      .split(",")
+      .map((t) => t.trim())
+      .filter(Boolean);
 
     const data = {
       id: item.id,
@@ -46,7 +51,8 @@ export function EditItemForm({
       defaultWeight: formData.get("weight")
         ? parseFloat(formData.get("weight") as string)
         : undefined,
-      categoryIds,
+      categoryId: (formData.get("categoryId") as string) || null,
+      tags: tags,
     };
 
     const result = await updateItemAction(data);
@@ -101,45 +107,31 @@ export function EditItemForm({
 
       <div className="form-group">
         <label className="form-label">Classification</label>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "0.5rem",
-            maxHeight: "150px",
-            overflowY: "auto",
-            border: "2px solid var(--border)",
-            padding: "1rem",
-          }}
+        <select
+          name="categoryId"
+          defaultValue={item.category?.id ?? ""}
+          className="form-input"
+          disabled={loading}
         >
+          <option value="">Uncategorized</option>
           {allCategories.map((cat) => (
-            <label
-              key={cat.id}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "0.5rem",
-                fontSize: "0.8rem",
-                fontWeight: 700,
-                textTransform: "uppercase",
-                cursor: "pointer",
-              }}
-            >
-              <input
-                type="checkbox"
-                name="categoryIds"
-                value={cat.id}
-                defaultChecked={existingCategoryIds.has(cat.id)}
-                disabled={loading}
-                style={{ width: "18px", height: "18px" }}
-              />
+            <option key={cat.id} value={cat.id}>
               {cat.name}
-            </label>
+            </option>
           ))}
-          {allCategories.length === 0 && (
-            <span style={{ opacity: 0.5 }}>NO CLASSIFICATIONS DEFINED</span>
-          )}
-        </div>
+        </select>
+      </div>
+
+      <div className="form-group">
+        <label className="form-label">Tags (comma separated)</label>
+        <input
+          name="tags"
+          type="text"
+          className="form-input"
+          defaultValue={item.tags.join(", ")}
+          placeholder="e.g. essential, hygiene, travel"
+          disabled={loading}
+        />
       </div>
 
       {error && (
@@ -169,7 +161,6 @@ export function EditItemForm({
             fontWeight: 800,
             textTransform: "uppercase",
             cursor: "pointer",
-            letterSpacing: "0.05em",
           }}
         >
           {deleting ? "Removing..." : "Delete"}
@@ -178,11 +169,6 @@ export function EditItemForm({
           <button
             type="button"
             className="btn-sign"
-            style={{
-              background: "transparent",
-              border: "2px solid var(--border)",
-              color: "var(--foreground)",
-            }}
             onClick={onCancel}
             disabled={loading}
           >

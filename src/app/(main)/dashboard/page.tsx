@@ -1,50 +1,14 @@
 export const dynamic = "force-dynamic";
 import { getCurrentUser } from "@/lib/auth";
-import { getDashboardData } from "@/services/dashboard.service";
+import { getDashboardData } from "@/features/dashboard/dashboard.service";
 import { css } from "@/styled-system/css";
 import { flex, grid } from "@/styled-system/patterns";
-import { createClient } from "@/utils/supabase/client";
-import prisma from "@/lib/prisma";
 
 export const metadata = {
   title: "Dashboard",
 };
 
 export default async function DashboardPage() {
-  // // 1. Direct Diagnostic Check
-  // const supabase = await createClient();
-  // const {
-  //   data: { user: supabaseUser },
-  //   error: authError,
-  // } = await supabase.auth.getUser();
-
-  // console.log("DEBUG - Supabase Auth User:", supabaseUser);
-  // if (authError) console.error("DEBUG - Supabase Auth Error:", authError);
-
-  // // 2. Fallback check if Supabase succeeded but Prisma failed
-  // let dbUser = null;
-  // if (supabaseUser) {
-  //   dbUser = await prisma.user.findUnique({ where: { id: supabaseUser.id } });
-  //   console.log("DEBUG - Prisma DB User:", dbUser);
-  // }
-
-  // // Temporary explicit fallback UI to tell us EXACTLY who failed
-  // if (!supabaseUser) {
-  //   return (
-  //     <div style={{ padding: "2rem", color: "red" }}>
-  //       ❌ Supabase Auth failed to read your session cookies on the server!
-  //     </div>
-  //   );
-  // }
-
-  // if (!dbUser) {
-  //   return (
-  //     <div style={{ padding: "2rem", color: "orange" }}>
-  //       ⚠️ Supabase authenticated you successfully, but Prisma cannot find your
-  //       row in the database!
-  //     </div>
-  //   );
-  // }
   const user = await getCurrentUser();
 
   console.log("Dashboard page - current user:", user);

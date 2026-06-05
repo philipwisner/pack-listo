@@ -511,7 +511,7 @@ export default async function AdminPage() {
                     <select
                       id={`item-categories-${item.id}`}
                       name="categoryIds"
-                      defaultValue={item.categories.map((cat) => cat.id)}
+                      defaultValue={item.category?.id}
                       multiple
                       size={4}
                       className={css({

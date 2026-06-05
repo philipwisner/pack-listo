@@ -6,6 +6,7 @@ import {
   BagTypeSchema,
   ItemSchema,
 } from "@/features/admin/admin.schema";
+import { categoryService } from "@/features/category/category.service";
 import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import { z } from "zod";
@@ -24,14 +25,24 @@ export const createCategoryAction = adminClient
     redirect("/admin");
   });
 
-export const updateCategoryAction = adminClient
-  .inputSchema(CategorySchema) // 👈 Updated
+export const updateCategoryActionOld = adminClient
+  .inputSchema(CategorySchema)
   .action(async ({ parsedInput: { id, name, icon, color } }) => {
     if (!id) throw new Error("ID required");
     await prisma.category.update({
       where: { id },
       data: { name, icon, color },
     });
+    redirect("/admin");
+  });
+
+export const updateCategoryAction = adminClient
+  .inputSchema(CategorySchema)
+  .action(async ({ parsedInput: { id, ...data } }) => {
+    if (!id) throw new Error("ID required");
+
+    // Reuse the existing service instead of calling prisma directly
+    await categoryService.update(id, data, { enforceOwnership: false });
     redirect("/admin");
   });
 

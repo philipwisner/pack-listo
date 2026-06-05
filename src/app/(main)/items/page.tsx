@@ -1,16 +1,13 @@
-import { itemService } from "@/services/item.service";
-import { categoryService } from "@/services/category.service";
-import { createClient } from "@/utils/supabase/server";
+import { itemService } from "@/features/item/item.service";
+import { categoryService } from "@/features/category/category.service";
 import ItemsClient from "./ItemsClient";
+import { getCurrentUser } from "@/lib/auth";
 
 export const metadata = {
   title: "Items",
 };
 export default async function ItemsPage() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser();
 
   let items: any[] = [];
   let categories: any[] = [];

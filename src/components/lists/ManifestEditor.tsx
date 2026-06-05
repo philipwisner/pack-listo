@@ -14,7 +14,7 @@ interface ListItem {
   isPacked: boolean;
   item: {
     name: string;
-    categories: { name: string; color?: string | null }[];
+    category: { name: string; color?: string | null };
   };
 }
 
@@ -84,13 +84,7 @@ export function ManifestEditor({
               </div>
               <div className={styles.nameCol}>{li.item.name}</div>
               <div className={styles.qtyCol}>x{li.quantity}</div>
-              <div className={styles.catCol}>
-                {li.item.categories.map((c) => (
-                  <span key={c.name} className={styles.tag}>
-                    {c.name}
-                  </span>
-                ))}
-              </div>
+              <span className={styles.tag}>{li.item.category.name}</span>
               <div className={styles.actionCol}>
                 <button
                   onClick={() => handleRemove(li.id)}

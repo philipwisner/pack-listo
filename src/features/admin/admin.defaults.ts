@@ -5,7 +5,7 @@ import { cache } from "react";
 
 // Types for your UI components
 export type DefaultItem = Prisma.ItemGetPayload<{
-  include: { categories: { select: { id: true; name: true } } };
+  include: { category: true };
 }>;
 
 export type DefaultCategory = Prisma.CategoryGetPayload<{}>;
@@ -29,7 +29,7 @@ export const getDefaultBagTypes = cache(async () => {
 export const getDefaultItems = cache(async () => {
   return prisma.item.findMany({
     where: { userId: null },
-    include: { categories: { select: { id: true, name: true } } },
+    include: { category: true },
     orderBy: { name: "asc" },
   });
 });

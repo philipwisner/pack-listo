@@ -67,7 +67,7 @@ export default function ItemsClient({
               id={item.id}
               name={item.name}
               weight={item.defaultWeight || 0}
-              categories={item.categories}
+              category={item.category}
               onEdit={() => setEditingItem(item)}
             />
           ))

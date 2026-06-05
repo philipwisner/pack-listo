@@ -1,4 +1,4 @@
-import { bagTypeService } from "@/services/bag-type.service";
+import { bagTypeService } from "@/features/bag-type/bag-type.service";
 import { createClient } from "@/utils/supabase/server";
 import BagTypesClient from "./BagTypesClient";
 

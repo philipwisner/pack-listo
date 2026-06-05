@@ -1,18 +1,16 @@
-import { listService } from "@/services/list.service";
-import { createClient } from "@/utils/supabase/server";
+import { listService } from "@/features/list/list.service";
 import ListsClient from "./ListsClient";
+import { List } from "@/generated/prisma/browser";
+import { getCurrentUser } from "@/lib/auth";
 
 export const metadata = {
   title: "Lists",
 };
 
 export default async function ListsPage() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser();
 
-  let lists: any[] = [];
+  let lists: List[] = [];
   if (user) {
     lists = await listService.getAll(user.id);
   }

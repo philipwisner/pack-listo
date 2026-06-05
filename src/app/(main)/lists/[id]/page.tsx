@@ -1,6 +1,6 @@
 import React from "react";
-import { listService } from "@/services/list.service";
-import { itemService } from "@/services/item.service";
+import { listService } from "@/features/list/list.service";
+import { itemService } from "@/features/item/item.service";
 import { ManifestEditor } from "@/components/lists/ManifestEditor";
 import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
@@ -37,10 +37,7 @@ export default async function ListDetailPage({
     isPacked: li.isPacked,
     item: {
       name: li.item.name,
-      categories: li.item.categories.map((c: any) => ({
-        name: c.name,
-        color: c.color,
-      })),
+      category: li.category,
     },
   }));
 

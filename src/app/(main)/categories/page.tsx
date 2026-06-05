@@ -1,6 +1,7 @@
-import { categoryService } from "@/services/category.service";
+// import { categoryService } from "@/features/category/category.service";
 import CategoriesClient from "./CategoriesClient";
 import { getCurrentUser } from "@/lib/auth";
+import { getCategoriesAction } from "@/features/category/category.actions";
 
 export const metadata = {
   title: "Categories",
@@ -11,7 +12,9 @@ export default async function CategoriesPage() {
 
   let categories: any[] = [];
   if (user) {
-    categories = await categoryService.getAll(user.id);
+    const result = await getCategoriesAction();
+    categories = result?.data || [];
+    // categories = await categoryService.getAll(user.id);
   }
 
   return <CategoriesClient initialCategories={categories} />;

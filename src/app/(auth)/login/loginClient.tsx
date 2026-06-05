@@ -5,6 +5,7 @@ import { Input } from "@/components/TextInput/TextInput";
 import { InputLabel } from "@/components/InputLabel/InputLabel";
 import { Button } from "@/components/Button/Button";
 import { FormContainer } from "@/features/auth/auth.styles";
+import { ArrowRight } from "lucide-react";
 
 const initialState = {
   error: "",
@@ -112,6 +113,7 @@ export function LoginFormContent({ redirectTo }: LoginFormContentProps) {
         type="submit"
         isLoading={isPending}
         loadingText="Logging in..."
+        iconRight={<ArrowRight />}
       />
     </FormContainer>
   );

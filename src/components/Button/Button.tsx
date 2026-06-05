@@ -173,15 +173,12 @@ export const Button = ({
       {!isLoading && iconLeft && (
         <span className="button-icon">{iconLeft}</span>
       )}
-
       {isLoading && (
         <span className="button-spinner" aria-hidden="true">
           🌀 {/* Replace with an SVG spin-graphic or keyframe component */}
         </span>
       )}
-
       <span>{isLoading ? loadingText : text}</span>
-
       {!isLoading && iconRight && (
         <span className="button-icon">{iconRight}</span>
       )}

@@ -4,62 +4,83 @@
 //   binaryTargets = ["native", "linux-musl-arm64-openssl-3.0.x"]
 // }
 
+
+// Local commands
+// npx prisma format
+// npx prisma db push
+// npx prisma generate
+
+// Deployment commands
+// npx prisma migrate dev --name [migration_name]
+
+//Command to seed production database, make sure to set the DATABASE_URL env variable to your Supabase connection pooler string before running
+//DATABASE_URL="YOUR_SUPABASE_CONNECTION_POOLER_STRING_HERE" npx prisma db seed
+
+
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
 }
 
 datasource db {
-  provider  = "postgresql"
+  provider = "postgresql"
 }
 
 model User {
-  id         String     @id @unique
-  email      String     @unique
-  name       String?
-  isAdmin    Boolean    @default(false)
-  categories Category[]
-  items      Item[]
-  lists      List[]
-  bagTypes   BagType[]
+  id               String                 @id @unique
+  email            String                 @unique
+  name             String?
+  isAdmin          Boolean                @default(false)
+  categories       Category[]
+  items            Item[]
+  lists            List[]
+  bagTypes         BagType[]
+  hiddenItems      HiddenSystemItem[]
+  locations        Location[]
+  hiddenCategories HiddenSystemCategory[]
+  hiddenBagTypes   HiddenSystemBagType[]
+  hiddenLocations  HiddenSystemLocation[]
 }
 
 model Category {
-  id     String  @id @default(cuid()) @unique
-  name   String
-  icon   String?
-  color  String?
-  userId String?
-  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  items  Item[]  @relation("CategoryToItem")
+  id        String          @id @unique @default(cuid())
+  name      String
+  icon      String?
+  color     String?
+  userId    String?
+  user      User?           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items     Item[]
   listItems ListItem[]
-  lists  CategoryOrder[]
+  lists     CategoryOrder[]
 
   @@unique([name, userId])
+  @@index([userId])
 }
 
 model CategoryOrder {
-  listId      String
-  categoryId  String
-  position    Int
+  listId     String
+  categoryId String
+  position   Int
   // Add onDelete: Cascade to both fields below
-  list        List     @relation(fields: [listId], references: [id], onDelete: Cascade)
-  category    Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  list       List     @relation(fields: [listId], references: [id], onDelete: Cascade)
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 
   @@id([listId, categoryId])
 }
 
 model BagType {
-  id        String     @id @default(cuid())
-  name      String
-  icon      String?
-  color     String?
-  userId    String?
-  user      User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  listItems ListItem[]
-  lists  BagTypeOrder[]
+  id           String         @id @default(cuid())
+  name         String
+  icon         String?
+  color        String?
+  userId       String?
+  user         User?          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  listItems    ListItem[]
+  lists        BagTypeOrder[]
+  defaultItems Item[]         @relation("BagTypeDefaults")
 
   @@unique([name, userId])
+  @@index([userId])
 }
 
 model BagTypeOrder {
@@ -73,30 +94,56 @@ model BagTypeOrder {
   @@id([listId, bagTypeId])
 }
 
-
 model Item {
-  id            String     @id @default(cuid())
-  name          String
-  defaultWeight Float?
-  userId        String?
-  user          User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  listItems     ListItem[]
-  categories    Category[] @relation("CategoryToItem")
+  id                String             @id @default(cuid())
+  name              String
+  defaultWeight     Float?
+  userId            String?
+  user              User?              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  listItems         ListItem[]
+  categoryId        String?
+  category          Category?          @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  tags              String[]           @default([])
+  defaultBagTypeId  String?
+  defaultBagType    BagType?           @relation("BagTypeDefaults", fields: [defaultBagTypeId], references: [id], onDelete: SetNull)
+  defaultLocationId String?
+  defaultLocation   Location?          @relation("LocationDefaults", fields: [defaultLocationId], references: [id], onDelete: SetNull)
+  hiddenSystemItems HiddenSystemItem[]
+
+  @@index([userId])
+}
+
+model HiddenSystemItem {
+  userId String
+  itemId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  item   Item   @relation(fields: [itemId], references: [id], onDelete: Cascade)
+
+  @@id([userId, itemId])
+}
+
+enum ListStatus {
+  PLANNING
+  PACKING
+  IN_TRANSIT
+  COMPLETED
+  ARCHIVED
 }
 
 model List {
-  id           String     @id @default(cuid())
-  name         String
-  destination  String?
-  tripDate     DateTime?
-  lengthOfStay Int?
-  status       String     @default("PLANNING")
-  isTemplate   Boolean    @default(false)
-  userId       String?
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
-  user         User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  items        ListItem[]
+  id             String          @id @default(cuid())
+  name           String
+  destination    String?
+  tripDate       DateTime?
+  lengthOfStay   Int?
+  groupingConfig String[]        @default(["BAG", "CATEGORY", "LOCATION"])
+  status         ListStatus      @default(PLANNING)
+  isTemplate     Boolean         @default(false)
+  userId         String?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  user           User?           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items          ListItem[]
   categoryOrders CategoryOrder[]
   bagTypeOrders  BagTypeOrder[]
 }
@@ -111,13 +158,59 @@ model ListItem {
   notes       String?
   categoryId  String?
   category    Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
-  bagType     String?
   bagTypeId   String?
-  bagTypeRef  BagType?  @relation(fields: [bagTypeId], references: [id], onDelete: SetNull)
-  bagLocation String?
+  bagType     BagType?  @relation(fields: [bagTypeId], references: [id], onDelete: SetNull)
   sortOrder   Int       @default(0)
   item        Item      @relation(fields: [itemId], references: [id], onDelete: Cascade)
   list        List      @relation(fields: [listId], references: [id], onDelete: Cascade)
+  locationId  String?
+  location    Location? @relation(fields: [locationId], references: [id], onDelete: SetNull)
 
   @@unique([listId, itemId])
 }
+
+model Location {
+  id           String     @id @default(cuid())
+  name         String
+  color        String?
+  icon         String?
+  userId       String?
+  user         User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  defaultItems Item[]     @relation("LocationDefaults")
+  listItems    ListItem[]
+
+  @@unique([name, userId])
+  @@index([userId])
+}
+
+model HiddenSystemCategory {
+  userId     String
+  categoryId String
+  user       User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, categoryId])
+}
+
+model HiddenSystemBagType {
+  userId    String
+  bagTypeId String
+  user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, bagTypeId])
+}
+
+model HiddenSystemLocation {
+  userId     String
+  locationId String
+  user       User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, locationId])
+}
+
+// Item, Category, BagType, Location are all connected to User, but they can also be "global" (userId = null). This allows for default items/categories/bagtypes/locations that are available to all users.
+//So a user can create their own categories/items/bagtypes/locations, where they are then the owner
+//The can edit an existing default category/item/bagtype/location, which creates a new user-owned version of that record and hides the default one for that user
+//They can delete default category/item/bagtype/location, which doesn't actually delete the record, but just hides it for that user using the HiddenSystemItem/HiddenSystemCategory/HiddenSystemBagType/HiddenSystemLocation tables.
+//User then can create a list which copies over Items as List Items, it will inherit those values but they can override or add new values
+//When a user tries to update/delete an item you check if it exists as a ListItem, if it does you ask them if these changes should cascade to the ListItem as well, if they say yes you update the Item and all related ListItems.
+//This is different for categories, bag types and locations because i am storing a reference to them, so those changes will automatically cascade down to the ListItem without needing to do anything, i would have to make changes to support them forking.

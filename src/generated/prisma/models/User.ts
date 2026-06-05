@@ -178,6 +178,11 @@ export type UserWhereInput = {
   items?: Prisma.ItemListRelationFilter
   lists?: Prisma.ListListRelationFilter
   bagTypes?: Prisma.BagTypeListRelationFilter
+  hiddenItems?: Prisma.HiddenSystemItemListRelationFilter
+  locations?: Prisma.LocationListRelationFilter
+  hiddenCategories?: Prisma.HiddenSystemCategoryListRelationFilter
+  hiddenBagTypes?: Prisma.HiddenSystemBagTypeListRelationFilter
+  hiddenLocations?: Prisma.HiddenSystemLocationListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -189,6 +194,11 @@ export type UserOrderByWithRelationInput = {
   items?: Prisma.ItemOrderByRelationAggregateInput
   lists?: Prisma.ListOrderByRelationAggregateInput
   bagTypes?: Prisma.BagTypeOrderByRelationAggregateInput
+  hiddenItems?: Prisma.HiddenSystemItemOrderByRelationAggregateInput
+  locations?: Prisma.LocationOrderByRelationAggregateInput
+  hiddenCategories?: Prisma.HiddenSystemCategoryOrderByRelationAggregateInput
+  hiddenBagTypes?: Prisma.HiddenSystemBagTypeOrderByRelationAggregateInput
+  hiddenLocations?: Prisma.HiddenSystemLocationOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -203,6 +213,11 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   items?: Prisma.ItemListRelationFilter
   lists?: Prisma.ListListRelationFilter
   bagTypes?: Prisma.BagTypeListRelationFilter
+  hiddenItems?: Prisma.HiddenSystemItemListRelationFilter
+  locations?: Prisma.LocationListRelationFilter
+  hiddenCategories?: Prisma.HiddenSystemCategoryListRelationFilter
+  hiddenBagTypes?: Prisma.HiddenSystemBagTypeListRelationFilter
+  hiddenLocations?: Prisma.HiddenSystemLocationListRelationFilter
 }, "id" | "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -234,6 +249,11 @@ export type UserCreateInput = {
   items?: Prisma.ItemCreateNestedManyWithoutUserInput
   lists?: Prisma.ListCreateNestedManyWithoutUserInput
   bagTypes?: Prisma.BagTypeCreateNestedManyWithoutUserInput
+  hiddenItems?: Prisma.HiddenSystemItemCreateNestedManyWithoutUserInput
+  locations?: Prisma.LocationCreateNestedManyWithoutUserInput
+  hiddenCategories?: Prisma.HiddenSystemCategoryCreateNestedManyWithoutUserInput
+  hiddenBagTypes?: Prisma.HiddenSystemBagTypeCreateNestedManyWithoutUserInput
+  hiddenLocations?: Prisma.HiddenSystemLocationCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -245,6 +265,11 @@ export type UserUncheckedCreateInput = {
   items?: Prisma.ItemUncheckedCreateNestedManyWithoutUserInput
   lists?: Prisma.ListUncheckedCreateNestedManyWithoutUserInput
   bagTypes?: Prisma.BagTypeUncheckedCreateNestedManyWithoutUserInput
+  hiddenItems?: Prisma.HiddenSystemItemUncheckedCreateNestedManyWithoutUserInput
+  locations?: Prisma.LocationUncheckedCreateNestedManyWithoutUserInput
+  hiddenCategories?: Prisma.HiddenSystemCategoryUncheckedCreateNestedManyWithoutUserInput
+  hiddenBagTypes?: Prisma.HiddenSystemBagTypeUncheckedCreateNestedManyWithoutUserInput
+  hiddenLocations?: Prisma.HiddenSystemLocationUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -256,6 +281,11 @@ export type UserUpdateInput = {
   items?: Prisma.ItemUpdateManyWithoutUserNestedInput
   lists?: Prisma.ListUpdateManyWithoutUserNestedInput
   bagTypes?: Prisma.BagTypeUpdateManyWithoutUserNestedInput
+  hiddenItems?: Prisma.HiddenSystemItemUpdateManyWithoutUserNestedInput
+  locations?: Prisma.LocationUpdateManyWithoutUserNestedInput
+  hiddenCategories?: Prisma.HiddenSystemCategoryUpdateManyWithoutUserNestedInput
+  hiddenBagTypes?: Prisma.HiddenSystemBagTypeUpdateManyWithoutUserNestedInput
+  hiddenLocations?: Prisma.HiddenSystemLocationUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -267,6 +297,11 @@ export type UserUncheckedUpdateInput = {
   items?: Prisma.ItemUncheckedUpdateManyWithoutUserNestedInput
   lists?: Prisma.ListUncheckedUpdateManyWithoutUserNestedInput
   bagTypes?: Prisma.BagTypeUncheckedUpdateManyWithoutUserNestedInput
+  hiddenItems?: Prisma.HiddenSystemItemUncheckedUpdateManyWithoutUserNestedInput
+  locations?: Prisma.LocationUncheckedUpdateManyWithoutUserNestedInput
+  hiddenCategories?: Prisma.HiddenSystemCategoryUncheckedUpdateManyWithoutUserNestedInput
+  hiddenBagTypes?: Prisma.HiddenSystemBagTypeUncheckedUpdateManyWithoutUserNestedInput
+  hiddenLocations?: Prisma.HiddenSystemLocationUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -314,6 +349,11 @@ export type UserMinOrderByAggregateInput = {
 export type UserNullableScalarRelationFilter = {
   is?: Prisma.UserWhereInput | null
   isNot?: Prisma.UserWhereInput | null
+}
+
+export type UserScalarRelationFilter = {
+  is?: Prisma.UserWhereInput
+  isNot?: Prisma.UserWhereInput
 }
 
 export type StringFieldUpdateOperationsInput = {
@@ -376,6 +416,20 @@ export type UserUpdateOneWithoutItemsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutItemsInput, Prisma.UserUpdateWithoutItemsInput>, Prisma.UserUncheckedUpdateWithoutItemsInput>
 }
 
+export type UserCreateNestedOneWithoutHiddenItemsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutHiddenItemsInput, Prisma.UserUncheckedCreateWithoutHiddenItemsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutHiddenItemsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutHiddenItemsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutHiddenItemsInput, Prisma.UserUncheckedCreateWithoutHiddenItemsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutHiddenItemsInput
+  upsert?: Prisma.UserUpsertWithoutHiddenItemsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutHiddenItemsInput, Prisma.UserUpdateWithoutHiddenItemsInput>, Prisma.UserUncheckedUpdateWithoutHiddenItemsInput>
+}
+
 export type UserCreateNestedOneWithoutListsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutListsInput, Prisma.UserUncheckedCreateWithoutListsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutListsInput
@@ -392,6 +446,64 @@ export type UserUpdateOneWithoutListsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutListsInput, Prisma.UserUpdateWithoutListsInput>, Prisma.UserUncheckedUpdateWithoutListsInput>
 }
 
+export type UserCreateNestedOneWithoutLocationsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutLocationsInput, Prisma.UserUncheckedCreateWithoutLocationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutLocationsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutLocationsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutLocationsInput, Prisma.UserUncheckedCreateWithoutLocationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutLocationsInput
+  upsert?: Prisma.UserUpsertWithoutLocationsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutLocationsInput, Prisma.UserUpdateWithoutLocationsInput>, Prisma.UserUncheckedUpdateWithoutLocationsInput>
+}
+
+export type UserCreateNestedOneWithoutHiddenCategoriesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutHiddenCategoriesInput, Prisma.UserUncheckedCreateWithoutHiddenCategoriesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutHiddenCategoriesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutHiddenCategoriesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutHiddenCategoriesInput, Prisma.UserUncheckedCreateWithoutHiddenCategoriesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutHiddenCategoriesInput
+  upsert?: Prisma.UserUpsertWithoutHiddenCategoriesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutHiddenCategoriesInput, Prisma.UserUpdateWithoutHiddenCategoriesInput>, Prisma.UserUncheckedUpdateWithoutHiddenCategoriesInput>
+}
+
+export type UserCreateNestedOneWithoutHiddenBagTypesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutHiddenBagTypesInput, Prisma.UserUncheckedCreateWithoutHiddenBagTypesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutHiddenBagTypesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutHiddenBagTypesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutHiddenBagTypesInput, Prisma.UserUncheckedCreateWithoutHiddenBagTypesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutHiddenBagTypesInput
+  upsert?: Prisma.UserUpsertWithoutHiddenBagTypesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutHiddenBagTypesInput, Prisma.UserUpdateWithoutHiddenBagTypesInput>, Prisma.UserUncheckedUpdateWithoutHiddenBagTypesInput>
+}
+
+export type UserCreateNestedOneWithoutHiddenLocationsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutHiddenLocationsInput, Prisma.UserUncheckedCreateWithoutHiddenLocationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutHiddenLocationsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutHiddenLocationsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutHiddenLocationsInput, Prisma.UserUncheckedCreateWithoutHiddenLocationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutHiddenLocationsInput
+  upsert?: Prisma.UserUpsertWithoutHiddenLocationsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutHiddenLocationsInput, Prisma.UserUpdateWithoutHiddenLocationsInput>, Prisma.UserUncheckedUpdateWithoutHiddenLocationsInput>
+}
+
 export type UserCreateWithoutCategoriesInput = {
   id: string
   email: string
@@ -400,6 +512,11 @@ export type UserCreateWithoutCategoriesInput = {
   items?: Prisma.ItemCreateNestedManyWithoutUserInput
   lists?: Prisma.ListCreateNestedManyWithoutUserInput
   bagTypes?: Prisma.BagTypeCreateNestedManyWithoutUserInput
+  hiddenItems?: Prisma.HiddenSystemItemCreateNestedManyWithoutUserInput
+  locations?: Prisma.LocationCreateNestedManyWithoutUserInput
+  hiddenCategories?: Prisma.HiddenSystemCategoryCreateNestedManyWithoutUserInput
+  hiddenBagTypes?: Prisma.HiddenSystemBagTypeCreateNestedManyWithoutUserInput
+  hiddenLocations?: Prisma.HiddenSystemLocationCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCategoriesInput = {
@@ -410,6 +527,11 @@ export type UserUncheckedCreateWithoutCategoriesInput = {
   items?: Prisma.ItemUncheckedCreateNestedManyWithoutUserInput
   lists?: Prisma.ListUncheckedCreateNestedManyWithoutUserInput
   bagTypes?: Prisma.BagTypeUncheckedCreateNestedManyWithoutUserInput
+  hiddenItems?: Prisma.HiddenSystemItemUncheckedCreateNestedManyWithoutUserInput
+  locations?: Prisma.LocationUncheckedCreateNestedManyWithoutUserInput
+  hiddenCategories?: Prisma.HiddenSystemCategoryUncheckedCreateNestedManyWithoutUserInput
+  hiddenBagTypes?: Prisma.HiddenSystemBagTypeUncheckedCreateNestedManyWithoutUserInput
+  hiddenLocations?: Prisma.HiddenSystemLocationUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCategoriesInput = {
@@ -436,6 +558,11 @@ export type UserUpdateWithoutCategoriesInput = {
   items?: Prisma.ItemUpdateManyWithoutUserNestedInput
   lists?: Prisma.ListUpdateManyWithoutUserNestedInput
   bagTypes?: Prisma.BagTypeUpdateManyWithoutUserNestedInput
+  hiddenItems?: Prisma.HiddenSystemItemUpdateManyWithoutUserNestedInput
+  locations?: Prisma.LocationUpdateManyWithoutUserNestedInput
+  hiddenCategories?: Prisma.HiddenSystemCategoryUpdateManyWithoutUserNestedInput
+  hiddenBagTypes?: Prisma.HiddenSystemBagTypeUpdateManyWithoutUserNestedInput
+  hiddenLocations?: Prisma.HiddenSystemLocationUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCategoriesInput = {
@@ -446,6 +573,11 @@ export type UserUncheckedUpdateWithoutCategoriesInput = {
   items?: Prisma.ItemUncheckedUpdateManyWithoutUserNestedInput
   lists?: Prisma.ListUncheckedUpdateManyWithoutUserNestedInput
   bagTypes?: Prisma.BagTypeUncheckedUpdateManyWithoutUserNestedInput
+  hiddenItems?: Prisma.HiddenSystemItemUncheckedUpdateManyWithoutUserNestedInput
+  locations?: Prisma.LocationUncheckedUpdateManyWithoutUserNestedInput
+  hiddenCategories?: Prisma.HiddenSystemCategoryUncheckedUpdateManyWithoutUserNestedInput
+  hiddenBagTypes?: Prisma.HiddenSystemBagTypeUncheckedUpdateManyWithoutUserNestedInput
+  hiddenLocations?: Prisma.HiddenSystemLocationUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutBagTypesInput = {
@@ -456,6 +588,11 @@ export type UserCreateWithoutBagTypesInput = {
   categories?: Prisma.CategoryCreateNestedManyWithoutUserInput
   items?: Prisma.ItemCreateNestedManyWithoutUserInput
   lists?: Prisma.ListCreateNestedManyWithoutUserInput
+  hiddenItems?: Prisma.HiddenSystemItemCreateNestedManyWithoutUserInput
+  locations?: Prisma.LocationCreateNestedManyWithoutUserInput
+  hiddenCategories?: Prisma.HiddenSystemCategoryCreateNestedManyWithoutUserInput
+  hiddenBagTypes?: Prisma.HiddenSystemBagTypeCreateNestedManyWithoutUserInput
+  hiddenLocations?: Prisma.HiddenSystemLocationCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutBagTypesInput = {
@@ -466,6 +603,11 @@ export type UserUncheckedCreateWithoutBagTypesInput = {
   categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutUserInput
   items?: Prisma.ItemUncheckedCreateNestedManyWithoutUserInput
   lists?: Prisma.ListUncheckedCreateNestedManyWithoutUserInput
+  hiddenItems?: Prisma.HiddenSystemItemUncheckedCreateNestedManyWithoutUserInput
+  locations?: Prisma.LocationUncheckedCreateNestedManyWithoutUserInput
+  hiddenCategories?: Prisma.HiddenSystemCategoryUncheckedCreateNestedManyWithoutUserInput
+  hiddenBagTypes?: Prisma.HiddenSystemBagTypeUncheckedCreateNestedManyWithoutUserInput
+  hiddenLocations?: Prisma.HiddenSystemLocationUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutBagTypesInput = {
@@ -492,6 +634,11 @@ export type UserUpdateWithoutBagTypesInput = {
   categories?: Prisma.CategoryUpdateManyWithoutUserNestedInput
   items?: Prisma.ItemUpdateManyWithoutUserNestedInput
   lists?: Prisma.ListUpdateManyWithoutUserNestedInput
+  hiddenItems?: Prisma.HiddenSystemItemUpdateManyWithoutUserNestedInput
+  locations?: Prisma.LocationUpdateManyWithoutUserNestedInput
+  hiddenCategories?: Prisma.HiddenSystemCategoryUpdateManyWithoutUserNestedInput
+  hiddenBagTypes?: Prisma.HiddenSystemBagTypeUpdateManyWithoutUserNestedInput
+  hiddenLocations?: Prisma.HiddenSystemLocationUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutBagTypesInput = {
@@ -502,6 +649,11 @@ export type UserUncheckedUpdateWithoutBagTypesInput = {
   categories?: Prisma.CategoryUncheckedUpdateManyWithoutUserNestedInput
   items?: Prisma.ItemUncheckedUpdateManyWithoutUserNestedInput
   lists?: Prisma.ListUncheckedUpdateManyWithoutUserNestedInput
+  hiddenItems?: Prisma.HiddenSystemItemUncheckedUpdateManyWithoutUserNestedInput
+  locations?: Prisma.LocationUncheckedUpdateManyWithoutUserNestedInput
+  hiddenCategories?: Prisma.HiddenSystemCategoryUncheckedUpdateManyWithoutUserNestedInput
+  hiddenBagTypes?: Prisma.HiddenSystemBagTypeUncheckedUpdateManyWithoutUserNestedInput
+  hiddenLocations?: Prisma.HiddenSystemLocationUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutItemsInput = {
@@ -512,6 +664,11 @@ export type UserCreateWithoutItemsInput = {
   categories?: Prisma.CategoryCreateNestedManyWithoutUserInput
   lists?: Prisma.ListCreateNestedManyWithoutUserInput
   bagTypes?: Prisma.BagTypeCreateNestedManyWithoutUserInput
+  hiddenItems?: Prisma.HiddenSystemItemCreateNestedManyWithoutUserInput
+  locations?: Prisma.LocationCreateNestedManyWithoutUserInput
+  hiddenCategories?: Prisma.HiddenSystemCategoryCreateNestedManyWithoutUserInput
+  hiddenBagTypes?: Prisma.HiddenSystemBagTypeCreateNestedManyWithoutUserInput
+  hiddenLocations?: Prisma.HiddenSystemLocationCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutItemsInput = {
@@ -522,6 +679,11 @@ export type UserUncheckedCreateWithoutItemsInput = {
   categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutUserInput
   lists?: Prisma.ListUncheckedCreateNestedManyWithoutUserInput
   bagTypes?: Prisma.BagTypeUncheckedCreateNestedManyWithoutUserInput
+  hiddenItems?: Prisma.HiddenSystemItemUncheckedCreateNestedManyWithoutUserInput
+  locations?: Prisma.LocationUncheckedCreateNestedManyWithoutUserInput
+  hiddenCategories?: Prisma.HiddenSystemCategoryUncheckedCreateNestedManyWithoutUserInput
+  hiddenBagTypes?: Prisma.HiddenSystemBagTypeUncheckedCreateNestedManyWithoutUserInput
+  hiddenLocations?: Prisma.HiddenSystemLocationUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutItemsInput = {
@@ -548,6 +710,11 @@ export type UserUpdateWithoutItemsInput = {
   categories?: Prisma.CategoryUpdateManyWithoutUserNestedInput
   lists?: Prisma.ListUpdateManyWithoutUserNestedInput
   bagTypes?: Prisma.BagTypeUpdateManyWithoutUserNestedInput
+  hiddenItems?: Prisma.HiddenSystemItemUpdateManyWithoutUserNestedInput
+  locations?: Prisma.LocationUpdateManyWithoutUserNestedInput
+  hiddenCategories?: Prisma.HiddenSystemCategoryUpdateManyWithoutUserNestedInput
+  hiddenBagTypes?: Prisma.HiddenSystemBagTypeUpdateManyWithoutUserNestedInput
+  hiddenLocations?: Prisma.HiddenSystemLocationUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutItemsInput = {
@@ -558,6 +725,87 @@ export type UserUncheckedUpdateWithoutItemsInput = {
   categories?: Prisma.CategoryUncheckedUpdateManyWithoutUserNestedInput
   lists?: Prisma.ListUncheckedUpdateManyWithoutUserNestedInput
   bagTypes?: Prisma.BagTypeUncheckedUpdateManyWithoutUserNestedInput
+  hiddenItems?: Prisma.HiddenSystemItemUncheckedUpdateManyWithoutUserNestedInput
+  locations?: Prisma.LocationUncheckedUpdateManyWithoutUserNestedInput
+  hiddenCategories?: Prisma.HiddenSystemCategoryUncheckedUpdateManyWithoutUserNestedInput
+  hiddenBagTypes?: Prisma.HiddenSystemBagTypeUncheckedUpdateManyWithoutUserNestedInput
+  hiddenLocations?: Prisma.HiddenSystemLocationUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutHiddenItemsInput = {
+  id: string
+  email: string
+  name?: string | null
+  isAdmin?: boolean
+  categories?: Prisma.CategoryCreateNestedManyWithoutUserInput
+  items?: Prisma.ItemCreateNestedManyWithoutUserInput
+  lists?: Prisma.ListCreateNestedManyWithoutUserInput
+  bagTypes?: Prisma.BagTypeCreateNestedManyWithoutUserInput
+  locations?: Prisma.LocationCreateNestedManyWithoutUserInput
+  hiddenCategories?: Prisma.HiddenSystemCategoryCreateNestedManyWithoutUserInput
+  hiddenBagTypes?: Prisma.HiddenSystemBagTypeCreateNestedManyWithoutUserInput
+  hiddenLocations?: Prisma.HiddenSystemLocationCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutHiddenItemsInput = {
+  id: string
+  email: string
+  name?: string | null
+  isAdmin?: boolean
+  categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutUserInput
+  items?: Prisma.ItemUncheckedCreateNestedManyWithoutUserInput
+  lists?: Prisma.ListUncheckedCreateNestedManyWithoutUserInput
+  bagTypes?: Prisma.BagTypeUncheckedCreateNestedManyWithoutUserInput
+  locations?: Prisma.LocationUncheckedCreateNestedManyWithoutUserInput
+  hiddenCategories?: Prisma.HiddenSystemCategoryUncheckedCreateNestedManyWithoutUserInput
+  hiddenBagTypes?: Prisma.HiddenSystemBagTypeUncheckedCreateNestedManyWithoutUserInput
+  hiddenLocations?: Prisma.HiddenSystemLocationUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutHiddenItemsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutHiddenItemsInput, Prisma.UserUncheckedCreateWithoutHiddenItemsInput>
+}
+
+export type UserUpsertWithoutHiddenItemsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutHiddenItemsInput, Prisma.UserUncheckedUpdateWithoutHiddenItemsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutHiddenItemsInput, Prisma.UserUncheckedCreateWithoutHiddenItemsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutHiddenItemsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutHiddenItemsInput, Prisma.UserUncheckedUpdateWithoutHiddenItemsInput>
+}
+
+export type UserUpdateWithoutHiddenItemsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  categories?: Prisma.CategoryUpdateManyWithoutUserNestedInput
+  items?: Prisma.ItemUpdateManyWithoutUserNestedInput
+  lists?: Prisma.ListUpdateManyWithoutUserNestedInput
+  bagTypes?: Prisma.BagTypeUpdateManyWithoutUserNestedInput
+  locations?: Prisma.LocationUpdateManyWithoutUserNestedInput
+  hiddenCategories?: Prisma.HiddenSystemCategoryUpdateManyWithoutUserNestedInput
+  hiddenBagTypes?: Prisma.HiddenSystemBagTypeUpdateManyWithoutUserNestedInput
+  hiddenLocations?: Prisma.HiddenSystemLocationUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutHiddenItemsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  categories?: Prisma.CategoryUncheckedUpdateManyWithoutUserNestedInput
+  items?: Prisma.ItemUncheckedUpdateManyWithoutUserNestedInput
+  lists?: Prisma.ListUncheckedUpdateManyWithoutUserNestedInput
+  bagTypes?: Prisma.BagTypeUncheckedUpdateManyWithoutUserNestedInput
+  locations?: Prisma.LocationUncheckedUpdateManyWithoutUserNestedInput
+  hiddenCategories?: Prisma.HiddenSystemCategoryUncheckedUpdateManyWithoutUserNestedInput
+  hiddenBagTypes?: Prisma.HiddenSystemBagTypeUncheckedUpdateManyWithoutUserNestedInput
+  hiddenLocations?: Prisma.HiddenSystemLocationUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutListsInput = {
@@ -568,6 +816,11 @@ export type UserCreateWithoutListsInput = {
   categories?: Prisma.CategoryCreateNestedManyWithoutUserInput
   items?: Prisma.ItemCreateNestedManyWithoutUserInput
   bagTypes?: Prisma.BagTypeCreateNestedManyWithoutUserInput
+  hiddenItems?: Prisma.HiddenSystemItemCreateNestedManyWithoutUserInput
+  locations?: Prisma.LocationCreateNestedManyWithoutUserInput
+  hiddenCategories?: Prisma.HiddenSystemCategoryCreateNestedManyWithoutUserInput
+  hiddenBagTypes?: Prisma.HiddenSystemBagTypeCreateNestedManyWithoutUserInput
+  hiddenLocations?: Prisma.HiddenSystemLocationCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutListsInput = {
@@ -578,6 +831,11 @@ export type UserUncheckedCreateWithoutListsInput = {
   categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutUserInput
   items?: Prisma.ItemUncheckedCreateNestedManyWithoutUserInput
   bagTypes?: Prisma.BagTypeUncheckedCreateNestedManyWithoutUserInput
+  hiddenItems?: Prisma.HiddenSystemItemUncheckedCreateNestedManyWithoutUserInput
+  locations?: Prisma.LocationUncheckedCreateNestedManyWithoutUserInput
+  hiddenCategories?: Prisma.HiddenSystemCategoryUncheckedCreateNestedManyWithoutUserInput
+  hiddenBagTypes?: Prisma.HiddenSystemBagTypeUncheckedCreateNestedManyWithoutUserInput
+  hiddenLocations?: Prisma.HiddenSystemLocationUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutListsInput = {
@@ -604,6 +862,11 @@ export type UserUpdateWithoutListsInput = {
   categories?: Prisma.CategoryUpdateManyWithoutUserNestedInput
   items?: Prisma.ItemUpdateManyWithoutUserNestedInput
   bagTypes?: Prisma.BagTypeUpdateManyWithoutUserNestedInput
+  hiddenItems?: Prisma.HiddenSystemItemUpdateManyWithoutUserNestedInput
+  locations?: Prisma.LocationUpdateManyWithoutUserNestedInput
+  hiddenCategories?: Prisma.HiddenSystemCategoryUpdateManyWithoutUserNestedInput
+  hiddenBagTypes?: Prisma.HiddenSystemBagTypeUpdateManyWithoutUserNestedInput
+  hiddenLocations?: Prisma.HiddenSystemLocationUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutListsInput = {
@@ -614,6 +877,315 @@ export type UserUncheckedUpdateWithoutListsInput = {
   categories?: Prisma.CategoryUncheckedUpdateManyWithoutUserNestedInput
   items?: Prisma.ItemUncheckedUpdateManyWithoutUserNestedInput
   bagTypes?: Prisma.BagTypeUncheckedUpdateManyWithoutUserNestedInput
+  hiddenItems?: Prisma.HiddenSystemItemUncheckedUpdateManyWithoutUserNestedInput
+  locations?: Prisma.LocationUncheckedUpdateManyWithoutUserNestedInput
+  hiddenCategories?: Prisma.HiddenSystemCategoryUncheckedUpdateManyWithoutUserNestedInput
+  hiddenBagTypes?: Prisma.HiddenSystemBagTypeUncheckedUpdateManyWithoutUserNestedInput
+  hiddenLocations?: Prisma.HiddenSystemLocationUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutLocationsInput = {
+  id: string
+  email: string
+  name?: string | null
+  isAdmin?: boolean
+  categories?: Prisma.CategoryCreateNestedManyWithoutUserInput
+  items?: Prisma.ItemCreateNestedManyWithoutUserInput
+  lists?: Prisma.ListCreateNestedManyWithoutUserInput
+  bagTypes?: Prisma.BagTypeCreateNestedManyWithoutUserInput
+  hiddenItems?: Prisma.HiddenSystemItemCreateNestedManyWithoutUserInput
+  hiddenCategories?: Prisma.HiddenSystemCategoryCreateNestedManyWithoutUserInput
+  hiddenBagTypes?: Prisma.HiddenSystemBagTypeCreateNestedManyWithoutUserInput
+  hiddenLocations?: Prisma.HiddenSystemLocationCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutLocationsInput = {
+  id: string
+  email: string
+  name?: string | null
+  isAdmin?: boolean
+  categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutUserInput
+  items?: Prisma.ItemUncheckedCreateNestedManyWithoutUserInput
+  lists?: Prisma.ListUncheckedCreateNestedManyWithoutUserInput
+  bagTypes?: Prisma.BagTypeUncheckedCreateNestedManyWithoutUserInput
+  hiddenItems?: Prisma.HiddenSystemItemUncheckedCreateNestedManyWithoutUserInput
+  hiddenCategories?: Prisma.HiddenSystemCategoryUncheckedCreateNestedManyWithoutUserInput
+  hiddenBagTypes?: Prisma.HiddenSystemBagTypeUncheckedCreateNestedManyWithoutUserInput
+  hiddenLocations?: Prisma.HiddenSystemLocationUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutLocationsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutLocationsInput, Prisma.UserUncheckedCreateWithoutLocationsInput>
+}
+
+export type UserUpsertWithoutLocationsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutLocationsInput, Prisma.UserUncheckedUpdateWithoutLocationsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutLocationsInput, Prisma.UserUncheckedCreateWithoutLocationsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutLocationsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutLocationsInput, Prisma.UserUncheckedUpdateWithoutLocationsInput>
+}
+
+export type UserUpdateWithoutLocationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  categories?: Prisma.CategoryUpdateManyWithoutUserNestedInput
+  items?: Prisma.ItemUpdateManyWithoutUserNestedInput
+  lists?: Prisma.ListUpdateManyWithoutUserNestedInput
+  bagTypes?: Prisma.BagTypeUpdateManyWithoutUserNestedInput
+  hiddenItems?: Prisma.HiddenSystemItemUpdateManyWithoutUserNestedInput
+  hiddenCategories?: Prisma.HiddenSystemCategoryUpdateManyWithoutUserNestedInput
+  hiddenBagTypes?: Prisma.HiddenSystemBagTypeUpdateManyWithoutUserNestedInput
+  hiddenLocations?: Prisma.HiddenSystemLocationUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutLocationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  categories?: Prisma.CategoryUncheckedUpdateManyWithoutUserNestedInput
+  items?: Prisma.ItemUncheckedUpdateManyWithoutUserNestedInput
+  lists?: Prisma.ListUncheckedUpdateManyWithoutUserNestedInput
+  bagTypes?: Prisma.BagTypeUncheckedUpdateManyWithoutUserNestedInput
+  hiddenItems?: Prisma.HiddenSystemItemUncheckedUpdateManyWithoutUserNestedInput
+  hiddenCategories?: Prisma.HiddenSystemCategoryUncheckedUpdateManyWithoutUserNestedInput
+  hiddenBagTypes?: Prisma.HiddenSystemBagTypeUncheckedUpdateManyWithoutUserNestedInput
+  hiddenLocations?: Prisma.HiddenSystemLocationUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutHiddenCategoriesInput = {
+  id: string
+  email: string
+  name?: string | null
+  isAdmin?: boolean
+  categories?: Prisma.CategoryCreateNestedManyWithoutUserInput
+  items?: Prisma.ItemCreateNestedManyWithoutUserInput
+  lists?: Prisma.ListCreateNestedManyWithoutUserInput
+  bagTypes?: Prisma.BagTypeCreateNestedManyWithoutUserInput
+  hiddenItems?: Prisma.HiddenSystemItemCreateNestedManyWithoutUserInput
+  locations?: Prisma.LocationCreateNestedManyWithoutUserInput
+  hiddenBagTypes?: Prisma.HiddenSystemBagTypeCreateNestedManyWithoutUserInput
+  hiddenLocations?: Prisma.HiddenSystemLocationCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutHiddenCategoriesInput = {
+  id: string
+  email: string
+  name?: string | null
+  isAdmin?: boolean
+  categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutUserInput
+  items?: Prisma.ItemUncheckedCreateNestedManyWithoutUserInput
+  lists?: Prisma.ListUncheckedCreateNestedManyWithoutUserInput
+  bagTypes?: Prisma.BagTypeUncheckedCreateNestedManyWithoutUserInput
+  hiddenItems?: Prisma.HiddenSystemItemUncheckedCreateNestedManyWithoutUserInput
+  locations?: Prisma.LocationUncheckedCreateNestedManyWithoutUserInput
+  hiddenBagTypes?: Prisma.HiddenSystemBagTypeUncheckedCreateNestedManyWithoutUserInput
+  hiddenLocations?: Prisma.HiddenSystemLocationUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutHiddenCategoriesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutHiddenCategoriesInput, Prisma.UserUncheckedCreateWithoutHiddenCategoriesInput>
+}
+
+export type UserUpsertWithoutHiddenCategoriesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutHiddenCategoriesInput, Prisma.UserUncheckedUpdateWithoutHiddenCategoriesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutHiddenCategoriesInput, Prisma.UserUncheckedCreateWithoutHiddenCategoriesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutHiddenCategoriesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutHiddenCategoriesInput, Prisma.UserUncheckedUpdateWithoutHiddenCategoriesInput>
+}
+
+export type UserUpdateWithoutHiddenCategoriesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  categories?: Prisma.CategoryUpdateManyWithoutUserNestedInput
+  items?: Prisma.ItemUpdateManyWithoutUserNestedInput
+  lists?: Prisma.ListUpdateManyWithoutUserNestedInput
+  bagTypes?: Prisma.BagTypeUpdateManyWithoutUserNestedInput
+  hiddenItems?: Prisma.HiddenSystemItemUpdateManyWithoutUserNestedInput
+  locations?: Prisma.LocationUpdateManyWithoutUserNestedInput
+  hiddenBagTypes?: Prisma.HiddenSystemBagTypeUpdateManyWithoutUserNestedInput
+  hiddenLocations?: Prisma.HiddenSystemLocationUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutHiddenCategoriesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  categories?: Prisma.CategoryUncheckedUpdateManyWithoutUserNestedInput
+  items?: Prisma.ItemUncheckedUpdateManyWithoutUserNestedInput
+  lists?: Prisma.ListUncheckedUpdateManyWithoutUserNestedInput
+  bagTypes?: Prisma.BagTypeUncheckedUpdateManyWithoutUserNestedInput
+  hiddenItems?: Prisma.HiddenSystemItemUncheckedUpdateManyWithoutUserNestedInput
+  locations?: Prisma.LocationUncheckedUpdateManyWithoutUserNestedInput
+  hiddenBagTypes?: Prisma.HiddenSystemBagTypeUncheckedUpdateManyWithoutUserNestedInput
+  hiddenLocations?: Prisma.HiddenSystemLocationUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutHiddenBagTypesInput = {
+  id: string
+  email: string
+  name?: string | null
+  isAdmin?: boolean
+  categories?: Prisma.CategoryCreateNestedManyWithoutUserInput
+  items?: Prisma.ItemCreateNestedManyWithoutUserInput
+  lists?: Prisma.ListCreateNestedManyWithoutUserInput
+  bagTypes?: Prisma.BagTypeCreateNestedManyWithoutUserInput
+  hiddenItems?: Prisma.HiddenSystemItemCreateNestedManyWithoutUserInput
+  locations?: Prisma.LocationCreateNestedManyWithoutUserInput
+  hiddenCategories?: Prisma.HiddenSystemCategoryCreateNestedManyWithoutUserInput
+  hiddenLocations?: Prisma.HiddenSystemLocationCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutHiddenBagTypesInput = {
+  id: string
+  email: string
+  name?: string | null
+  isAdmin?: boolean
+  categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutUserInput
+  items?: Prisma.ItemUncheckedCreateNestedManyWithoutUserInput
+  lists?: Prisma.ListUncheckedCreateNestedManyWithoutUserInput
+  bagTypes?: Prisma.BagTypeUncheckedCreateNestedManyWithoutUserInput
+  hiddenItems?: Prisma.HiddenSystemItemUncheckedCreateNestedManyWithoutUserInput
+  locations?: Prisma.LocationUncheckedCreateNestedManyWithoutUserInput
+  hiddenCategories?: Prisma.HiddenSystemCategoryUncheckedCreateNestedManyWithoutUserInput
+  hiddenLocations?: Prisma.HiddenSystemLocationUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutHiddenBagTypesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutHiddenBagTypesInput, Prisma.UserUncheckedCreateWithoutHiddenBagTypesInput>
+}
+
+export type UserUpsertWithoutHiddenBagTypesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutHiddenBagTypesInput, Prisma.UserUncheckedUpdateWithoutHiddenBagTypesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutHiddenBagTypesInput, Prisma.UserUncheckedCreateWithoutHiddenBagTypesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutHiddenBagTypesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutHiddenBagTypesInput, Prisma.UserUncheckedUpdateWithoutHiddenBagTypesInput>
+}
+
+export type UserUpdateWithoutHiddenBagTypesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  categories?: Prisma.CategoryUpdateManyWithoutUserNestedInput
+  items?: Prisma.ItemUpdateManyWithoutUserNestedInput
+  lists?: Prisma.ListUpdateManyWithoutUserNestedInput
+  bagTypes?: Prisma.BagTypeUpdateManyWithoutUserNestedInput
+  hiddenItems?: Prisma.HiddenSystemItemUpdateManyWithoutUserNestedInput
+  locations?: Prisma.LocationUpdateManyWithoutUserNestedInput
+  hiddenCategories?: Prisma.HiddenSystemCategoryUpdateManyWithoutUserNestedInput
+  hiddenLocations?: Prisma.HiddenSystemLocationUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutHiddenBagTypesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  categories?: Prisma.CategoryUncheckedUpdateManyWithoutUserNestedInput
+  items?: Prisma.ItemUncheckedUpdateManyWithoutUserNestedInput
+  lists?: Prisma.ListUncheckedUpdateManyWithoutUserNestedInput
+  bagTypes?: Prisma.BagTypeUncheckedUpdateManyWithoutUserNestedInput
+  hiddenItems?: Prisma.HiddenSystemItemUncheckedUpdateManyWithoutUserNestedInput
+  locations?: Prisma.LocationUncheckedUpdateManyWithoutUserNestedInput
+  hiddenCategories?: Prisma.HiddenSystemCategoryUncheckedUpdateManyWithoutUserNestedInput
+  hiddenLocations?: Prisma.HiddenSystemLocationUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutHiddenLocationsInput = {
+  id: string
+  email: string
+  name?: string | null
+  isAdmin?: boolean
+  categories?: Prisma.CategoryCreateNestedManyWithoutUserInput
+  items?: Prisma.ItemCreateNestedManyWithoutUserInput
+  lists?: Prisma.ListCreateNestedManyWithoutUserInput
+  bagTypes?: Prisma.BagTypeCreateNestedManyWithoutUserInput
+  hiddenItems?: Prisma.HiddenSystemItemCreateNestedManyWithoutUserInput
+  locations?: Prisma.LocationCreateNestedManyWithoutUserInput
+  hiddenCategories?: Prisma.HiddenSystemCategoryCreateNestedManyWithoutUserInput
+  hiddenBagTypes?: Prisma.HiddenSystemBagTypeCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutHiddenLocationsInput = {
+  id: string
+  email: string
+  name?: string | null
+  isAdmin?: boolean
+  categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutUserInput
+  items?: Prisma.ItemUncheckedCreateNestedManyWithoutUserInput
+  lists?: Prisma.ListUncheckedCreateNestedManyWithoutUserInput
+  bagTypes?: Prisma.BagTypeUncheckedCreateNestedManyWithoutUserInput
+  hiddenItems?: Prisma.HiddenSystemItemUncheckedCreateNestedManyWithoutUserInput
+  locations?: Prisma.LocationUncheckedCreateNestedManyWithoutUserInput
+  hiddenCategories?: Prisma.HiddenSystemCategoryUncheckedCreateNestedManyWithoutUserInput
+  hiddenBagTypes?: Prisma.HiddenSystemBagTypeUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutHiddenLocationsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutHiddenLocationsInput, Prisma.UserUncheckedCreateWithoutHiddenLocationsInput>
+}
+
+export type UserUpsertWithoutHiddenLocationsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutHiddenLocationsInput, Prisma.UserUncheckedUpdateWithoutHiddenLocationsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutHiddenLocationsInput, Prisma.UserUncheckedCreateWithoutHiddenLocationsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutHiddenLocationsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutHiddenLocationsInput, Prisma.UserUncheckedUpdateWithoutHiddenLocationsInput>
+}
+
+export type UserUpdateWithoutHiddenLocationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  categories?: Prisma.CategoryUpdateManyWithoutUserNestedInput
+  items?: Prisma.ItemUpdateManyWithoutUserNestedInput
+  lists?: Prisma.ListUpdateManyWithoutUserNestedInput
+  bagTypes?: Prisma.BagTypeUpdateManyWithoutUserNestedInput
+  hiddenItems?: Prisma.HiddenSystemItemUpdateManyWithoutUserNestedInput
+  locations?: Prisma.LocationUpdateManyWithoutUserNestedInput
+  hiddenCategories?: Prisma.HiddenSystemCategoryUpdateManyWithoutUserNestedInput
+  hiddenBagTypes?: Prisma.HiddenSystemBagTypeUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutHiddenLocationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  categories?: Prisma.CategoryUncheckedUpdateManyWithoutUserNestedInput
+  items?: Prisma.ItemUncheckedUpdateManyWithoutUserNestedInput
+  lists?: Prisma.ListUncheckedUpdateManyWithoutUserNestedInput
+  bagTypes?: Prisma.BagTypeUncheckedUpdateManyWithoutUserNestedInput
+  hiddenItems?: Prisma.HiddenSystemItemUncheckedUpdateManyWithoutUserNestedInput
+  locations?: Prisma.LocationUncheckedUpdateManyWithoutUserNestedInput
+  hiddenCategories?: Prisma.HiddenSystemCategoryUncheckedUpdateManyWithoutUserNestedInput
+  hiddenBagTypes?: Prisma.HiddenSystemBagTypeUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -626,6 +1198,11 @@ export type UserCountOutputType = {
   items: number
   lists: number
   bagTypes: number
+  hiddenItems: number
+  locations: number
+  hiddenCategories: number
+  hiddenBagTypes: number
+  hiddenLocations: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -633,6 +1210,11 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   items?: boolean | UserCountOutputTypeCountItemsArgs
   lists?: boolean | UserCountOutputTypeCountListsArgs
   bagTypes?: boolean | UserCountOutputTypeCountBagTypesArgs
+  hiddenItems?: boolean | UserCountOutputTypeCountHiddenItemsArgs
+  locations?: boolean | UserCountOutputTypeCountLocationsArgs
+  hiddenCategories?: boolean | UserCountOutputTypeCountHiddenCategoriesArgs
+  hiddenBagTypes?: boolean | UserCountOutputTypeCountHiddenBagTypesArgs
+  hiddenLocations?: boolean | UserCountOutputTypeCountHiddenLocationsArgs
 }
 
 /**
@@ -673,6 +1255,41 @@ export type UserCountOutputTypeCountBagTypesArgs<ExtArgs extends runtime.Types.E
   where?: Prisma.BagTypeWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountHiddenItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.HiddenSystemItemWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountLocationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.LocationWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountHiddenCategoriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.HiddenSystemCategoryWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountHiddenBagTypesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.HiddenSystemBagTypeWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountHiddenLocationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.HiddenSystemLocationWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -683,6 +1300,11 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   items?: boolean | Prisma.User$itemsArgs<ExtArgs>
   lists?: boolean | Prisma.User$listsArgs<ExtArgs>
   bagTypes?: boolean | Prisma.User$bagTypesArgs<ExtArgs>
+  hiddenItems?: boolean | Prisma.User$hiddenItemsArgs<ExtArgs>
+  locations?: boolean | Prisma.User$locationsArgs<ExtArgs>
+  hiddenCategories?: boolean | Prisma.User$hiddenCategoriesArgs<ExtArgs>
+  hiddenBagTypes?: boolean | Prisma.User$hiddenBagTypesArgs<ExtArgs>
+  hiddenLocations?: boolean | Prisma.User$hiddenLocationsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -713,6 +1335,11 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   items?: boolean | Prisma.User$itemsArgs<ExtArgs>
   lists?: boolean | Prisma.User$listsArgs<ExtArgs>
   bagTypes?: boolean | Prisma.User$bagTypesArgs<ExtArgs>
+  hiddenItems?: boolean | Prisma.User$hiddenItemsArgs<ExtArgs>
+  locations?: boolean | Prisma.User$locationsArgs<ExtArgs>
+  hiddenCategories?: boolean | Prisma.User$hiddenCategoriesArgs<ExtArgs>
+  hiddenBagTypes?: boolean | Prisma.User$hiddenBagTypesArgs<ExtArgs>
+  hiddenLocations?: boolean | Prisma.User$hiddenLocationsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -725,6 +1352,11 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     items: Prisma.$ItemPayload<ExtArgs>[]
     lists: Prisma.$ListPayload<ExtArgs>[]
     bagTypes: Prisma.$BagTypePayload<ExtArgs>[]
+    hiddenItems: Prisma.$HiddenSystemItemPayload<ExtArgs>[]
+    locations: Prisma.$LocationPayload<ExtArgs>[]
+    hiddenCategories: Prisma.$HiddenSystemCategoryPayload<ExtArgs>[]
+    hiddenBagTypes: Prisma.$HiddenSystemBagTypePayload<ExtArgs>[]
+    hiddenLocations: Prisma.$HiddenSystemLocationPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1129,6 +1761,11 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   items<T extends Prisma.User$itemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$itemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   lists<T extends Prisma.User$listsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$listsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ListPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   bagTypes<T extends Prisma.User$bagTypesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$bagTypesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BagTypePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  hiddenItems<T extends Prisma.User$hiddenItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$hiddenItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$HiddenSystemItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  locations<T extends Prisma.User$locationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$locationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LocationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  hiddenCategories<T extends Prisma.User$hiddenCategoriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$hiddenCategoriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$HiddenSystemCategoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  hiddenBagTypes<T extends Prisma.User$hiddenBagTypesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$hiddenBagTypesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$HiddenSystemBagTypePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  hiddenLocations<T extends Prisma.User$hiddenLocationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$hiddenLocationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$HiddenSystemLocationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1648,6 +2285,126 @@ export type User$bagTypesArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   distinct?: Prisma.BagTypeScalarFieldEnum | Prisma.BagTypeScalarFieldEnum[]
+}
+
+/**
+ * User.hiddenItems
+ */
+export type User$hiddenItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the HiddenSystemItem
+   */
+  select?: Prisma.HiddenSystemItemSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the HiddenSystemItem
+   */
+  omit?: Prisma.HiddenSystemItemOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.HiddenSystemItemInclude<ExtArgs> | null
+  where?: Prisma.HiddenSystemItemWhereInput
+  orderBy?: Prisma.HiddenSystemItemOrderByWithRelationInput | Prisma.HiddenSystemItemOrderByWithRelationInput[]
+  cursor?: Prisma.HiddenSystemItemWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.HiddenSystemItemScalarFieldEnum | Prisma.HiddenSystemItemScalarFieldEnum[]
+}
+
+/**
+ * User.locations
+ */
+export type User$locationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Location
+   */
+  select?: Prisma.LocationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Location
+   */
+  omit?: Prisma.LocationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LocationInclude<ExtArgs> | null
+  where?: Prisma.LocationWhereInput
+  orderBy?: Prisma.LocationOrderByWithRelationInput | Prisma.LocationOrderByWithRelationInput[]
+  cursor?: Prisma.LocationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.LocationScalarFieldEnum | Prisma.LocationScalarFieldEnum[]
+}
+
+/**
+ * User.hiddenCategories
+ */
+export type User$hiddenCategoriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the HiddenSystemCategory
+   */
+  select?: Prisma.HiddenSystemCategorySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the HiddenSystemCategory
+   */
+  omit?: Prisma.HiddenSystemCategoryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.HiddenSystemCategoryInclude<ExtArgs> | null
+  where?: Prisma.HiddenSystemCategoryWhereInput
+  orderBy?: Prisma.HiddenSystemCategoryOrderByWithRelationInput | Prisma.HiddenSystemCategoryOrderByWithRelationInput[]
+  cursor?: Prisma.HiddenSystemCategoryWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.HiddenSystemCategoryScalarFieldEnum | Prisma.HiddenSystemCategoryScalarFieldEnum[]
+}
+
+/**
+ * User.hiddenBagTypes
+ */
+export type User$hiddenBagTypesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the HiddenSystemBagType
+   */
+  select?: Prisma.HiddenSystemBagTypeSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the HiddenSystemBagType
+   */
+  omit?: Prisma.HiddenSystemBagTypeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.HiddenSystemBagTypeInclude<ExtArgs> | null
+  where?: Prisma.HiddenSystemBagTypeWhereInput
+  orderBy?: Prisma.HiddenSystemBagTypeOrderByWithRelationInput | Prisma.HiddenSystemBagTypeOrderByWithRelationInput[]
+  cursor?: Prisma.HiddenSystemBagTypeWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.HiddenSystemBagTypeScalarFieldEnum | Prisma.HiddenSystemBagTypeScalarFieldEnum[]
+}
+
+/**
+ * User.hiddenLocations
+ */
+export type User$hiddenLocationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the HiddenSystemLocation
+   */
+  select?: Prisma.HiddenSystemLocationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the HiddenSystemLocation
+   */
+  omit?: Prisma.HiddenSystemLocationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.HiddenSystemLocationInclude<ExtArgs> | null
+  where?: Prisma.HiddenSystemLocationWhereInput
+  orderBy?: Prisma.HiddenSystemLocationOrderByWithRelationInput | Prisma.HiddenSystemLocationOrderByWithRelationInput[]
+  cursor?: Prisma.HiddenSystemLocationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.HiddenSystemLocationScalarFieldEnum | Prisma.HiddenSystemLocationScalarFieldEnum[]
 }
 
 /**

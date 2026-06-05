@@ -8,54 +8,6 @@ import { createAdminClient } from "@/utils/supabase/admin";
 import { prisma } from "@/lib/prisma";
 import { LoginSchema, SignupSchema, AuthActionState } from "./auth.schema";
 
-async function cloneDefaultsForUser(userId: string) {
-  try {
-    const existingCount = await prisma.category.count({ where: { userId } });
-    if (existingCount > 0) return;
-
-    const [defaultCategories, defaultBagTypes, defaultItems] =
-      await Promise.all([
-        prisma.category.findMany({ where: { userId: null } }),
-        prisma.bagType.findMany({ where: { userId: null } }),
-        prisma.item.findMany({
-          where: { userId: null },
-          include: { categories: true },
-        }),
-      ]);
-
-    const categoryMap = new Map<string, string>();
-    for (const cat of defaultCategories) {
-      const created = await prisma.category.create({
-        data: { name: cat.name, icon: cat.icon, color: cat.color, userId },
-      });
-      categoryMap.set(cat.id, created.id);
-    }
-
-    for (const bt of defaultBagTypes) {
-      await prisma.bagType.create({
-        data: { name: bt.name, icon: bt.icon, color: bt.color, userId },
-      });
-    }
-
-    for (const it of defaultItems) {
-      const connectCats = (it.categories || [])
-        .map((c) => ({ id: categoryMap.get(c.id) }))
-        .filter((c) => c.id) as { id: string }[];
-
-      await prisma.item.create({
-        data: {
-          name: it.name,
-          defaultWeight: it.defaultWeight,
-          userId,
-          categories: { connect: connectCats },
-        },
-      });
-    }
-  } catch (err) {
-    console.warn("Failed to clone default data for user:", err);
-  }
-}
-
 /**
  * LOGIN SERVER ACTION
  */
@@ -155,7 +107,6 @@ export async function signupAction(
           update: { email: data.user.email || email, name },
           create: { id: data.user.id, email: data.user.email || email, name },
         });
-        await cloneDefaultsForUser(data.user.id);
       } catch (dbErr) {
         console.warn("Prisma user upsert failed:", dbErr);
       }
@@ -186,7 +137,6 @@ export async function signupAction(
                   name,
                 },
               });
-              await cloneDefaultsForUser(createdUser.id);
             } catch (dbErr) {
               console.warn(
                 "Prisma user upsert skipped after admin fallback hook:",

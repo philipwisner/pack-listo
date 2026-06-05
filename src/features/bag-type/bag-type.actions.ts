@@ -1,13 +1,17 @@
 "use server";
 
 import { protectedActionClient } from "@/lib/safe-action";
-import { bagTypeService } from "@/services/bag-type.service";
+import { bagTypeService } from "@/features/bag-type/bag-type.service";
 import { z } from "zod";
 
 const createBagTypeSchema = z.object({
   name: z.string().min(1),
   icon: z.string().optional(),
   color: z.string().optional(),
+});
+
+const updateBagTypeSchema = createBagTypeSchema.extend({
+  id: z.string(),
 });
 
 export const createBagTypeAction = protectedActionClient
@@ -19,13 +23,6 @@ export const createBagTypeAction = protectedActionClient
     });
     return { success: true, bagType };
   });
-
-const updateBagTypeSchema = z.object({
-  id: z.string(),
-  name: z.string().min(1),
-  icon: z.string().optional(),
-  color: z.string().optional(),
-});
 
 export const updateBagTypeAction = protectedActionClient
   .schema(updateBagTypeSchema)

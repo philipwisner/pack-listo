@@ -1,7 +1,7 @@
 "use server";
 
 import { protectedActionClient } from "@/lib/safe-action";
-import { itemService } from "@/services/item.service";
+import { itemService } from "@/features/item/item.service";
 import { z } from "zod";
 
 const createItemSchema = z.object({

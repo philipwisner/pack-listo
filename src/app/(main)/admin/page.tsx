@@ -424,8 +424,7 @@ export default async function AdminPage() {
             <InputLabel htmlFor="item-categories" label="Categories" />
             <select
               id="item-categories"
-              name="categoryIds"
-              multiple
+              name="categoryId"
               size={4}
               className={css({
                 width: "100%",
@@ -510,9 +509,8 @@ export default async function AdminPage() {
                     />
                     <select
                       id={`item-categories-${item.id}`}
-                      name="categoryIds"
+                      name="categoryId"
                       defaultValue={item.category?.id}
-                      multiple
                       size={4}
                       className={css({
                         width: "100%",

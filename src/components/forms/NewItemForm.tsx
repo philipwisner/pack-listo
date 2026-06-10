@@ -30,14 +30,14 @@ export function NewItemForm({
     setError(null);
 
     const formData = new FormData(e.currentTarget);
-    const categoryIds = formData.getAll("categoryIds") as string[];
+    const selected = formData.get("categoryId") as string | null;
 
     const data = {
       name: formData.get("name") as string,
       defaultWeight: formData.get("weight")
         ? parseFloat(formData.get("weight") as string)
         : undefined,
-      categoryIds: categoryIds.length > 0 ? categoryIds : undefined,
+      categoryId: selected ? String(selected) : undefined,
     };
 
     const result = await createItemAction(data);
@@ -106,8 +106,8 @@ export function NewItemForm({
               }}
             >
               <input
-                type="checkbox"
-                name="categoryIds"
+                type="radio"
+                name="categoryId"
                 value={cat.id}
                 disabled={loading}
                 style={{ width: "18px", height: "18px" }}

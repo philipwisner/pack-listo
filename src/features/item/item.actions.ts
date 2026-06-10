@@ -7,7 +7,7 @@ import { z } from "zod";
 const createItemSchema = z.object({
   name: z.string().min(1),
   defaultWeight: z.number().optional(),
-  categoryIds: z.array(z.string()).optional(),
+  categoryId: z.string().optional(),
 });
 
 export const createItemAction = protectedActionClient
@@ -24,7 +24,7 @@ const updateItemSchema = z.object({
   id: z.string(),
   name: z.string().min(1),
   defaultWeight: z.number().optional(),
-  categoryIds: z.array(z.string()).optional(),
+  categoryId: z.string().optional(),
 });
 
 export const updateItemAction = protectedActionClient

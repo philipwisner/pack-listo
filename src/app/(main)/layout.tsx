@@ -2,6 +2,7 @@ import { Header } from "@/components/Header/Header";
 import { getCurrentUser } from "@/lib/auth";
 import { flex } from "@/styled-system/patterns";
 import { css } from "@/styled-system/css";
+export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: {

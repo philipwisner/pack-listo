@@ -16,7 +16,9 @@
     "db:push": "prisma db push",
     "db:seed": "prisma db seed",
     "db:reset": "prisma migrate reset --force && tsx prisma/seed.ts",
-    "db:sync": "prisma format && prisma db push && prisma generate"
+    "db:sync": "prisma format && prisma db push && prisma generate",
+    "db:prod:deploy": "npx dotenv-cli -e .env.production -- prisma migrate deploy",
+    "db:prod:push": "npx dotenv-cli -e .env.production -- prisma db push"
   },
   "prisma": {
     "seed": "npx tsx prisma/seed.ts"

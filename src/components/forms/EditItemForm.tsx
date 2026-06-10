@@ -45,13 +45,17 @@ export function EditItemForm({
       .map((t) => t.trim())
       .filter(Boolean);
 
+    const rawCategoryId = formData.get("categoryId");
     const data = {
       id: item.id,
       name: formData.get("name") as string,
       defaultWeight: formData.get("weight")
         ? parseFloat(formData.get("weight") as string)
         : undefined,
-      categoryId: (formData.get("categoryId") as string) || null,
+      categoryId:
+        typeof rawCategoryId === "string" && rawCategoryId !== ""
+          ? rawCategoryId
+          : undefined,
       tags: tags,
     };
 

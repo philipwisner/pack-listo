@@ -17,6 +17,6 @@ export const BagTypeSchema = z.object({
 export const ItemSchema = z.object({
   id: z.string().optional(),
   name: z.string().min(1, "Name is required"),
-  defaultWeight: z.coerce.number().nullable(),
-  categoryId: z.string().nullable(),
+  defaultWeight: z.coerce.number().optional().nullable(),
+  categoryId: z.string().optional().nullable(),
 });

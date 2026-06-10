@@ -8,7 +8,7 @@ export type ListWithDetails = Prisma.ListGetPayload<{
     items: {
       include: {
         item: { include: { category: true } };
-        bagTypeRef: true;
+        bagType: true;
       };
     };
   };
@@ -34,7 +34,7 @@ export const listService = {
         items: {
           include: {
             item: { include: { category: true } },
-            bagTypeRef: true,
+            bagType: true,
           },
           orderBy: { sortOrder: "asc" },
         },

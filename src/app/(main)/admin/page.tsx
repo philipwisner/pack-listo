@@ -395,10 +395,17 @@ export default async function AdminPage() {
           action={async (formData: FormData) => {
             "use server";
             const rawWeight = formData.get("defaultWeight") as string;
+            const rawCategoryId = formData.get("categoryId");
             await createItemAction({
               name: formData.get("name") as string,
-              defaultWeight: rawWeight ? parseFloat(rawWeight) : null,
-              categoryId: formData.get("categoryId") as string | null,
+              defaultWeight:
+                rawWeight && rawWeight.trim() !== ""
+                  ? parseFloat(rawWeight)
+                  : undefined,
+              categoryId:
+                typeof rawCategoryId === "string" && rawCategoryId !== ""
+                  ? rawCategoryId
+                  : undefined,
             });
           }}
           className={grid({ columns: { base: 1, md: 3 }, gap: "4", mb: "6" })}
@@ -472,11 +479,19 @@ export default async function AdminPage() {
                   action={async (formData: FormData) => {
                     "use server";
                     const rawWeight = formData.get("defaultWeight") as string;
+                    const rawCategoryId = formData.get("categoryId");
                     await updateItemAction({
                       id: formData.get("id") as string,
                       name: formData.get("name") as string,
-                      defaultWeight: rawWeight ? parseFloat(rawWeight) : null,
-                      categoryId: formData.get("categoryId") as string | null,
+                      defaultWeight:
+                        rawWeight && rawWeight.trim() !== ""
+                          ? parseFloat(rawWeight)
+                          : undefined,
+                      categoryId:
+                        typeof rawCategoryId === "string" &&
+                        rawCategoryId !== ""
+                          ? rawCategoryId
+                          : undefined,
                     });
                   }}
                   className={grid({ columns: { base: 1 }, gap: "4" })}

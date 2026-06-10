@@ -34,7 +34,7 @@ export async function getDashboardData(userId: string): Promise<{
       include: {
         items: {
           include: {
-            bagTypeRef: true,
+            bagType: true,
           },
         },
       },
@@ -63,7 +63,7 @@ export async function getDashboardData(userId: string): Promise<{
 
       // Determine list bagType (fallback if not configured explicitly)
       const bagType =
-        list.items.find((i) => i.bagTypeRef)?.bagTypeRef?.name ||
+        list.items.find((i) => i.bagType?.name)?.bagType?.name ||
         "Carry-on Backpack";
 
       return {

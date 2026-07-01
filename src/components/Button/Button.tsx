@@ -175,7 +175,7 @@ export const Button = ({
       )}
       {isLoading && (
         <span className="button-spinner" aria-hidden="true">
-          🌀 {/* Replace with an SVG spin-graphic or keyframe component */}
+          ... {/* Replace with an SVG spin-graphic or keyframe component */}
         </span>
       )}
       <span>{isLoading ? loadingText : text}</span>

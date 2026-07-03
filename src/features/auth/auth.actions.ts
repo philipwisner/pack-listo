@@ -93,6 +93,7 @@ export async function signupAction(
       password,
       options: {
         data: { name },
+        emailRedirectTo: `${location.origin}/auth/callback?next=/dashboard`,
       },
     });
 

@@ -6,6 +6,7 @@ import { InputLabel } from "@/components/InputLabel/InputLabel";
 import { Button } from "@/components/Button/Button";
 import { FormContainer } from "@/features/auth/auth.styles";
 import { ArrowRight } from "lucide-react";
+import { Error } from "@/components/Error/Error";
 
 const initialState = {
   error: "",
@@ -70,17 +71,6 @@ export function LoginFormContent({ redirectTo }: LoginFormContentProps) {
   return (
     <FormContainer action={formAction} onSubmit={handleSubmit} noValidate>
       <input type="hidden" name="redirectTo" value={redirectTo} />
-      {fieldErrors.server && (
-        <p
-          style={{
-            color: "var(--colors-red-500, #ef4444)",
-            fontSize: "0.875rem",
-            marginBottom: "1rem",
-          }}
-        >
-          {fieldErrors.server}
-        </p>
-      )}
       <div>
         <InputLabel htmlFor="email" label="E-mail" />
         <Input
@@ -107,7 +97,6 @@ export function LoginFormContent({ redirectTo }: LoginFormContentProps) {
           onChange={() => handleInputChange("password")}
         />
       </div>
-
       <Button
         text="Log In"
         type="submit"
@@ -115,6 +104,7 @@ export function LoginFormContent({ redirectTo }: LoginFormContentProps) {
         loadingText="Logging in..."
         iconRight={<ArrowRight />}
       />
+      {fieldErrors.server && <Error text={fieldErrors.server} />}
     </FormContainer>
   );
 }

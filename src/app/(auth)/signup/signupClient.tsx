@@ -6,6 +6,7 @@ import { InputLabel } from "@/components/InputLabel/InputLabel";
 import { Input } from "@/components/TextInput/TextInput";
 import { Button } from "@/components/Button/Button";
 import { FormContainer } from "@/features/auth/auth.styles";
+import { Error } from "@/components/Error/Error";
 
 const initialState = {
   error: "",
@@ -70,17 +71,6 @@ export function SignupFormContent() {
 
   return (
     <FormContainer action={formAction} onSubmit={handleSubmit} noValidate>
-      {fieldErrors.server && (
-        <p
-          style={{
-            color: "var(--colors-red-500, #ef4444)",
-            fontSize: "0.875rem",
-            marginBottom: "1rem",
-          }}
-        >
-          {fieldErrors.server}
-        </p>
-      )}
       <div>
         <InputLabel htmlFor="name" label="Name" />
         <Input
@@ -126,6 +116,7 @@ export function SignupFormContent() {
         isLoading={isPending}
         loadingText="Creating Account..."
       />
+      {fieldErrors.server && <Error text={fieldErrors.server} />}
     </FormContainer>
   );
 }

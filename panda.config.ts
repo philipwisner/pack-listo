@@ -372,11 +372,26 @@ export default defineConfig({
           },
         },
         error: {
-          bg: { value: "{colors.red.50}" },
-          border: { value: "{colors.red.100}" },
+          bg: {
+            value: {
+              base: "{colors.red.50}",
+              _dark: "{colors.red.700}",
+            },
+          },
+          border: {
+            value: {
+              base: "{colors.red.200}",
+              _dark: "{colors.red.400}",
+            },
+          },
+          text: {
+            value: {
+              base: "{colors.red.600}",
+              _dark: "{colors.red.100}",
+            },
+          },
           main: { value: "{colors.red.500}" },
           active: { value: "{colors.red.600}" },
-          text: { value: "{colors.red.600}" },
           "bg-subtle": { value: "{colors.red.500/10}" },
         },
         success: {

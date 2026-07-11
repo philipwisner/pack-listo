@@ -5,6 +5,7 @@ import {
   PageBackground,
   AuthContainerContent,
   AdditionalOptions,
+  AccessibilityHeading,
 } from "@/features/auth/auth.styles";
 import { LoginFormContent } from "./loginClient";
 
@@ -23,11 +24,17 @@ export default async function LoginPage({ searchParams }: PageProps) {
   return (
     <PageBackground>
       <AuthContainerContent>
+        <AccessibilityHeading>Sign In to PackListo</AccessibilityHeading>
         <Logo />
         <LoginFormContent redirectTo={redirectTo} />
         <AdditionalOptions>
           <MutedText>
-            Don't have an account? <InternalLink text="Sign Up" url="/signup" />
+            Don't have an account?{" "}
+            <InternalLink
+              text="Sign Up"
+              url="/signup"
+              aria-label="Go to Sign Up Page"
+            />
           </MutedText>
         </AdditionalOptions>
       </AuthContainerContent>

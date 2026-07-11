@@ -68,6 +68,22 @@ export function LoginFormContent({ redirectTo }: LoginFormContentProps) {
     }
   };
 
+  const emailDescribedBy =
+    [
+      fieldErrors.email ? "login-email-error" : null,
+      fieldErrors.server ? "login-form-error" : null,
+    ]
+      .filter(Boolean)
+      .join(" ") || undefined;
+
+  const passwordDescribedBy =
+    [
+      fieldErrors.password ? "login-password-error" : null,
+      fieldErrors.server ? "login-form-error" : null,
+    ]
+      .filter(Boolean)
+      .join(" ") || undefined;
+
   return (
     <FormContainer action={formAction} onSubmit={handleSubmit} noValidate>
       <input type="hidden" name="redirectTo" value={redirectTo} />
@@ -81,8 +97,18 @@ export function LoginFormContent({ redirectTo }: LoginFormContentProps) {
           placeholder="user@email.com"
           disabled={isPending}
           hasError={fieldErrors.email}
+          aria-required="true"
+          aria-invalid={Boolean(fieldErrors.email || fieldErrors.server)}
+          aria-describedby={emailDescribedBy}
           onChange={() => handleInputChange("email")}
         />
+        {fieldErrors.email && (
+          <Error
+            id="login-email-error"
+            text="Please enter a valid email address."
+            role="alert"
+          />
+        )}
       </div>
       <div>
         <InputLabel htmlFor="password" label="Password" />
@@ -93,9 +119,19 @@ export function LoginFormContent({ redirectTo }: LoginFormContentProps) {
           required
           placeholder="••••••••••"
           disabled={isPending}
+          aria-required="true"
           hasError={fieldErrors.password}
+          aria-invalid={Boolean(fieldErrors.password || fieldErrors.server)}
+          aria-describedby={passwordDescribedBy}
           onChange={() => handleInputChange("password")}
         />
+        {fieldErrors.password && (
+          <Error
+            id="login-password-error"
+            text="Password is required."
+            role="alert"
+          />
+        )}
       </div>
       <Button
         text="Log In"
@@ -104,7 +140,14 @@ export function LoginFormContent({ redirectTo }: LoginFormContentProps) {
         loadingText="Logging in..."
         iconRight={<ArrowRight />}
       />
-      {fieldErrors.server && <Error text={fieldErrors.server} />}
+      {fieldErrors.server && (
+        <Error
+          variant="message"
+          id="login-form-error"
+          text={fieldErrors.server}
+          role="alert"
+        />
+      )}
     </FormContainer>
   );
 }

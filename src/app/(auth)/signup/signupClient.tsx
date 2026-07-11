@@ -69,6 +69,30 @@ export function SignupFormContent() {
     }
   };
 
+  const nameDescribedBy =
+    [
+      fieldErrors.name ? "signup-name-error" : null,
+      fieldErrors.server ? "signup-form-error" : null,
+    ]
+      .filter(Boolean)
+      .join(" ") || undefined;
+
+  const emailDescribedBy =
+    [
+      fieldErrors.email ? "signup-email-error" : null,
+      fieldErrors.server ? "signup-form-error" : null,
+    ]
+      .filter(Boolean)
+      .join(" ") || undefined;
+
+  const passwordDescribedBy =
+    [
+      fieldErrors.password ? "signup-password-error" : null,
+      fieldErrors.server ? "signup-form-error" : null,
+    ]
+      .filter(Boolean)
+      .join(" ") || undefined;
+
   return (
     <FormContainer action={formAction} onSubmit={handleSubmit} noValidate>
       <div>
@@ -81,8 +105,13 @@ export function SignupFormContent() {
           placeholder="John Doe"
           disabled={isPending}
           hasError={fieldErrors.name}
+          aria-invalid={Boolean(fieldErrors.name || fieldErrors.server)}
+          aria-describedby={nameDescribedBy}
           onChange={() => handleInputChange("name")}
         />
+        {fieldErrors.name && (
+          <Error id="signup-name-error" text="Name is required." role="alert" />
+        )}
       </div>
       <div>
         <InputLabel htmlFor="email" label="E-mail" />
@@ -94,8 +123,17 @@ export function SignupFormContent() {
           placeholder="user@email.com"
           disabled={isPending}
           hasError={fieldErrors.email}
+          aria-invalid={Boolean(fieldErrors.email || fieldErrors.server)}
+          aria-describedby={emailDescribedBy}
           onChange={() => handleInputChange("email")}
         />
+        {fieldErrors.email && (
+          <Error
+            id="signup-email-error"
+            text="Please enter a valid email address."
+            role="alert"
+          />
+        )}
       </div>
       <div>
         <InputLabel htmlFor="password" label="Password" />
@@ -107,8 +145,17 @@ export function SignupFormContent() {
           placeholder="••••••••••"
           disabled={isPending}
           hasError={fieldErrors.password}
+          aria-invalid={Boolean(fieldErrors.password || fieldErrors.server)}
+          aria-describedby={passwordDescribedBy}
           onChange={() => handleInputChange("password")}
         />
+        {fieldErrors.password && (
+          <Error
+            id="signup-password-error"
+            text="Password is required."
+            role="alert"
+          />
+        )}
       </div>
       <Button
         text="Sign Up"
@@ -116,7 +163,14 @@ export function SignupFormContent() {
         isLoading={isPending}
         loadingText="Creating Account..."
       />
-      {fieldErrors.server && <Error text={fieldErrors.server} />}
+      {fieldErrors.server && (
+        <Error
+          variant="message"
+          id="signup-form-error"
+          text={fieldErrors.server}
+          role="alert"
+        />
+      )}
     </FormContainer>
   );
 }

@@ -33,6 +33,15 @@ export const FormContainer = styled("form", {
   },
 });
 
+export const AccessibilityHeading = styled("h1", {
+  base: {
+    width: "1px",
+    height: "1px",
+    padding: "0",
+    overflow: "hidden",
+  },
+});
+
 export const AdditionalOptions = (props: ComponentProps<typeof Flex>) => (
   <Flex
     direction="column"

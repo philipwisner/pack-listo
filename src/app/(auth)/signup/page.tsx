@@ -20,7 +20,12 @@ export default function SignupPage() {
         <SignupFormContent />
         <AdditionalOptions>
           <MutedText>
-            Already have an account? <InternalLink text="Log In" url="/login" />
+            Already have an account?{" "}
+            <InternalLink
+              text="Log In"
+              url="/login"
+              aria-label="Go to Log In Page"
+            />
           </MutedText>
         </AdditionalOptions>
       </AuthContainerContent>

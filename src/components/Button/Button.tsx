@@ -117,7 +117,7 @@ export const ButtonStyled = styled("button", {
 
     // Width Sizing Rules
     width: {
-      full: { width: "100%", mt: "2" },
+      full: { width: "100%" },
       fit: { width: "fit-content" },
     },
 

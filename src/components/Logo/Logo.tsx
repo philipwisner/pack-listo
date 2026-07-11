@@ -21,6 +21,8 @@ export const Logo = ({ width = "100%", height = "100%" }: LogoProps) => {
         width={width}
         height={height}
         fill="none"
+        role="img"
+        aria-label="Pack Listo Logo"
         viewBox="0 0 231 37"
         xmlns="http://www.w3.org/2000/svg"
       >

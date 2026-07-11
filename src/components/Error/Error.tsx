@@ -1,10 +1,10 @@
 import { styled } from "@/styled-system/jsx";
 import { LucideAlertCircle } from "lucide-react";
-import { type ComponentProps, type ReactNode } from "react";
+import { type ComponentProps } from "react";
 
 // 1. Define strict type props for your API layout
 export interface ErrorProps extends ComponentProps<typeof ErrorStyled> {
-  variant?: "primary" | "inverse" | "alternative";
+  variant?: "input" | "message" | "inverse";
   width?: "full" | "fit";
   canDismiss?: boolean;
   text: string;
@@ -19,13 +19,22 @@ export const ErrorStyled = styled("div", {
     gap: "4",
     py: "3",
     px: "4",
-    borderRadius: "md",
     fontWeight: "regular",
     fontSize: "base",
   },
   variants: {
     variant: {
-      primary: {
+      input: {
+        color: "error.text",
+        pt: "2",
+        pb: "0",
+        px: "0",
+        gap: "2",
+        mb: "-2",
+        fontSize: "sm",
+      },
+      message: {
+        borderRadius: "md",
         bg: "error.bg",
         color: "error.text",
         border: "1px solid",
@@ -36,25 +45,6 @@ export const ErrorStyled = styled("div", {
         color: "button.secondary.text",
         border: "1px solid",
         borderColor: "input.border.default",
-        _hover: {
-          bg: "button.secondary.hoverBg",
-          shadow: "shadows.button.secondary",
-          transform: "translateY(-1px)",
-        },
-        _focus: {
-          outlineColor: "input.border.focus",
-        },
-        _focusVisible: {
-          outlineColor: "input.border.focus",
-        },
-        _active: {
-          bg: "button.secondary.activeBg",
-        },
-        _disabled: {
-          bg: "input.background.disabled",
-          color: "input.placeholder.default",
-          _hover: { bg: "input.background.disabled" },
-        },
       },
       alternative: {
         borderRadius: "full",
@@ -78,14 +68,14 @@ export const ErrorStyled = styled("div", {
   },
 
   defaultVariants: {
-    variant: "primary",
+    variant: "input",
     width: "full",
   },
 });
 
 // 3. Render Component Structure
 export const Error = ({
-  variant = "primary",
+  variant = "input",
   width = "full",
   canDismiss = false,
   text = "",
@@ -93,7 +83,7 @@ export const Error = ({
 }: ErrorProps) => {
   return (
     <ErrorStyled variant={variant} width={width} {...props}>
-      <LucideAlertCircle size={20} />
+      <LucideAlertCircle size={variant === "input" ? 16 : 20} />
       <p>{text}</p>
       {canDismiss && <span>x</span>}
     </ErrorStyled>

@@ -77,6 +77,9 @@ export default defineConfig({
         "24": { value: "6rem" },
         "32": { value: "8rem" },
       },
+      sizes: {
+        pageContainer: { value: "1400px" },
+      },
       colors: {
         black: { value: "#000000" },
         white: { value: "#ffffff" },
@@ -450,14 +453,14 @@ export default defineConfig({
         value: {
           fontSize: "{fontSizes.lg}",
           lineHeight: "{lineHeights.tight}",
-          fontWeight: "{fontWeights.bold}",
+          fontWeight: "{fontWeights.semibold}",
         },
       },
       headingXl: {
         value: {
           fontSize: "{fontSizes.xl}",
           lineHeight: "{lineHeights.tight}",
-          fontWeight: "{fontWeights.bold}",
+          fontWeight: "{fontWeights.semibold}",
         },
       },
       heading2xl: {

@@ -1,4 +1,4 @@
-import { Header } from "@/components/Header/Header";
+import { Navbar } from "@/components/Navbar/Navbar";
 import { getCurrentUser } from "@/lib/auth";
 import { flex } from "@/styled-system/patterns";
 import { css } from "@/styled-system/css";
@@ -27,7 +27,7 @@ export default async function MainLayout({
         overflow: "hidden",
       })}
     >
-      <Header user={user} />
+      <Navbar user={user} />
       <main
         className={css({
           flex: "1",

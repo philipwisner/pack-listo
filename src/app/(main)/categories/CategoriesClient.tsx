@@ -1,11 +1,16 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { Modal } from "@/components/Modal/Modal";
 import { NewCategoryForm } from "@/components/forms/NewCategoryForm";
 import { EditCategoryForm } from "@/components/forms/EditCategoryForm";
 import styles from "@/components/items/Items.module.css";
 import { useRouter } from "next/navigation";
+import { Button } from "@/components/Button/Button";
+import { styled } from "@/styled-system/jsx/factory";
+import { css } from "@/styled-system/css/css";
+import { PageHeader } from "@/components/PageHeader/PageHeader";
+import { PageContainer } from "@/styles/layout.styles";
 
 interface CategoriesClientProps {
   initialCategories: any[];
@@ -25,23 +30,14 @@ export default function CategoriesClient({
   };
 
   return (
-    <div className="dashboard-page" style={{ padding: "4rem" }}>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "flex-end",
-          marginBottom: "3rem",
-          borderBottom: "4px solid var(--border)",
-          paddingBottom: "1.5rem",
+    <PageContainer>
+      <PageHeader
+        text="My Categories"
+        button={{
+          text: "Create Category",
+          onClick: () => setIsCreateModalOpen(true),
         }}
-      >
-        <h1 style={{ marginBottom: 0 }}>Classifications</h1>
-        <button className="btn-sign" onClick={() => setIsCreateModalOpen(true)}>
-          Define New Category
-        </button>
-      </div>
-
+      />
       <div className={styles.inventoryTable}>
         <div className={styles.tableHeader}>
           <span>Code</span>
@@ -134,6 +130,6 @@ export default function CategoriesClient({
           />
         )}
       </Modal>
-    </div>
+    </PageContainer>
   );
 }

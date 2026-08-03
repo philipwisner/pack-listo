@@ -1,85 +1,126 @@
 "use client";
 
-import React, { useState } from "react";
-import { ListCard } from "@/components/lists/ListCard";
+import { useState } from "react";
+import { ListCard } from "@/components/ListCard/ListCard";
 import { Modal } from "@/components/Modal/Modal";
 import { NewListForm } from "@/components/forms/NewListForm";
-import styles from "@/components/lists/Lists.module.css";
 import { useRouter } from "next/navigation";
+import { PageHeader } from "@/components/PageHeader/PageHeader";
+import { PageContainer } from "@/styles/layout.styles";
+import { MutedText } from "@/styles/input.styles";
+import { BottomCard } from "@/components/BottomCard/BottomCard";
+import { createListAction } from "@/features/list/list.actions";
 
 interface ListsClientProps {
   initialLists: any[];
 }
 
 export default function ListsClient({ initialLists }: ListsClientProps) {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const router = useRouter();
+  const [showBottomCard, setShowBottomCard] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const handleSuccess = () => {
-    setIsModalOpen(false);
-    // Refresh the server component data
+    setShowBottomCard(false);
     router.refresh();
   };
 
+  const createListInputs = [
+    {
+      id: "name",
+      label: "List Name",
+      type: "text",
+      placeholder: "Your list name",
+      required: true,
+    },
+    {
+      id: "destination",
+      label: "Destination",
+      type: "text",
+      placeholder: "Where are you going?",
+      required: false,
+    },
+    {
+      id: "dates",
+      label: "Dates",
+      type: "text",
+      placeholder: "When?",
+      required: false,
+    },
+  ];
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+
+    const formData = new FormData(e.currentTarget);
+    const data = {
+      name: formData.get("name") as string,
+      destination: formData.get("destination") as string,
+      tripDate: formData.get("tripDate")
+        ? new Date(formData.get("tripDate") as string)
+        : undefined,
+      lengthOfStay: formData.get("lengthOfStay")
+        ? parseInt(formData.get("lengthOfStay") as string)
+        : undefined,
+      isTemplate: formData.get("isTemplate") === "on",
+    };
+
+    const result = await createListAction(data);
+    console.log("createListAction result:", result);
+
+    if (result?.data?.success) {
+      handleSuccess();
+      router.refresh();
+      if (result.data.list) {
+        router.push(`/lists/${result.data.list.id}`);
+      }
+    } else {
+      setError("Failed to create manifest. Please check all requirements.");
+      setLoading(false);
+    }
+  }
+
   return (
-    <div className="dashboard-page" style={{ padding: "4rem" }}>
-      <div className={styles.pageHeader}>
-        <h1>Manifests / Lists</h1>
-        <button className="btn-sign" onClick={() => setIsModalOpen(true)}>
-          Create New Manifest
-        </button>
-      </div>
-
-      <div className={styles.listsGrid}>
-        {initialLists.length === 0 ? (
-          <div
-            style={{
-              padding: "4rem",
-              textAlign: "center",
-              border: "2px dashed var(--border)",
-              fontWeight: 800,
-            }}
-          >
-            NO MANIFESTS DETECTED. AUTHORIZATION REQUIRED.
-          </div>
-        ) : (
-          initialLists.map((list) => (
-            <ListCard
-              key={list.id}
-              id={list.id}
-              name={list.name}
-              destination={list.destination || "UNKNOWN"}
-              date={
-                list.tripDate
-                  ? new Date(list.tripDate).toISOString().split("T")[0]
-                  : "TBD"
-              }
-              itemCount={list._count?.items || 0}
-              status={list.isTemplate ? "TEMPLATE" : "ACTIVE"}
-            />
-          ))
-        )}
-      </div>
-
-      <section className="sign-panel" style={{ marginTop: "4rem" }}>
-        <h2>Standard Procedures</h2>
-        <p style={{ fontWeight: 600 }}>
-          All lists must be finalized 24 hours prior to departure. Use templates
-          for recurring route profiles.
-        </p>
-      </section>
-
-      <Modal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+    <>
+      {/* <Modal
+        isOpen={showBottomCard}
+        onClose={() => setShowBottomCard(false)}
         title="AUTHORIZE NEW MANIFEST"
         gate="L-40"
       >
         <NewListForm
           onSuccess={handleSuccess}
-          onCancel={() => setIsModalOpen(false)}
+          onCancel={() => setShowBottomCard(false)}
         />
-      </Modal>
-    </div>
+      </Modal> */}
+      <PageContainer>
+        {showBottomCard && (
+          <BottomCard
+            heading="Create List"
+            onClose={() => setShowBottomCard(false)}
+            inputs={createListInputs}
+            button={{ text: "Create List", type: "submit" }}
+            onSave={handleSubmit}
+          />
+        )}
+        <PageHeader
+          text="My Lists"
+          button={{
+            text: "Create List",
+            onClick: () => setShowBottomCard(true),
+          }}
+        />
+        <div>
+          {initialLists.length === 0 ? (
+            <MutedText>No Lists. Create a List to get started.</MutedText>
+          ) : (
+            initialLists.map((list) => <ListCard key={list.id} list={list} />)
+          )}
+        </div>
+      </PageContainer>
+    </>
   );
 }

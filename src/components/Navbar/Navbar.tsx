@@ -8,11 +8,11 @@ import { Logo } from "../Logo/Logo";
 import Link from "next/link";
 import { AuthUser } from "@/lib/auth";
 
-export interface HeaderProps {
+export interface NavbarProps {
   user?: AuthUser | null;
 }
 
-export const Header = ({ user }: HeaderProps) => {
+export const Navbar = ({ user }: NavbarProps) => {
   return (
     <header
       className={css({

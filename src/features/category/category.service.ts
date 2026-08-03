@@ -52,7 +52,7 @@ export const categoryService = {
       enforceOwnership: true,
     },
   ) {
-    if (!id) throw new Error("Category ID i`s required for update.");
+    if (!id) throw new Error("Category ID is required for update.");
 
     const { userId, enforceOwnership } = options;
 

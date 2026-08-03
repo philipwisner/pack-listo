@@ -4,6 +4,8 @@ import { itemService } from "@/features/item/item.service";
 import { ManifestEditor } from "@/components/lists/ManifestEditor";
 import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
+import { PageContainer } from "@/styles/layout.styles";
+import { PageHeader } from "@/components/PageHeader/PageHeader";
 
 export default async function ListDetailPage({
   params,
@@ -25,7 +27,6 @@ export default async function ListDetailPage({
 
   const list = await listService.getById(id, userId);
   const items = await itemService.getAll(userId);
-  console.log("list:", list);
 
   if (!list) {
     notFound();
@@ -43,11 +44,8 @@ export default async function ListDetailPage({
   }));
 
   return (
-    <ManifestEditor
-      listId={list.id}
-      name={list.name}
-      items={transformedItems}
-      availableItems={items}
-    />
+    <PageContainer>
+      <PageHeader text={list.name} button={{ text: "Edit List" }} />
+    </PageContainer>
   );
 }

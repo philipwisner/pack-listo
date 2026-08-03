@@ -18,6 +18,7 @@ export interface ListCardProps extends ComponentProps<typeof ListCardStyled> {
 export const ListCardStyled = styled(Link, {
   base: {
     border: "1px solid",
+    marginBottom: token("spacing.4"),
     borderColor: {
       base: "gray.300",
       _dark: "gray.600",

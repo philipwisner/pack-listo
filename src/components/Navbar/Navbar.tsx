@@ -40,7 +40,7 @@ export const Navbar = ({ user }: NavbarProps) => {
         >
           <Logo />
         </Link>
-        <div className={flex({ align: "center", gap: "4" })}>
+        <div className={flex({ align: "center", gap: "4", flexWrap: "wrap" })}>
           <InternalLink text="Dashboard" url="/dashboard" />
           <InternalLink text="Lists" url="/lists" />
           <InternalLink text="Items" url="/items" />

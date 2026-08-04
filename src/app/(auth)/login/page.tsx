@@ -1,5 +1,6 @@
-import { Logo } from "@/components/Logo/Logo";
-import { InternalLink } from "@/components/InternalLink/InternalLink";
+import { LoginFormContent } from "./loginClient";
+import { Logo } from "@/components/Logo";
+import { InternalLink } from "@/components/InternalLink";
 import { MutedText } from "@/styles/text.styles";
 import {
   PageBackground,
@@ -7,7 +8,6 @@ import {
   AdditionalOptions,
   AccessibilityHeading,
 } from "@/features/auth/auth.styles";
-import { LoginFormContent } from "./loginClient";
 
 export const metadata = {
   title: "Log In",

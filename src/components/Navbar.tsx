@@ -1,11 +1,11 @@
 "use client";
+import Link from "next/link";
 import { css } from "@/styled-system/css/css";
 import { flex } from "@/styled-system/patterns/flex";
-import { InternalLink } from "../InternalLink/InternalLink";
+import { InternalLink } from "@/components/InternalLink";
+import { Button } from "@/components/Button/Button";
+import { Logo } from "@/components/Logo";
 import { logoutAction } from "@/features/auth/auth.actions";
-import { Button } from "../Button/Button";
-import { Logo } from "../Logo/Logo";
-import Link from "next/link";
 import { AuthUser } from "@/lib/auth";
 
 export interface NavbarProps {

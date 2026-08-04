@@ -1,12 +1,12 @@
-import { Logo } from "@/components/Logo/Logo";
-import { InternalLink } from "@/components/InternalLink/InternalLink";
+import { SignupFormContent } from "./signupClient";
+import { Logo } from "@/components/Logo";
+import { InternalLink } from "@/components/InternalLink";
 import { MutedText } from "@/styles/text.styles";
 import {
   PageBackground,
   AuthContainerContent,
   AdditionalOptions,
 } from "@/features/auth/auth.styles";
-import { SignupFormContent } from "./signupClient";
 
 export const metadata = {
   title: "Sign Up",

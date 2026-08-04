@@ -1,12 +1,11 @@
 "use client";
-
 import { useActionState, useState, useEffect } from "react";
 import { signupAction } from "@/features/auth/auth.actions";
-import { InputLabel } from "@/components/InputLabel/InputLabel";
+import { InputLabel } from "@/components/InputLabel";
 import { Input } from "@/components/TextInput/TextInput";
 import { Button } from "@/components/Button/Button";
+import { Error } from "@/components/Error";
 import { FormContainer } from "@/features/auth/auth.styles";
-import { Error } from "@/components/Error/Error";
 
 const initialState = {
   error: "",

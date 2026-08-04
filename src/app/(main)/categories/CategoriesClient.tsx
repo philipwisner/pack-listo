@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/Button/Button";
 import { styled } from "@/styled-system/jsx/factory";
 import { css } from "@/styled-system/css/css";
-import { PageHeader } from "@/components/PageHeader/PageHeader";
+import { PageHeader } from "@/components/PageHeader";
 import { PageContainer } from "@/styles/layout.styles";
 
 interface CategoriesClientProps {

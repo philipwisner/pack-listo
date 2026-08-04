@@ -118,7 +118,7 @@ export const ButtonStyled = styled("button", {
     // Width Sizing Rules
     width: {
       full: { width: "100%" },
-      fit: { width: "fit-content" },
+      fit: { width: "fit-content", height: "fit-content" },
     },
 
     // Button sizing rules
@@ -139,7 +139,7 @@ export const ButtonStyled = styled("button", {
   // Fallback production safety defaults
   defaultVariants: {
     variant: "primary",
-    width: "full",
+    width: "fit",
     size: "base",
   },
 });

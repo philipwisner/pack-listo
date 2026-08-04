@@ -1,14 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { ListCard } from "@/components/ListCard/ListCard";
-import { Modal } from "@/components/Modal/Modal";
-import { NewListForm } from "@/components/forms/NewListForm";
+import { ListCard } from "@/components/ListCard";
 import { useRouter } from "next/navigation";
-import { PageHeader } from "@/components/PageHeader/PageHeader";
+import { PageHeader } from "@/components/PageHeader";
 import { PageContainer } from "@/styles/layout.styles";
-import { MutedText } from "@/styles/input.styles";
-import { BottomCard } from "@/components/BottomCard/BottomCard";
+import { MutedText } from "@/styles/text.styles";
+import { BottomCard } from "@/components/BottomCard";
 import { createListAction } from "@/features/list/list.actions";
 
 interface ListsClientProps {
@@ -18,7 +16,9 @@ interface ListsClientProps {
 export default function ListsClient({ initialLists }: ListsClientProps) {
   const router = useRouter();
   const [showBottomCard, setShowBottomCard] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<{ [key: string]: boolean }>(
+    {},
+  );
   const [loading, setLoading] = useState(false);
 
   const handleSuccess = () => {
@@ -51,9 +51,19 @@ export default function ListsClient({ initialLists }: ListsClientProps) {
   ];
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+    const form = e.currentTarget;
+
+    const nameInput = form.querySelector("#name") as HTMLInputElement;
+
+    if (!form.checkValidity()) {
+      console.log("Invalid form");
+      e.preventDefault();
+      setFieldErrors({
+        name: !nameInput.validity.valid,
+      });
+    }
+
     setLoading(true);
-    setError(null);
 
     const formData = new FormData(e.currentTarget);
     const data = {
@@ -78,32 +88,36 @@ export default function ListsClient({ initialLists }: ListsClientProps) {
         router.push(`/lists/${result.data.list.id}`);
       }
     } else {
-      setError("Failed to create manifest. Please check all requirements.");
       setLoading(false);
     }
   }
 
   return (
     <>
-      {/* <Modal
-        isOpen={showBottomCard}
-        onClose={() => setShowBottomCard(false)}
-        title="AUTHORIZE NEW MANIFEST"
-        gate="L-40"
-      >
-        <NewListForm
-          onSuccess={handleSuccess}
-          onCancel={() => setShowBottomCard(false)}
+      {showBottomCard && (
+        <BottomCard
+          heading="Create List"
+          onClose={() => setShowBottomCard(false)}
+          inputs={createListInputs}
+          button={{ text: "Create List", type: "submit" }}
+          onSave={handleSubmit}
+          isLoading={loading}
+          fieldErrors={fieldErrors}
         />
-      </Modal> */}
+      )}
       <PageContainer>
         {showBottomCard && (
-          <BottomCard
-            heading="Create List"
-            onClose={() => setShowBottomCard(false)}
-            inputs={createListInputs}
-            button={{ text: "Create List", type: "submit" }}
-            onSave={handleSubmit}
+          <div
+            style={{
+              background: "black",
+              opacity: 0.4,
+              height: "100vh",
+              width: "100vw",
+              position: "absolute",
+              left: 0,
+              top: 0,
+              zIndex: 100,
+            }}
           />
         )}
         <PageHeader

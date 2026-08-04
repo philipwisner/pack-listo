@@ -1,7 +1,8 @@
-import { Navbar } from "@/components/Navbar/Navbar";
-import { getCurrentUser } from "@/lib/auth";
 import { flex } from "@/styled-system/patterns";
 import { css } from "@/styled-system/css";
+import { getCurrentUser } from "@/lib/auth";
+import { Navbar } from "@/components/Navbar";
+
 export const dynamic = "force-dynamic";
 
 export const metadata = {

@@ -1,7 +1,7 @@
 import { styled } from "@/styled-system/jsx";
-import { type ComponentProps, type ReactNode } from "react";
-import { Button } from "../Button/Button";
 import { css } from "@/styled-system/css/css";
+import { type ComponentProps } from "react";
+import { Button } from "@/components/Button/Button";
 import { PrimaryHeading } from "@/styles/text.styles";
 
 export interface PageHeaderProps

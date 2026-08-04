@@ -1,11 +1,8 @@
 import type { Metadata, Viewport } from "next";
-import { DM_Sans } from "next/font/google";
 import "./globals.css";
-import {
-  DarkModeToggle,
-  ToggleContainer,
-} from "@/components/DarkModeToggle/DarkModeToggle";
+import { DM_Sans } from "next/font/google";
 import { Providers } from "@/contexts/Providers";
+import { DarkModeToggle, ToggleContainer } from "@/components/DarkModeToggle";
 
 export const metadata: Metadata = {
   title: "Pack Listo",

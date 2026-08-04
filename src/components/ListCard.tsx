@@ -1,8 +1,8 @@
+import Link from "next/link";
 import { styled } from "@/styled-system/jsx/factory";
 import { ComponentProps } from "@/styled-system/types/jsx";
 import { token } from "@/styled-system/tokens";
 import { css } from "@/styled-system/css/css";
-import Link from "next/link";
 import { MapPin } from "lucide-react";
 import { SecondaryHeading } from "@/styles/text.styles";
 
@@ -52,7 +52,13 @@ const ItemCount = styled("span", {
   },
 });
 
-export function ListCard({ list }: { list: ListCardProps }) {
+export function ListCard({
+  list,
+  loading = false,
+}: {
+  list: ListCardProps;
+  loading?: boolean;
+}) {
   const { id, name, destination, date, items } = list;
   const itemCount = items.length;
   const packedCount = items.filter((item) => item.isPacked).length;

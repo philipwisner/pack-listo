@@ -17,8 +17,8 @@ import {
 } from "@/features/admin/admin.actions";
 import { Button } from "@/components/Button/Button";
 import { Input } from "@/components/TextInput/TextInput";
-import { InputLabel } from "@/components/InputLabel/InputLabel";
-import { InternalLink } from "@/components/InternalLink/InternalLink";
+import { InputLabel } from "@/components/InputLabel";
+import { InternalLink } from "@/components/InternalLink";
 import { css } from "@/styled-system/css";
 import { flex, grid } from "@/styled-system/patterns";
 

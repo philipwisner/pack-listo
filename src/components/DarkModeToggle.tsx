@@ -1,7 +1,6 @@
 "use client";
-
-import { useDarkMode } from "@/contexts/DarkModeContext";
 import { styled } from "@/styled-system/jsx/factory";
+import { useDarkMode } from "@/contexts/DarkModeContext";
 
 export const ToggleContainer = styled("form", {
   base: {

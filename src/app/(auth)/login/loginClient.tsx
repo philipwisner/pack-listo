@@ -1,12 +1,12 @@
 "use client";
 import { useActionState, useState, useEffect } from "react";
+import { ArrowRight } from "lucide-react";
 import { loginAction } from "@/features/auth/auth.actions";
 import { Input } from "@/components/TextInput/TextInput";
-import { InputLabel } from "@/components/InputLabel/InputLabel";
+import { InputLabel } from "@/components/InputLabel";
 import { Button } from "@/components/Button/Button";
+import { Error } from "@/components/Error";
 import { FormContainer } from "@/features/auth/auth.styles";
-import { ArrowRight } from "lucide-react";
-import { Error } from "@/components/Error/Error";
 
 const initialState = {
   error: "",

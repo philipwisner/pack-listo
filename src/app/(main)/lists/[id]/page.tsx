@@ -1,11 +1,10 @@
 import React from "react";
 import { listService } from "@/features/list/list.service";
 import { itemService } from "@/features/item/item.service";
-import { ManifestEditor } from "@/components/lists/ManifestEditor";
 import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
 import { PageContainer } from "@/styles/layout.styles";
-import { PageHeader } from "@/components/PageHeader/PageHeader";
+import { PageHeader } from "@/components/PageHeader";
 
 export default async function ListDetailPage({
   params,
@@ -26,7 +25,9 @@ export default async function ListDetailPage({
   const userId = user.id;
 
   const list = await listService.getById(id, userId);
-  const items = await itemService.getAll(userId);
+
+  //Move this to the client component so it stops blocking loading
+  // const items = await itemService.getAll(userId);
 
   if (!list) {
     notFound();

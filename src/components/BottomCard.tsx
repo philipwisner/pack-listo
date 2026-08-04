@@ -1,11 +1,12 @@
-import { styled } from "@/styled-system/jsx";
 import { type ComponentProps, useRef } from "react";
-import { Button } from "../Button/Button";
+import { styled } from "@/styled-system/jsx";
 import { token } from "@/styled-system/tokens";
-import { SecondaryHeading } from "@/styles/text.styles";
+import { Button } from "@/components//Button/Button";
+import { InputLabel } from "@/components/InputLabel";
+import { Input } from "@/components/TextInput/TextInput";
+import { Error } from "@/components/Error";
 import { useClickOutside } from "@/hooks/useClickOutside";
-import { InputLabel } from "../InputLabel/InputLabel";
-import { Input } from "../TextInput/TextInput";
+import { SecondaryHeading } from "@/styles/text.styles";
 
 export interface BottomCardProps
   extends ComponentProps<typeof BottomCardStyled> {
@@ -25,6 +26,7 @@ export interface BottomCardProps
   }[];
   onClose?: () => void;
   onSave?: (e: React.FormEvent<HTMLFormElement>) => void;
+  fieldErrors?: { [key: string]: boolean };
 }
 
 export const BottomCardStyled = styled("div", {
@@ -34,9 +36,10 @@ export const BottomCardStyled = styled("div", {
     left: 0,
     right: 0,
     backgroundColor: { base: "white", _dark: "gray.800" },
-    padding: "1rem",
     zIndex: 1000,
     minHeight: "100px",
+    paddingTop: token("spacing.10"),
+    paddingBottom: token("spacing.20"),
   },
 });
 
@@ -47,6 +50,7 @@ export const BottomCard = ({
   isLoading = false,
   onClose,
   onSave,
+  fieldErrors,
 }: BottomCardProps) => {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -60,6 +64,8 @@ export const BottomCard = ({
         style={{
           maxWidth: token("sizes.pageContainer"),
           margin: "0 auto",
+          paddingLeft: token("spacing.8"),
+          paddingRight: token("spacing.8"),
         }}
       >
         <SecondaryHeading>{heading}</SecondaryHeading>
@@ -70,7 +76,15 @@ export const BottomCard = ({
             marginTop: "1rem",
           }}
         >
-          <form onSubmit={onSave}>
+          <form
+            onSubmit={onSave}
+            style={{
+              display: "flex",
+              gap: "1rem",
+              alignItems: "flex-end",
+              flexWrap: "wrap",
+            }}
+          >
             {inputs &&
               inputs.length &&
               inputs.map((input) => {
@@ -84,24 +98,33 @@ export const BottomCard = ({
                       required={input.required}
                       placeholder={input.placeholder}
                       aria-required={input.required}
-                      // hasError={fieldErrors.password}
+                      data-1p-ignore
+                      data-bwignore
+                      data-lpignore="true"
+                      hasError={fieldErrors?.[input.id]}
                       // aria-invalid={Boolean(
                       //   fieldErrors.password || fieldErrors.server,
                       // )}
                       // aria-describedby={passwordDescribedBy}
                       // onChange={() => handleInputChange("password")}
                     />
-                    {/* {fieldErrors.password && (
-                    <Error
-                      id="login-password-error"
-                      text="Password is required."
-                      role="alert"
-                    />
-                  )} */}
+                    {fieldErrors?.[input.id] && (
+                      <Error
+                        id="login-password-error"
+                        text="Password is required."
+                        role="alert"
+                      />
+                    )}
                   </div>
                 );
               })}
-            <Button text="Create List" width="fit" type="submit" />
+            <Button
+              text="Cancel"
+              width="fit"
+              type="button"
+              variant="secondary"
+            />
+            <Button text={button?.text} width="fit" type="submit" />
 
             {/* {error && (
               <div

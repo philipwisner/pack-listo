@@ -26,9 +26,9 @@ export interface BottomCardProps
   }[];
   onClose?: () => void;
   onSave?: (e: React.FormEvent<HTMLFormElement>) => void;
-  fieldErrors?: { [key: string]: boolean };
+  // Accepts a string message or a boolean flag per input ID
+  fieldErrors?: Record<string, string | boolean | undefined>;
 }
-
 export const BottomCardStyled = styled("div", {
   base: {
     position: "fixed",
@@ -42,7 +42,6 @@ export const BottomCardStyled = styled("div", {
     paddingBottom: token("spacing.20"),
   },
 });
-
 export const BottomCard = ({
   heading,
   inputs,
@@ -68,14 +67,8 @@ export const BottomCard = ({
           paddingRight: token("spacing.8"),
         }}
       >
-        <SecondaryHeading>{heading}</SecondaryHeading>
-        <div
-          style={{
-            display: "flex",
-            gap: "1rem",
-            marginTop: "1rem",
-          }}
-        >
+        {heading && <SecondaryHeading>{heading}</SecondaryHeading>}
+        <div style={{ display: "flex", gap: "1rem", marginTop: "1rem" }}>
           <form
             onSubmit={onSave}
             style={{
@@ -85,60 +78,52 @@ export const BottomCard = ({
               flexWrap: "wrap",
             }}
           >
-            {inputs &&
-              inputs.length &&
-              inputs.map((input) => {
-                return (
-                  <div key={input.id}>
-                    <InputLabel htmlFor={input.id} label={input.label} />
-                    <Input
-                      id={input.id}
-                      name={input.id}
-                      type={input.type}
-                      required={input.required}
-                      placeholder={input.placeholder}
-                      aria-required={input.required}
-                      data-1p-ignore
-                      data-bwignore
-                      data-lpignore="true"
-                      hasError={fieldErrors?.[input.id]}
-                      // aria-invalid={Boolean(
-                      //   fieldErrors.password || fieldErrors.server,
-                      // )}
-                      // aria-describedby={passwordDescribedBy}
-                      // onChange={() => handleInputChange("password")}
-                    />
-                    {fieldErrors?.[input.id] && (
-                      <Error
-                        id="login-password-error"
-                        text="Password is required."
-                        role="alert"
-                      />
-                    )}
-                  </div>
-                );
-              })}
+            {inputs?.map((input) => {
+              const error = fieldErrors?.[input.id];
+              const hasError = Boolean(error);
+              const errorId = `${input.id}-error`;
+              const errorMessage =
+                typeof error === "string"
+                  ? error
+                  : `${input.label} is invalid.`;
+
+              return (
+                <div key={input.id}>
+                  <InputLabel htmlFor={input.id} label={input.label} />
+                  <Input
+                    id={input.id}
+                    name={input.id}
+                    type={input.type}
+                    required={input.required}
+                    placeholder={input.placeholder}
+                    aria-required={input.required}
+                    data-1p-ignore
+                    data-bwignore
+                    data-lpignore="true"
+                    hasError={hasError}
+                    aria-invalid={hasError}
+                    aria-describedby={hasError ? errorId : undefined}
+                  />
+                  {hasError && (
+                    <Error id={errorId} text={errorMessage} role="alert" />
+                  )}
+                </div>
+              );
+            })}
+
             <Button
               text="Cancel"
               width="fit"
               type="button"
               variant="secondary"
+              onClick={onClose}
             />
-            <Button text={button?.text} width="fit" type="submit" />
-
-            {/* {error && (
-              <div
-                style={{
-                  background: "var(--accent-blue)",
-                  color: "white",
-                  padding: "1rem",
-                  marginBottom: "2rem",
-                  fontWeight: 800,
-                }}
-              >
-                ERROR: {error}
-              </div>
-            )} */}
+            <Button
+              text={button?.text ?? "Save"}
+              width="fit"
+              type="submit"
+              disabled={isLoading}
+            />
           </form>
         </div>
       </div>

@@ -21,6 +21,23 @@ export const createListAction = protectedActionClient
     return { success: true, list };
   });
 
+const updateListSchema = z.object({
+  id: z.string(),
+  name: z.string().min(1),
+  destination: z.string().optional(),
+  tripDate: z.date().optional(),
+  lengthOfStay: z.number().int().positive().optional(),
+  isTemplate: z.boolean().default(false),
+});
+
+export const updateListAction = protectedActionClient
+  .schema(updateListSchema)
+  .action(async ({ parsedInput, ctx: { userId } }) => {
+    const { id, ...data } = parsedInput;
+    const list = await listService.update(id, userId, data);
+    return { success: true, list };
+  });
+
 export const deleteListAction = protectedActionClient
   .schema(z.object({ id: z.string() }))
   .action(async ({ parsedInput, ctx: { userId } }) => {

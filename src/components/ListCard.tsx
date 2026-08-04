@@ -1,36 +1,40 @@
 import Link from "next/link";
 import { styled } from "@/styled-system/jsx/factory";
-import { ComponentProps } from "@/styled-system/types/jsx";
 import { token } from "@/styled-system/tokens";
 import { css } from "@/styled-system/css/css";
 import { MapPin } from "lucide-react";
 import { SecondaryHeading } from "@/styles/text.styles";
+import { List, ListItem } from "@/generated/prisma/browser";
 
-export interface ListCardProps extends ComponentProps<typeof ListCardStyled> {
-  id: string;
-  name: string;
-  destination?: string;
+export interface ListCardProps extends List {
+  itemCount?: number;
   date?: string;
-  itemCount: number;
-  status: string;
-  items: any[];
+  items?: ListItem[];
+  href?: string;
 }
-export const ListCardStyled = styled(Link, {
-  base: {
-    border: "1px solid",
-    marginBottom: token("spacing.4"),
-    borderColor: {
-      base: "gray.300",
-      _dark: "gray.600",
-    },
-    background: {
-      base: "white",
-      _dark: "gray.800",
-    },
-    display: "flex",
-    padding: token("spacing.4"),
-    borderRadius: token("radii.sm"),
+
+const listCardBaseStyles = {
+  border: "1px solid",
+  marginBottom: token("spacing.4"),
+  borderColor: {
+    base: "gray.300",
+    _dark: "gray.600",
   },
+  background: {
+    base: "white",
+    _dark: "gray.800",
+  },
+  display: "flex",
+  padding: token("spacing.4"),
+  borderRadius: token("radii.sm"),
+};
+
+export const ListCardStyled = styled(Link, {
+  base: listCardBaseStyles,
+});
+
+export const ListCardSkeletonStyled = styled("div", {
+  base: listCardBaseStyles,
 });
 
 const ItemCountContainer = styled("p", {
@@ -52,16 +56,10 @@ const ItemCount = styled("span", {
   },
 });
 
-export function ListCard({
-  list,
-  loading = false,
-}: {
-  list: ListCardProps;
-  loading?: boolean;
-}) {
+export function ListCard({ list }: { list: ListCardProps; loading?: boolean }) {
   const { id, name, destination, date, items } = list;
-  const itemCount = items.length;
-  const packedCount = items.filter((item) => item.isPacked).length;
+  const itemCount = items?.length ?? 0;
+  const packedCount = items?.filter((item) => item.isPacked).length ?? 0;
   console.log("ListCard list:", list);
   return (
     <ListCardStyled href={`/lists/${id}`}>
@@ -95,11 +93,46 @@ export function ListCard({
             }}
           ></div>
           <p>
+            {" "}
             {itemCount > 0 ? Math.round((packedCount / itemCount) * 100) : 0}%
             Packed
           </p>
         </div>
       </div>
     </ListCardStyled>
+  );
+}
+
+export function ListCardSkeleton() {
+  return (
+    <ListCardSkeletonStyled>
+      <div style={{ flex: "1 1 auto" }}>
+        <SecondaryHeading
+          className={css({
+            flex: "1 1 auto",
+          })}
+        ></SecondaryHeading>
+        <p style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+          <MapPin />
+        </p>
+        <div>x</div>
+      </div>
+      <div style={{ textAlign: "right" }}>
+        <ItemCountContainer>
+          <ItemCount>0</ItemCount> / 0 items
+        </ItemCountContainer>
+        <div style={{ display: "flex" }}>
+          <div
+            style={{
+              width: "100%",
+              height: "13px",
+              backgroundColor: "lightgray",
+              borderRadius: token("radii.xs"),
+            }}
+          ></div>
+          <p>Packed</p>
+        </div>
+      </div>
+    </ListCardSkeletonStyled>
   );
 }

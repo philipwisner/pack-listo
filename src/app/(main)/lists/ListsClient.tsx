@@ -1,16 +1,16 @@
 "use client";
-
 import { useState } from "react";
 import { ListCard } from "@/components/ListCard";
 import { useRouter } from "next/navigation";
 import { PageHeader } from "@/components/PageHeader";
-import { PageContainer } from "@/styles/layout.styles";
+import { PageContainer, PageOverlay } from "@/styles/layout.styles";
 import { MutedText } from "@/styles/text.styles";
 import { BottomCard } from "@/components/BottomCard";
 import { createListAction } from "@/features/list/list.actions";
+import { List } from "@/generated/prisma/browser";
 
 interface ListsClientProps {
-  initialLists: any[];
+  initialLists: List[];
 }
 
 export default function ListsClient({ initialLists }: ListsClientProps) {
@@ -51,13 +51,12 @@ export default function ListsClient({ initialLists }: ListsClientProps) {
   ];
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
     const form = e.currentTarget;
-
     const nameInput = form.querySelector("#name") as HTMLInputElement;
 
     if (!form.checkValidity()) {
       console.log("Invalid form");
-      e.preventDefault();
       setFieldErrors({
         name: !nameInput.validity.valid,
       });
@@ -79,7 +78,6 @@ export default function ListsClient({ initialLists }: ListsClientProps) {
     };
 
     const result = await createListAction(data);
-    console.log("createListAction result:", result);
 
     if (result?.data?.success) {
       handleSuccess();
@@ -106,20 +104,7 @@ export default function ListsClient({ initialLists }: ListsClientProps) {
         />
       )}
       <PageContainer>
-        {showBottomCard && (
-          <div
-            style={{
-              background: "black",
-              opacity: 0.4,
-              height: "100vh",
-              width: "100vw",
-              position: "absolute",
-              left: 0,
-              top: 0,
-              zIndex: 100,
-            }}
-          />
-        )}
+        {showBottomCard && <PageOverlay />}
         <PageHeader
           text="My Lists"
           button={{

@@ -8,3 +8,16 @@ export const PageContainer = styled("div", {
     margin: "0 auto",
   },
 });
+
+export const PageOverlay = styled("div", {
+  base: {
+    position: "absolute",
+    left: 0,
+    top: 0,
+    height: "100vh",
+    width: "100vw",
+    zIndex: 100,
+    background: "black",
+    opacity: 0.4,
+  },
+});

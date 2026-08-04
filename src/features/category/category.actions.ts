@@ -1,20 +1,10 @@
 "use server";
-
 import { protectedActionClient } from "@/lib/safe-action";
 import { categoryService } from "@/features/category/category.service";
 import { z } from "zod";
-import { ResourceService } from "@/utils/supabase/resource.service";
+import { ResourceService } from "@/utils/resource.service";
 import prisma from "@/lib/prisma";
-
-const createCategorySchema = z.object({
-  name: z.string().min(1),
-  icon: z.string().optional(),
-  color: z.string().optional(),
-});
-
-const updateCategorySchema = createCategorySchema.extend({
-  id: z.string(),
-});
+import { createCategorySchema, updateCategorySchema } from "./category.schemas";
 
 export const getCategoriesAction = protectedActionClient.action(
   async ({ ctx: { userId } }) => {

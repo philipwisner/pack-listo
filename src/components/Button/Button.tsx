@@ -3,7 +3,7 @@ import { type ComponentProps, type ReactNode } from "react";
 
 // 1. Define strict type props for your API layout
 export interface ButtonProps extends ComponentProps<typeof ButtonStyled> {
-  variant?: "primary" | "secondary" | "alternative";
+  variant?: "primary" | "secondary" | "delete" | "alternative";
   width?: "full" | "fit";
   size?: "small" | "base";
   primary?: boolean;
@@ -86,13 +86,38 @@ export const ButtonStyled = styled("button", {
           transform: "translateY(-1px)",
         },
         _focus: {
-          outlineColor: "input.border.focus",
+          outlineColor: "button.border.focus",
         },
         _focusVisible: {
           outlineColor: "input.border.focus",
         },
         _active: {
           bg: "button.secondary.activeBg",
+        },
+        _disabled: {
+          bg: "input.background.disabled",
+          color: "input.placeholder.default",
+          _hover: { bg: "input.background.disabled" },
+        },
+      },
+      delete: {
+        bg: "button.delete.bg",
+        color: "button.delete.text",
+        border: "1px solid",
+        borderColor: "button.delete.border",
+        _hover: {
+          bg: "button.delete.hoverBg",
+          shadow: "shadows.button.secondary",
+          transform: "translateY(-1px)",
+        },
+        _focus: {
+          outlineColor: "button.delete.focusRing",
+        },
+        _focusVisible: {
+          outlineColor: "button.delete.focusRing",
+        },
+        _active: {
+          bg: "button.delete.activeBg",
         },
         _disabled: {
           bg: "input.background.disabled",

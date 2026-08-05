@@ -243,6 +243,29 @@ export default defineConfig({
               value: { base: "{colors.gray.300}", _dark: "{colors.gray.600}" },
             },
           },
+          delete: {
+            text: {
+              value: { base: "{colors.red.700}", _dark: "{colors.red.100}" },
+            },
+            bg: {
+              value: { base: "{colors.red.100}", _dark: "{colors.red.700}" },
+            },
+            hoverBg: {
+              value: { base: "{colors.red.200}", _dark: "{colors.red.800}" },
+            },
+            border: {
+              value: { base: "{colors.red.400}", _dark: "{colors.red.300}" },
+            },
+            activeBg: {
+              value: { base: "{colors.red.300}", _dark: "{colors.red.600}" },
+            },
+            focusRing: {
+              value: {
+                base: "{colors.red.300}",
+                _dark: "{colors.red.300}",
+              },
+            },
+          },
         },
         input: {
           label: {

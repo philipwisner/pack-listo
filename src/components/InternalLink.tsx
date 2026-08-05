@@ -11,7 +11,7 @@ export interface InternalLinkProps {
 const LinkStyled = styled(Link, {
   base: {
     fontWeight: "semibold",
-    textDecoration: "underline",
+    // textDecoration: "underline",
     color: "link.main",
     cursor: "pointer",
     _hover: {

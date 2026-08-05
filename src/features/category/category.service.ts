@@ -34,17 +34,6 @@ export const categoryService = {
     });
   },
 
-  // async update(
-  //   id: string,
-  //   userId: string,
-  //   data: { name?: string; icon?: string; color?: string },
-  // ) {
-  //   return prisma.category.update({
-  //     where: { id, userId },
-  //     data,
-  //   });
-  // },
-
   async update(
     id: string,
     data: Prisma.CategoryUpdateInput,

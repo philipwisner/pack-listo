@@ -29,13 +29,14 @@ export const createCategoryAction = protectedActionClient
     return { success: true, category };
   });
 
+//Need to handle editing SYSTEM CATEGORIES - DON'T ALLOW DELETE USE FORK AND EDIT
 export const updateCategoryAction = protectedActionClient
   .schema(updateCategorySchema)
   .action(async ({ parsedInput, ctx: { userId } }) => {
     const { id, ...data } = parsedInput;
     const category = await categoryService.update(id, data, {
       userId,
-      enforceOwnership: true,
+      enforceOwnership: false,
     });
     return { success: true, category };
   });

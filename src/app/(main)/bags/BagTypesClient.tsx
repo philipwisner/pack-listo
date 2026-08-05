@@ -1,16 +1,37 @@
 "use client";
-
-import React, { useState } from "react";
-import { Modal } from "@/components/Modal/Modal";
-import { NewBagTypeForm } from "@/components/forms/NewBagTypeForm";
-import { EditBagTypeForm } from "@/components/forms/EditBagTypeForm";
-import styles from "@/components/items/Items.module.css";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { z } from "zod";
+import { BagType } from "@/generated/prisma/browser";
+import { createCategorySchema } from "@/features/category/category.schemas";
+import { BottomCard } from "@/components/BottomCard";
+import {
+  ColorTag,
+  InlineButtonsContainer,
+  ListContainer,
+  ListItemContainer,
+  PageContainer,
+  PageOverlay,
+} from "@/styles/layout.styles";
+import { PageHeader } from "@/components/PageHeader";
+import { MutedText } from "@/styles/text.styles";
+import { FALLBACK_ICON, Icon, IconLabelLink } from "@/components/Icon";
+import { Button } from "@/components/Button/Button";
+import {
+  CATEGORY_COLORS,
+  FALLBACK_CATEGORY_COLOR,
+} from "@/features/category/category.constants";
+import { token } from "@/styled-system/tokens";
+import { Pencil, Trash2 } from "lucide-react";
+import { handleActionErrors } from "@/utils/handle-action-errors";
+import {
+  createBagTypeAction,
+  updateBagTypeAction,
+  deleteBagTypeAction,
+} from "@/features/bag-type/bag-type.actions";
+import { CategoryLabel } from "@/components/CategoryLabel";
 
-interface BagType {
-  id: string;
-  name: string;
-}
+type BagTypeFormData = z.infer<typeof createCategorySchema>;
 
 interface BagTypesClientProps {
   initialBagTypes: BagType[];
@@ -19,118 +40,263 @@ interface BagTypesClientProps {
 export default function BagTypesClient({
   initialBagTypes,
 }: BagTypesClientProps) {
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [editingBagType, setEditingBagType] = useState<BagType | null>(null);
   const router = useRouter();
+  const [isNew, setIsNew] = useState<boolean>(false);
+  const [showBottomCard, setShowBottomCard] = useState(false);
+  const [currentBagType, setCurrentBagType] = useState<BagType | undefined>(
+    undefined,
+  );
+  const [loading, setLoading] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState<
+    Record<string, string | boolean>
+  >({});
 
   const handleSuccess = () => {
-    setIsCreateModalOpen(false);
-    setEditingBagType(null);
+    setShowBottomCard(false);
+    setIsNew(true);
+    setLoading(false);
+    setCurrentBagType(undefined);
+    setFieldErrors({});
     router.refresh();
   };
 
+  function getRandomElement(arr: string[]) {
+    const randomIndex = Math.floor(Math.random() * arr.length);
+    return arr[randomIndex];
+  }
+
+  const selectUnusedColor = () => {
+    const usedColors = initialBagTypes.map((bag) => bag.color);
+    const availableColors = CATEGORY_COLORS.filter((color) => {
+      return !usedColors.includes(color);
+    });
+    if (availableColors.length !== 0) {
+      return getRandomElement(availableColors);
+    } else {
+      return FALLBACK_CATEGORY_COLOR;
+    }
+  };
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setLoading(true);
+    setFieldErrors({});
+
+    const form = e.currentTarget;
+    const nameInput = form.querySelector("#name") as HTMLInputElement;
+
+    if (!form.checkValidity()) {
+      setFieldErrors({
+        name: !nameInput?.validity.valid ? "Bag name is required" : false,
+      });
+      setLoading(false);
+      return;
+    }
+
+    const formData = new FormData(form);
+    let colorValue = formData.get("color") as string;
+    const isColorEmpty = !colorValue || colorValue.trim() === "";
+    if (isColorEmpty) {
+      colorValue = selectUnusedColor();
+    }
+    let iconValue = formData.get("icon") as string;
+    const isIconEmpty = !iconValue || iconValue.trim() === "";
+    if (isIconEmpty) {
+      iconValue = FALLBACK_ICON;
+    }
+    const data: BagTypeFormData = {
+      name: formData.get("name") as string,
+      color: colorValue,
+      icon: iconValue,
+    };
+
+    let result;
+    if (isNew) {
+      result = await createBagTypeAction(data);
+    } else if (currentBagType) {
+      result = await updateBagTypeAction({ id: currentBagType.id, ...data });
+    }
+
+    // // 3. Process action errors (if any) via helper
+    const serverError = handleActionErrors(result, (field, error) => {
+      setFieldErrors((prev) => ({ ...prev, [field]: error.message || true }));
+    });
+
+    if (serverError) {
+      setFieldErrors((prev) => ({ ...prev, server: serverError }));
+      setLoading(false);
+      return;
+    }
+
+    // 4. Handle Success
+    const responseData = result?.data as { success?: boolean } | undefined;
+    if (responseData?.success) {
+      handleSuccess();
+    } else {
+      setLoading(false);
+    }
+  }
+
+  async function handleDeleteBagType(bag: BagType) {
+    setLoading(true);
+    try {
+      const result = await deleteBagTypeAction({ id: bag.id });
+
+      const serverError = handleActionErrors(result, (field, error) => {
+        setFieldErrors((prev) => ({ ...prev, [field]: error.message || true }));
+      });
+
+      if (serverError) {
+        console.error("Delete failed:", serverError);
+        return;
+      }
+
+      router.refresh();
+    } catch (error) {
+      console.error("Failed to delete bag:", error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const bagTypeInputs = [
+    {
+      id: "name",
+      label: "Name",
+      type: "text",
+      placeholder: "e.g. Backpack",
+      required: true,
+      defaultValue: currentBagType?.name || "",
+    },
+    {
+      id: "color",
+      label: "Color",
+      type: "text",
+      placeholder: "e.g. #FFCA08",
+      required: false,
+      defaultValue: currentBagType?.color || "",
+    },
+    {
+      id: "icon",
+      label: "Icon",
+      type: "text",
+      placeholder: "e.g. backpack",
+      required: false,
+      defaultValue: currentBagType?.icon || "",
+    },
+  ];
+
   return (
-    <div className="dashboard-page" style={{ padding: "4rem" }}>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "flex-end",
-          marginBottom: "3rem",
-          borderBottom: "4px solid var(--border)",
-          paddingBottom: "1.5rem",
-        }}
-      >
-        <h1 style={{ marginBottom: 0 }}>Container Types</h1>
-        <button className="btn-sign" onClick={() => setIsCreateModalOpen(true)}>
-          Register New Container
-        </button>
-      </div>
-
-      <div className={styles.inventoryTable}>
-        <div className={styles.tableHeader}>
-          <span>Type ID</span>
-          <span>Description</span>
-          <span>Allocation</span>
-          <span>Actions</span>
-        </div>
-
-        {initialBagTypes.length === 0 ? (
-          <div
-            style={{ padding: "2rem", textAlign: "center", fontWeight: 800 }}
-          >
-            NO CONTAINERS REGISTERED.
-          </div>
-        ) : (
-          initialBagTypes.map((bag: any) => (
-            <div
-              key={bag.id}
-              style={{
-                display: "grid",
-                gridTemplateColumns: "80px 1fr 1fr 100px",
-                padding: "1rem 1.5rem",
-                borderBottom: "1px solid var(--border-muted)",
-                fontWeight: 700,
-                textTransform: "uppercase",
-              }}
-            >
-              <div style={{ opacity: 0.6, fontSize: "0.75rem" }}>
-                #{bag.id.slice(0, 4).toUpperCase()}
-              </div>
-              <div>{bag.name}</div>
-              <div style={{ fontSize: "0.75rem" }}>STANDARD CARGO</div>
-              <div>
-                <button
-                  className={styles.editBtn}
-                  onClick={() => setEditingBagType(bag)}
-                >
-                  EDIT
-                </button>
-              </div>
-            </div>
-          ))
-        )}
-      </div>
-
-      <section
-        className="sign-panel sign-panel-accent"
-        style={{ marginTop: "4rem" }}
-      >
-        <h2>Logistics Advisory</h2>
-        <p style={{ fontWeight: 600 }}>
-          Container types ensure accurate volume calculation for cargo
-          manifests. Maintain exact specifications for all registered units.
-        </p>
-      </section>
-
-      {/* Create Modal */}
-      <Modal
-        isOpen={isCreateModalOpen}
-        onClose={() => setIsCreateModalOpen(false)}
-        title="REGISTER NEW CONTAINER"
-        gate="G-88"
-      >
-        <NewBagTypeForm
-          onSuccess={handleSuccess}
-          onCancel={() => setIsCreateModalOpen(false)}
+    <>
+      {showBottomCard && (
+        <BottomCard
+          heading={`${isNew ? "Create" : "Update"} Bag`}
+          onClose={() => setShowBottomCard(false)}
+          inputs={bagTypeInputs}
+          button={{
+            text: `${isNew ? "Create" : "Update"} Bag`,
+            type: "submit",
+          }}
+          onSave={handleSubmit}
+          isLoading={loading}
+          fieldErrors={fieldErrors}
         />
-      </Modal>
-
-      {/* Edit Modal */}
-      <Modal
-        isOpen={!!editingBagType}
-        onClose={() => setEditingBagType(null)}
-        title="EDIT CONTAINER TYPE"
-        gate="G-88"
-      >
-        {editingBagType && (
-          <EditBagTypeForm
-            bagType={editingBagType}
-            onSuccess={handleSuccess}
-            onCancel={() => setEditingBagType(null)}
-          />
-        )}
-      </Modal>
-    </div>
+      )}
+      <PageContainer>
+        {showBottomCard && <PageOverlay />}
+        <PageHeader
+          text="My Bags"
+          button={{
+            text: "Create Bag",
+            onClick: () => {
+              setCurrentBagType(undefined);
+              setShowBottomCard(true);
+              setIsNew(true);
+            },
+          }}
+        />
+        <ListContainer>
+          {initialBagTypes.length === 0 ? (
+            <MutedText>No Bags. Create a Bag to get started.</MutedText>
+          ) : (
+            initialBagTypes.map((bag: BagType) => (
+              <ListItemContainer key={bag.id}>
+                <div
+                  style={{
+                    flex: "1 1 25%",
+                  }}
+                >
+                  <CategoryLabel category={bag} />
+                </div>
+                <div
+                  style={{
+                    flex: "1 1 25%",
+                    fontSize: "18px",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {bag.name}
+                </div>
+                <div
+                  style={{
+                    flex: "1 1 20%",
+                    display: "flex",
+                  }}
+                >
+                  <IconLabelLink
+                    href={`https://lucide.dev/icons/?search=${bag.icon}`}
+                    target="_blank"
+                  >
+                    <Icon
+                      value={bag.icon}
+                      color={token("colors.text.main")}
+                      size={16}
+                    />
+                    {bag.icon}
+                  </IconLabelLink>
+                </div>
+                <div
+                  style={{
+                    flex: "1 1 15%",
+                  }}
+                >
+                  <ColorTag
+                    style={{
+                      background: bag.color
+                        ? bag.color
+                        : FALLBACK_CATEGORY_COLOR,
+                    }}
+                  >
+                    {bag.color ? bag.color : FALLBACK_CATEGORY_COLOR}
+                  </ColorTag>
+                </div>
+                <InlineButtonsContainer>
+                  <Button
+                    text="Edit"
+                    variant="secondary"
+                    size="small"
+                    width="fit"
+                    onClick={() => {
+                      setShowBottomCard(true);
+                      setIsNew(false);
+                      setCurrentBagType(bag);
+                    }}
+                    iconLeft={<Pencil size={16} />}
+                  />
+                  <Button
+                    text="Delete"
+                    variant="delete"
+                    size="small"
+                    width="fit"
+                    onClick={() => handleDeleteBagType(bag)}
+                    iconLeft={<Trash2 size={16} />}
+                  />
+                </InlineButtonsContainer>
+              </ListItemContainer>
+            ))
+          )}
+        </ListContainer>
+      </PageContainer>
+    </>
   );
 }

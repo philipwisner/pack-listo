@@ -1,24 +1,35 @@
 "use client";
 import { useState } from "react";
-import { Modal } from "@/components/Modal/Modal";
-import { NewCategoryForm } from "@/components/forms/NewCategoryForm";
-import { EditCategoryForm } from "@/components/forms/EditCategoryForm";
 import { useRouter } from "next/navigation";
-import { PageHeader } from "@/components/PageHeader";
-import { PageContainer, PageOverlay } from "@/styles/layout.styles";
-import { Category } from "@/generated/prisma/browser";
-import { BottomCard } from "@/components/BottomCard";
 import { z } from "zod";
-import { handleActionErrors } from "@/utils/handle-action-errors";
-import { createCategorySchema } from "@/features/category/category.schemas";
-import { createCategoryAction } from "@/features/category/category.actions";
-import { MutedText } from "@/styles/text.styles";
+import { Category } from "@/generated/prisma/browser";
 import { token } from "@/styled-system/tokens";
-import { deleteCategoryAction } from "@/features/category/category.actions";
-import { styled } from "@/styled-system/jsx";
-import { Button } from "@/components/Button/Button";
 import { Pencil, Trash2 } from "lucide-react";
-import { CategoryIcon } from "@/components/CategoryIcon";
+import { PageHeader } from "@/components/PageHeader";
+import { BottomCard } from "@/components/BottomCard";
+import { FALLBACK_ICON, Icon, IconLabelLink } from "@/components/Icon";
+import { Button } from "@/components/Button/Button";
+import { createCategorySchema } from "@/features/category/category.schemas";
+import {
+  createCategoryAction,
+  updateCategoryAction,
+} from "@/features/category/category.actions";
+import { deleteCategoryAction } from "@/features/category/category.actions";
+import { handleActionErrors } from "@/utils/handle-action-errors";
+import { MutedText } from "@/styles/text.styles";
+import {
+  ColorTag,
+  InlineButtonsContainer,
+  ListContainer,
+  ListItemContainer,
+  PageContainer,
+  PageOverlay,
+} from "@/styles/layout.styles";
+import { CategoryLabel } from "@/components/CategoryLabel";
+import {
+  CATEGORY_COLORS,
+  FALLBACK_CATEGORY_COLOR,
+} from "@/features/category/category.constants";
 
 type CategoryFormData = z.infer<typeof createCategorySchema>;
 
@@ -26,72 +37,45 @@ interface CategoriesClientProps {
   initialCategories: Category[];
 }
 
-const CategoryContainer = styled("div", {
-  base: {
-    border: "1px solid",
-    marginBottom: token("spacing.2"),
-    borderColor: {
-      base: "gray.300",
-      _dark: "gray.600",
-    },
-    background: {
-      base: "white",
-      _dark: "gray.900",
-    },
-    display: "flex",
-    justifyContent: "flex-start",
-    alignContent: "center",
-    alignItems: "center",
-    padding: token("spacing.4"),
-    borderRadius: token("radii.sm"),
-    width: "100%",
-  },
-});
-
 export default function CategoriesClient({
   initialCategories,
 }: CategoriesClientProps) {
   const router = useRouter();
+  const [isNew, setIsNew] = useState<boolean>(false);
   const [showBottomCard, setShowBottomCard] = useState(false);
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [editingCategory, setEditingCategory] = useState<any | null>(null);
-
+  const [currentCategory, setCurrentCategory] = useState<Category | undefined>(
+    undefined,
+  );
+  const [loading, setLoading] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<
     Record<string, string | boolean>
   >({});
-  const [loading, setLoading] = useState(false);
 
   const handleSuccess = () => {
-    setIsCreateModalOpen(false);
     setShowBottomCard(false);
-    setEditingCategory(null);
+    setIsNew(true);
+    setLoading(false);
+    setCurrentCategory(undefined);
     setFieldErrors({});
     router.refresh();
   };
 
-  const createCategoryInputs = [
-    {
-      id: "name",
-      label: "Category Name",
-      type: "text",
-      placeholder: "Your category name",
-      required: true,
-    },
-    {
-      id: "color",
-      label: "Color",
-      type: "text",
-      placeholder: "Color",
-      required: false,
-    },
-    {
-      id: "icon",
-      label: "Icon",
-      type: "text",
-      placeholder: "Icon",
-      required: false,
-    },
-  ];
+  function getRandomElement(arr: string[]) {
+    const randomIndex = Math.floor(Math.random() * arr.length);
+    return arr[randomIndex];
+  }
+
+  const selectUnusedColor = () => {
+    const usedColors = initialCategories.map((category) => category.color);
+    const availableColors = CATEGORY_COLORS.filter((color) => {
+      return !usedColors.includes(color);
+    });
+    if (availableColors.length !== 0) {
+      return getRandomElement(availableColors);
+    } else {
+      return FALLBACK_CATEGORY_COLOR;
+    }
+  };
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -101,7 +85,6 @@ export default function CategoriesClient({
     const form = e.currentTarget;
     const nameInput = form.querySelector("#name") as HTMLInputElement;
 
-    // 1. Client-Side HTML5 Pre-validation
     if (!form.checkValidity()) {
       setFieldErrors({
         name: !nameInput?.validity.valid ? "Category name is required" : false,
@@ -111,16 +94,30 @@ export default function CategoriesClient({
     }
 
     const formData = new FormData(form);
+    let colorValue = formData.get("color") as string;
+    const isColorEmpty = !colorValue || colorValue.trim() === "";
+    if (isColorEmpty) {
+      colorValue = selectUnusedColor();
+    }
+    let iconValue = formData.get("icon") as string;
+    const isIconEmpty = !iconValue || iconValue.trim() === "";
+    if (isIconEmpty) {
+      iconValue = FALLBACK_ICON;
+    }
     const data: CategoryFormData = {
       name: formData.get("name") as string,
-      color: formData.get("color") as string,
-      icon: "box",
+      color: colorValue,
+      icon: iconValue,
     };
 
-    // 2. Execute Server Action
-    const result = await createCategoryAction(data);
+    let result;
+    if (isNew) {
+      result = await createCategoryAction(data);
+    } else if (currentCategory) {
+      result = await updateCategoryAction({ id: currentCategory.id, ...data });
+    }
 
-    // 3. Process action errors (if any) via helper
+    // // 3. Process action errors (if any) via helper
     const serverError = handleActionErrors(result, (field, error) => {
       setFieldErrors((prev) => ({ ...prev, [field]: error.message || true }));
     });
@@ -145,7 +142,6 @@ export default function CategoriesClient({
     try {
       const result = await deleteCategoryAction({ id: category.id });
 
-      // Optionally handle errors if deleteCategoryAction returns an ActionResponse
       const serverError = handleActionErrors(result, (field, error) => {
         setFieldErrors((prev) => ({ ...prev, [field]: error.message || true }));
       });
@@ -155,7 +151,6 @@ export default function CategoriesClient({
         return;
       }
 
-      // Refresh server components & re-fetch initialCategories
       router.refresh();
     } catch (error) {
       console.error("Failed to delete category:", error);
@@ -164,14 +159,44 @@ export default function CategoriesClient({
     }
   }
 
+  const categoryInputs = [
+    {
+      id: "name",
+      label: "Name",
+      type: "text",
+      placeholder: "e.g. Clothing",
+      required: true,
+      defaultValue: currentCategory?.name || "",
+    },
+    {
+      id: "color",
+      label: "Color",
+      type: "text",
+      placeholder: "e.g. #FFCA08",
+      required: false,
+      defaultValue: currentCategory?.color || "",
+    },
+    {
+      id: "icon",
+      label: "Icon",
+      type: "text",
+      placeholder: "e.g. shirt",
+      required: false,
+      defaultValue: currentCategory?.icon || "",
+    },
+  ];
+
   return (
     <>
       {showBottomCard && (
         <BottomCard
-          heading="Create Category"
+          heading={`${isNew ? "Create" : "Update"} Category`}
           onClose={() => setShowBottomCard(false)}
-          inputs={createCategoryInputs}
-          button={{ text: "Create Category", type: "submit" }}
+          inputs={categoryInputs}
+          button={{
+            text: `${isNew ? "Create" : "Update"} Category`,
+            type: "submit",
+          }}
           onSave={handleSubmit}
           isLoading={loading}
           fieldErrors={fieldErrors}
@@ -184,49 +209,26 @@ export default function CategoriesClient({
           button={{
             text: "Create Category",
             onClick: () => {
+              setCurrentCategory(undefined);
               setShowBottomCard(true);
-              setIsCreateModalOpen(true);
+              setIsNew(true);
             },
           }}
         />
-        <div style={{ marginTop: token("spacing.8") }}>
+        <ListContainer>
           {initialCategories.length === 0 ? (
             <MutedText>
               No Categories. Create a Category to get started.
             </MutedText>
           ) : (
             initialCategories.map((category: Category) => (
-              <CategoryContainer key={category.id}>
+              <ListItemContainer key={category.id}>
                 <div
                   style={{
                     flex: "1 1 25%",
                   }}
                 >
-                  <div
-                    style={{
-                      background: `${category.color}40`,
-                      border: `1px solid ${category.color}`,
-                      width: "fit-content",
-                      padding: "2px 8px",
-                      borderRadius: "4px",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      alignContent: "center",
-                      gap: token("spacing.2"),
-                    }}
-                  >
-                    <CategoryIcon
-                      value={category.icon}
-                      color={
-                        category.color
-                          ? category.color
-                          : token("colors.text.main")
-                      }
-                      size={18}
-                    />
-                    {category.name}
-                  </div>
+                  <CategoryLabel category={category} />
                 </div>
                 <div
                   style={{
@@ -241,115 +243,61 @@ export default function CategoriesClient({
                   style={{
                     flex: "1 1 20%",
                     display: "flex",
-                    justifyContent: "flex-start",
-                    alignItems: "center",
-                    alignContent: "center",
-                    gap: token("spacing.2"),
                   }}
                 >
-                  {/* {category.icon && (
-                    <DynamicIcon
-                      name={category.icon}
-                      color={category.color}
-                      size={24}
-                    />
-                  )} */}
-                  <CategoryIcon
-                    value={category.icon}
-                    color={token("colors.text.main")}
-                    // color={
-                    //   category.color
-                    //     ? category.color
-                    //     : token("colors.text.main")
-                    // }
-                  />
-                  <a
-                    style={{
-                      paddingInline: token("spacing.2"),
-                      paddingBlock: token("spacing.1"),
-                      fontSize: token("fontSizes.sm"),
-                      // background: token("colors.label"),
-                      border: "thin solid",
-                      borderColor: token("colors.label"),
-                      borderRadius: token("radii.md"),
-                    }}
+                  <IconLabelLink
                     href={`https://lucide.dev/icons/?search=${category.icon}`}
                     target="_blank"
                   >
+                    <Icon
+                      value={category.icon}
+                      color={token("colors.text.main")}
+                      size={16}
+                    />
                     {category.icon}
-                  </a>
+                  </IconLabelLink>
                 </div>
                 <div
                   style={{
                     flex: "1 1 15%",
                   }}
                 >
-                  <span
+                  <ColorTag
                     style={{
-                      padding: "2px 8px",
-                      background: category.color ?? "",
-                      color: "#fff",
-                      fontSize: "0.65rem",
+                      background: category.color
+                        ? category.color
+                        : FALLBACK_CATEGORY_COLOR,
                     }}
                   >
-                    {category.color ? category.color : "None"}
-                  </span>
+                    {category.color ? category.color : FALLBACK_CATEGORY_COLOR}
+                  </ColorTag>
                 </div>
-                <div
-                  style={{
-                    flex: "1 1 10%",
-                    display: "flex",
-                    gap: token("spacing.2"),
-                  }}
-                >
+                <InlineButtonsContainer>
                   <Button
                     text="Edit"
                     variant="secondary"
                     size="small"
                     width="fit"
-                    onClick={() => setEditingCategory(category)}
+                    onClick={() => {
+                      setShowBottomCard(true);
+                      setIsNew(false);
+                      setCurrentCategory(category);
+                    }}
                     iconLeft={<Pencil size={16} />}
                   />
                   <Button
                     text="Delete"
-                    variant="secondary"
+                    variant="delete"
                     size="small"
                     width="fit"
                     onClick={() => handleDeleteCategory(category)}
                     iconLeft={<Trash2 size={16} />}
                   />
-                </div>
-              </CategoryContainer>
+                </InlineButtonsContainer>
+              </ListItemContainer>
             ))
           )}
-        </div>
-
-        {/* Create Modal */}
-        <Modal
-          isOpen={isCreateModalOpen}
-          onClose={() => setIsCreateModalOpen(false)}
-          title="Create"
-        >
-          <NewCategoryForm
-            onSuccess={handleSuccess}
-            onCancel={() => setIsCreateModalOpen(false)}
-          />
-        </Modal>
-
-        {/* Edit Modal */}
-        <Modal
-          isOpen={!!editingCategory}
-          onClose={() => setEditingCategory(null)}
-          title="Edit"
-        >
-          {editingCategory && (
-            <EditCategoryForm
-              category={editingCategory}
-              onSuccess={handleSuccess}
-              onCancel={() => setEditingCategory(null)}
-            />
-          )}
-        </Modal>
+        </ListContainer>
       </PageContainer>
     </>
   );

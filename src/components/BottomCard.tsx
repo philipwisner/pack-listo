@@ -101,18 +101,19 @@ export const BottomCard = ({
                 <div key={input.id} style={{ flex: 1, minWidth: "200px" }}>
                   <InputLabel htmlFor={input.id} label={input.label} />
                   <Input
+                    {...input}
                     id={input.id}
                     name={input.id}
                     type={input.type}
                     required={input.required}
                     placeholder={input.placeholder}
                     aria-required={input.required}
-                    data-1p-ignore
-                    data-bwignore
-                    data-lpignore="true"
                     hasError={hasError}
                     aria-invalid={hasError}
                     aria-describedby={hasError ? errorId : undefined}
+                    data-1p-ignore
+                    data-bwignore
+                    data-lpignore="true"
                   />
                   {hasError && (
                     <Error id={errorId} text={errorMessage} role="alert" />

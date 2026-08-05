@@ -75,18 +75,18 @@ export function Icon({ value, ...props }: IconProps) {
 
 export const IconLabelLink = styled("a", {
   base: {
-    paddingInline: token("spacing.2"),
-    paddingBlock: token("spacing.1"),
-    fontSize: token("fontSizes.sm"),
+    paddingInline: "{spacing.2}",
+    paddingBlock: "{spacing.1}",
+    fontSize: "{fontSizes.sm}",
     border: "thin solid",
-    borderColor: token("colors.label"),
-    borderRadius: token("radii.md"),
+    borderColor: "{colors.label}",
+    borderRadius: "{radii.md}",
     display: "flex",
     alignContent: "center",
     alignItems: "center",
-    gap: token("spacing.2"),
+    gap: "{spacing.2}",
     _hover: {
-      bg: { base: token("colors.gray.100"), _dark: token("colors.gray.800") },
+      bg: { base: "{colors.gray.100}", _dark: "{colors.gray.800}" },
       transform: "scale(1.01)",
     },
   },

@@ -249,7 +249,7 @@ export default function BagTypesClient({
                   >
                     <Icon
                       value={bag.icon}
-                      color={token("colors.text.main")}
+                      color={token("colors.gray.400")}
                       size={16}
                     />
                     {bag.icon}

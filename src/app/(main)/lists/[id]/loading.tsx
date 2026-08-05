@@ -1,5 +1,5 @@
 import { PageContainer } from "@/styles/layout.styles";
 
 export default function Loading() {
-  return <PageContainer>loading list</PageContainer>;
+  return <PageContainer>Loading Lists</PageContainer>;
 }

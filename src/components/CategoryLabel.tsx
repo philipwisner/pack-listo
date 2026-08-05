@@ -1,4 +1,3 @@
-import { token } from "@/styled-system/tokens";
 import { styled } from "@/styled-system/jsx";
 import { Category } from "@/generated/prisma/browser";
 import { Icon } from "@/components/Icon";
@@ -13,14 +12,14 @@ const CategoryStyled = styled("div", {
   base: {
     border: `1px solid`,
     width: "fit-content",
-    paddingInline: token("spacing.2"),
-    paddingBlock: token("spacing.1"),
+    paddingInline: "{spacing.2}",
+    paddingBlock: "{spacing.1}",
     borderRadius: "4px",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
     alignContent: "center",
-    gap: token("spacing.2"),
+    gap: "{spacing.2}",
   },
 });
 

@@ -1,9 +1,5 @@
-//This should render loading skeleton using skeleton components, fallback will parent loading file
+import { PageContainer } from "@/styles/layout.styles";
 
 export default function Loading() {
-  return (
-    <div className="flex h-screen w-full items-center justify-center">
-      <h2 className="text-xl font-semibold text-gray-700">Loading Bags...</h2>
-    </div>
-  );
+  return <PageContainer>Loading Bags</PageContainer>;
 }

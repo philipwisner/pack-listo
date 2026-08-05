@@ -1,15 +1,23 @@
 "use server";
-
 import { protectedActionClient } from "@/lib/safe-action";
 import { itemService } from "@/features/item/item.service";
 import { z } from "zod";
+import { createItemSchema, updateItemSchema } from "./item.schemas";
+import { ResourceService } from "@/utils/resource.service";
 
-const createItemSchema = z.object({
-  name: z.string().min(1),
-  defaultWeight: z.number().optional(),
-  categoryId: z.string().optional(),
-});
+import prisma from "@/lib/prisma";
 
+export const getItemsAction = protectedActionClient.action(
+  async ({ ctx: { userId } }) => {
+    return await ResourceService.getResources(
+      userId,
+      prisma.item,
+      prisma.hiddenSystemItem,
+      "itemId",
+      { include: { category: true } },
+    );
+  },
+);
 export const createItemAction = protectedActionClient
   .schema(createItemSchema)
   .action(async ({ parsedInput, ctx: { userId } }) => {
@@ -20,24 +28,22 @@ export const createItemAction = protectedActionClient
     return { success: true, item };
   });
 
-const updateItemSchema = z.object({
-  id: z.string(),
-  name: z.string().min(1),
-  defaultWeight: z.number().optional(),
-  categoryId: z.string().optional(),
-});
-
+//Need to handle editing SYSTEM ITEMS - DON'T ALLOW DELETE FORK AND EDIT
 export const updateItemAction = protectedActionClient
   .schema(updateItemSchema)
   .action(async ({ parsedInput, ctx: { userId } }) => {
     const { id, ...data } = parsedInput;
-    const item = await itemService.update(id, userId, data);
+    const item = await itemService.update(id, data, {
+      userId,
+      enforceOwnership: false,
+    });
     return { success: true, item };
   });
 
 export const deleteItemAction = protectedActionClient
   .schema(z.object({ id: z.string() }))
   .action(async ({ parsedInput, ctx: { userId } }) => {
-    await itemService.delete(parsedInput.id, userId);
+    // Switch from delete() to hide()
+    await itemService.hide(parsedInput.id, userId);
     return { success: true };
   });

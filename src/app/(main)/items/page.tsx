@@ -1,7 +1,7 @@
-import { itemService } from "@/features/item/item.service";
-import { categoryService } from "@/features/category/category.service";
 import ItemsClient from "./ItemsClient";
 import { getCurrentUser } from "@/lib/auth";
+import { Item, Category } from "@/generated/prisma/browser";
+import { getItemsAction } from "@/features/item/item.actions";
 
 export const metadata = {
   title: "Items",
@@ -9,15 +9,13 @@ export const metadata = {
 export default async function ItemsPage() {
   const user = await getCurrentUser();
 
-  let items: any[] = [];
-  let categories: any[] = [];
+  let items: (Item & { category: Category | null })[] = [];
 
   if (user) {
-    [items, categories] = await Promise.all([
-      itemService.getAll(user.id),
-      categoryService.getAll(user.id),
-    ]);
+    const itemsResult = await getItemsAction();
+    items =
+      (itemsResult?.data as (Item & { category: Category | null })[]) || [];
   }
 
-  return <ItemsClient initialItems={items} categories={categories} />;
+  return <ItemsClient initialItems={items} />;
 }

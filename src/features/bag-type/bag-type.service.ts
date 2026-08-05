@@ -4,7 +4,6 @@ import { Prisma } from "@/generated/prisma/browser";
 
 export const bagTypeService = {
   async getAll(userId: string) {
-    // 1. Get hidden IDs
     const hidden = await prisma.hiddenSystemBagType.findMany({
       where: { userId },
       select: { bagTypeId: true },

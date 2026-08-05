@@ -3,7 +3,6 @@ import { useState } from "react";
 import { Modal } from "@/components/Modal/Modal";
 import { NewCategoryForm } from "@/components/forms/NewCategoryForm";
 import { EditCategoryForm } from "@/components/forms/EditCategoryForm";
-import styles from "@/components/items/Items.module.css";
 import { useRouter } from "next/navigation";
 import { PageHeader } from "@/components/PageHeader";
 import { PageContainer, PageOverlay } from "@/styles/layout.styles";
@@ -13,12 +12,41 @@ import { z } from "zod";
 import { handleActionErrors } from "@/utils/handle-action-errors";
 import { createCategorySchema } from "@/features/category/category.schemas";
 import { createCategoryAction } from "@/features/category/category.actions";
+import { MutedText } from "@/styles/text.styles";
+import { token } from "@/styled-system/tokens";
+import { deleteCategoryAction } from "@/features/category/category.actions";
+import { styled } from "@/styled-system/jsx";
+import { Button } from "@/components/Button/Button";
+import { Pencil, Trash2 } from "lucide-react";
+import { CategoryIcon } from "@/components/CategoryIcon";
 
 type CategoryFormData = z.infer<typeof createCategorySchema>;
 
 interface CategoriesClientProps {
   initialCategories: Category[];
 }
+
+const CategoryContainer = styled("div", {
+  base: {
+    border: "1px solid",
+    marginBottom: token("spacing.2"),
+    borderColor: {
+      base: "gray.300",
+      _dark: "gray.600",
+    },
+    background: {
+      base: "white",
+      _dark: "gray.900",
+    },
+    display: "flex",
+    justifyContent: "flex-start",
+    alignContent: "center",
+    alignItems: "center",
+    padding: token("spacing.4"),
+    borderRadius: token("radii.sm"),
+    width: "100%",
+  },
+});
 
 export default function CategoriesClient({
   initialCategories,
@@ -85,7 +113,7 @@ export default function CategoriesClient({
     const formData = new FormData(form);
     const data: CategoryFormData = {
       name: formData.get("name") as string,
-      color: "red",
+      color: formData.get("color") as string,
       icon: "box",
     };
 
@@ -108,6 +136,30 @@ export default function CategoriesClient({
     if (responseData?.success) {
       handleSuccess();
     } else {
+      setLoading(false);
+    }
+  }
+
+  async function handleDeleteCategory(category: Category) {
+    setLoading(true);
+    try {
+      const result = await deleteCategoryAction({ id: category.id });
+
+      // Optionally handle errors if deleteCategoryAction returns an ActionResponse
+      const serverError = handleActionErrors(result, (field, error) => {
+        setFieldErrors((prev) => ({ ...prev, [field]: error.message || true }));
+      });
+
+      if (serverError) {
+        console.error("Delete failed:", serverError);
+        return;
+      }
+
+      // Refresh server components & re-fetch initialCategories
+      router.refresh();
+    } catch (error) {
+      console.error("Failed to delete category:", error);
+    } finally {
       setLoading(false);
     }
   }
@@ -137,59 +189,137 @@ export default function CategoriesClient({
             },
           }}
         />
-
-        <div className={styles.inventoryTable}>
-          <div className={styles.tableHeader}>
-            <span>Code</span>
-            <span>Label</span>
-            <span>Status</span>
-            <span>Actions</span>
-          </div>
-
+        <div style={{ marginTop: token("spacing.8") }}>
           {initialCategories.length === 0 ? (
-            <div
-              style={{ padding: "2rem", textAlign: "center", fontWeight: 800 }}
-            >
-              NO CLASSIFICATIONS DEFINED.
-            </div>
+            <MutedText>
+              No Categories. Create a Category to get started.
+            </MutedText>
           ) : (
-            initialCategories.map((cat: any) => (
-              <div
-                key={cat.id}
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "80px 1fr 1fr 100px",
-                  padding: "1rem 1.5rem",
-                  borderBottom: "1px solid var(--border-muted)",
-                  fontWeight: 700,
-                  textTransform: "uppercase",
-                }}
-              >
-                <div style={{ opacity: 0.6, fontSize: "0.75rem" }}>
-                  #{cat.id.slice(0, 4).toUpperCase()}
+            initialCategories.map((category: Category) => (
+              <CategoryContainer key={category.id}>
+                <div
+                  style={{
+                    flex: "1 1 25%",
+                  }}
+                >
+                  <div
+                    style={{
+                      background: `${category.color}40`,
+                      border: `1px solid ${category.color}`,
+                      width: "fit-content",
+                      padding: "2px 8px",
+                      borderRadius: "4px",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      alignContent: "center",
+                      gap: token("spacing.2"),
+                    }}
+                  >
+                    <CategoryIcon
+                      value={category.icon}
+                      color={
+                        category.color
+                          ? category.color
+                          : token("colors.text.main")
+                      }
+                      size={18}
+                    />
+                    {category.name}
+                  </div>
                 </div>
-                <div>{cat.name}</div>
-                <div>
+                <div
+                  style={{
+                    flex: "1 1 25%",
+                    fontSize: "18px",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {category.name}
+                </div>
+                <div
+                  style={{
+                    flex: "1 1 20%",
+                    display: "flex",
+                    justifyContent: "flex-start",
+                    alignItems: "center",
+                    alignContent: "center",
+                    gap: token("spacing.2"),
+                  }}
+                >
+                  {/* {category.icon && (
+                    <DynamicIcon
+                      name={category.icon}
+                      color={category.color}
+                      size={24}
+                    />
+                  )} */}
+                  <CategoryIcon
+                    value={category.icon}
+                    color={token("colors.text.main")}
+                    // color={
+                    //   category.color
+                    //     ? category.color
+                    //     : token("colors.text.main")
+                    // }
+                  />
+                  <a
+                    style={{
+                      paddingInline: token("spacing.2"),
+                      paddingBlock: token("spacing.1"),
+                      fontSize: token("fontSizes.sm"),
+                      // background: token("colors.label"),
+                      border: "thin solid",
+                      borderColor: token("colors.label"),
+                      borderRadius: token("radii.md"),
+                    }}
+                    href={`https://lucide.dev/icons/?search=${category.icon}`}
+                    target="_blank"
+                  >
+                    {category.icon}
+                  </a>
+                </div>
+                <div
+                  style={{
+                    flex: "1 1 15%",
+                  }}
+                >
                   <span
                     style={{
                       padding: "2px 8px",
-                      background: cat.color || "var(--border)",
+                      background: category.color ?? "",
                       color: "#fff",
                       fontSize: "0.65rem",
                     }}
                   >
-                    ACTIVE
+                    {category.color ? category.color : "None"}
                   </span>
                 </div>
-                <div>
-                  <button
-                    className={styles.editBtn}
-                    onClick={() => setEditingCategory(cat)}
-                  >
-                    EDIT
-                  </button>
+                <div
+                  style={{
+                    flex: "1 1 10%",
+                    display: "flex",
+                    gap: token("spacing.2"),
+                  }}
+                >
+                  <Button
+                    text="Edit"
+                    variant="secondary"
+                    size="small"
+                    width="fit"
+                    onClick={() => setEditingCategory(category)}
+                    iconLeft={<Pencil size={16} />}
+                  />
+                  <Button
+                    text="Delete"
+                    variant="secondary"
+                    size="small"
+                    width="fit"
+                    onClick={() => handleDeleteCategory(category)}
+                    iconLeft={<Trash2 size={16} />}
+                  />
                 </div>
-              </div>
+              </CategoryContainer>
             ))
           )}
         </div>
@@ -198,8 +328,7 @@ export default function CategoriesClient({
         <Modal
           isOpen={isCreateModalOpen}
           onClose={() => setIsCreateModalOpen(false)}
-          title="DEFINE NEW CLASSIFICATION"
-          gate="D-04"
+          title="Create"
         >
           <NewCategoryForm
             onSuccess={handleSuccess}
@@ -211,8 +340,7 @@ export default function CategoriesClient({
         <Modal
           isOpen={!!editingCategory}
           onClose={() => setEditingCategory(null)}
-          title="EDIT CLASSIFICATION"
-          gate="D-04"
+          title="Edit"
         >
           {editingCategory && (
             <EditCategoryForm

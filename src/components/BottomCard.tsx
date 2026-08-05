@@ -35,7 +35,7 @@ export const BottomCardStyled = styled("div", {
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: { base: "white", _dark: "gray.800" },
+    backgroundColor: { base: "white", _dark: "gray.900" },
     zIndex: 1000,
     minHeight: "100px",
     paddingTop: token("spacing.10"),
@@ -65,10 +65,19 @@ export const BottomCard = ({
           margin: "0 auto",
           paddingLeft: token("spacing.8"),
           paddingRight: token("spacing.8"),
+          width: "100%",
         }}
       >
         {heading && <SecondaryHeading>{heading}</SecondaryHeading>}
-        <div style={{ display: "flex", gap: "1rem", marginTop: "1rem" }}>
+        <div
+          style={{
+            display: "flex",
+            gap: "1rem",
+            marginTop: "1rem",
+            justifyContent: "space-between",
+            width: "100%",
+          }}
+        >
           <form
             onSubmit={onSave}
             style={{
@@ -76,6 +85,7 @@ export const BottomCard = ({
               gap: "1rem",
               alignItems: "flex-end",
               flexWrap: "wrap",
+              width: "100%",
             }}
           >
             {inputs?.map((input) => {
@@ -88,7 +98,7 @@ export const BottomCard = ({
                   : `${input.label} is invalid.`;
 
               return (
-                <div key={input.id}>
+                <div key={input.id} style={{ flex: 1, minWidth: "200px" }}>
                   <InputLabel htmlFor={input.id} label={input.label} />
                   <Input
                     id={input.id}

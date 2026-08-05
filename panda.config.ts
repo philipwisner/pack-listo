@@ -160,6 +160,9 @@ export default defineConfig({
         background: {
           value: { base: "{colors.gray.50}", _dark: "{colors.gray.950}" },
         },
+        label: {
+          value: { base: "{colors.gray.200}", _dark: "{colors.gray.700}" },
+        },
         text: {
           main: {
             value: { base: "{colors.gray.950}", _dark: "{colors.gray.50}" },

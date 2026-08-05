@@ -22,7 +22,7 @@ const listCardBaseStyles = {
   },
   background: {
     base: "white",
-    _dark: "gray.800",
+    _dark: "gray.900",
   },
   display: "flex",
   padding: token("spacing.4"),

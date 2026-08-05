@@ -4,7 +4,6 @@ dotenv.config({ path: ".env.local" });
 // Fall back to standard .env if keys aren't found in .env.local
 dotenv.config();
 
-// import { PrismaClient } from "@prisma/client";
 import { PrismaClient } from "../src/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { Pool } from "pg";
@@ -23,73 +22,1216 @@ if (!connectionString) {
 const pool = new Pool({ connectionString });
 const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter, log: ["warn", "error"] });
+
 // ---------------------------------------------------------------------------
-// Helpers
+// Seed Data
 // ---------------------------------------------------------------------------
 
-/** Upsert a category (global – no userId). */
-async function upsertCategory(data: {
-  name: string;
-  icon: string;
-  color: string;
-}) {
-  // Use empty-string sentinel so the compound unique index is satisfied on
-  // repeated runs (null != null in Postgres unique indexes).
-  await prisma.category.upsert({
-    where: { name_userId: { name: data.name, userId: "" } },
-    update: {},
-    create: { name: data.name, icon: data.icon, color: data.color },
-  });
-}
+const categories = [
+  {
+    "id": "cmr1h6niz00009e25qu6mw5kz",
+    "name": "Clothing",
+    "icon": "shirt",
+    "color": "#F06292",
+    "userId": null
+  },
+  {
+    "id": "cmr1h6nj500019e25weepc3ke",
+    "name": "Toiletries",
+    "icon": "droplet",
+    "color": "#039BE5",
+    "userId": null
+  },
+  {
+    "id": "cmr1h6njc00029e256nlxkypb",
+    "name": "Electronics",
+    "icon": "smartphone",
+    "color": "#FB8C00",
+    "userId": null
+  },
+  {
+    "id": "cmr1h6njh00039e2503q5384q",
+    "name": "Documents",
+    "icon": "file-text",
+    "color": "#C0CA33",
+    "userId": null
+  },
+  {
+    "id": "cmr1h6njl00049e25x11roweu",
+    "name": "Health",
+    "icon": "activity",
+    "color": "#10b981",
+    "userId": null
+  },
+  {
+    "id": "cmr1h6njo00059e25c9wn63wh",
+    "name": "Other",
+    "icon": "list-checks",
+    "color": "#8b5cf6",
+    "userId": null
+  },
+  {
+    "id": "cmr1h6njr00069e25b1bave62",
+    "name": "Accessories",
+    "icon": "watch",
+    "color": "#8E24AA",
+    "userId": null
+  },
+  {
+    "id": "cmr1h6njt00079e25514wssm8",
+    "name": "Entertainment",
+    "icon": "gamepad-2",
+    "color": "#E53935",
+    "userId": null
+  },
+  {
+    "id": "cmr1h6njy00089e256c6c8ba7",
+    "name": "Cables & Adapters",
+    "icon": "cable",
+    "color": "#6D4C41",
+    "userId": null
+  },
+  {
+    "id": "cmr1h6nk100099e25hajmkad6",
+    "name": "Packing Organizers",
+    "icon": "package",
+    "color": "#6D4C41",
+    "userId": null
+  },
+  {
+    "id": "cmsghrapd0008rx25w5wzzol6",
+    "name": "Beach",
+    "icon": "parasol",
+    "color": "#FDD835",
+    "userId": null
+  },
+  {
+    "id": "cmsghrf7c0009rx25cm79hqtq",
+    "name": "Camera",
+    "icon": "camera",
+    "color": "#546E7A",
+    "userId": null
+  }
+];
 
-/** Upsert a bag type (global – no userId). */
-async function upsertBagType(data: {
-  name: string;
-  icon: string;
-  color: string;
-}) {
-  await prisma.bagType.upsert({
-    where: { name_userId: { name: data.name, userId: "" } },
-    update: {},
-    create: { name: data.name, icon: data.icon, color: data.color },
-  });
-}
+const bagTypes = [
+  {
+    "id": "cmr1h6nk5000a9e25d2e6q9i7",
+    "name": "Backpack",
+    "icon": "backpack",
+    "color": "#71839B",
+    "userId": null
+  },
+  {
+    "id": "cmr1h6nk9000b9e25vxqkh86f",
+    "name": "Checked Suitcase",
+    "icon": "luggage",
+    "color": "#f97316",
+    "userId": null
+  },
+  {
+    "id": "cmr1h6nkd000c9e252yjb7p79",
+    "name": "Personal Item",
+    "icon": "briefcase",
+    "color": "#ec4899",
+    "userId": null
+  },
+  {
+    "id": "cmr1h6nkf000d9e25osxsigy3",
+    "name": "Toiletries Bag",
+    "icon": "bath",
+    "color": "#71839B",
+    "userId": null
+  },
+  {
+    "id": "cmr1h6nki000e9e257wcwlwlq",
+    "name": "On Person",
+    "icon": "hand",
+    "color": "#71839B",
+    "userId": null
+  },
+  {
+    "id": "cmsghq0fx0001rx25ve9zh9cd",
+    "name": "Purse",
+    "icon": "handbag",
+    "color": "#10b981",
+    "userId": null
+  },
+  {
+    "id": "cmsghqaok0002rx25zk1avgto",
+    "name": "Camera Bag",
+    "icon": "camera",
+    "color": "#71839B",
+    "userId": null
+  },
+  {
+    "id": "cmsghqf950003rx256z2hob7x",
+    "name": "Travel Backpack",
+    "icon": "plane",
+    "color": "#71839B",
+    "userId": null
+  },
+  {
+    "id": "cmsghqh960004rx252vn8c0d8",
+    "name": "Sling",
+    "icon": "handbag",
+    "color": "#546E7A",
+    "userId": null
+  },
+  {
+    "id": "cmsghqjqm0005rx25m4ane3q9",
+    "name": "Tote Bag",
+    "icon": "handbag",
+    "color": "#6366f1",
+    "userId": null
+  },
+  {
+    "id": "cmsghqopi0006rx25bzggsg3a",
+    "name": "Beach Bag",
+    "icon": "parasol",
+    "color": "#71839B",
+    "userId": null
+  },
+  {
+    "id": "cmsghqyyt0007rx25588jq000",
+    "name": "Fanny Pack",
+    "icon": "handbag",
+    "color": "#4ade80",
+    "userId": null
+  },
+  {
+    "id": "cmsgi5puq000arx25vixivrfb",
+    "name": "Diaper Bag",
+    "icon": "baby",
+    "color": "#3949AB",
+    "userId": null
+  }
+];
 
-/**
- * Create a library item if it doesn't already exist.
- * categoryName is the primary category (used to fetch the ID).
- * tags is an optional array of string labels.
- */
-async function seedItem(
-  name: string,
-  categoryName: string, // Changed from array to single string
-  tags: string[] = [], // Added explicit tags param
-  defaultWeight?: number,
-) {
-  const existing = await prisma.item.findFirst({
-    where: { name, userId: null },
-  });
-  if (existing) return;
-
-  // Resolve Category ID
-  const category = await prisma.category.findFirst({
-    where: { name: categoryName, userId: null },
-  });
-
-  // Create Item
-  await prisma.item.create({
-    data: {
-      name,
-      defaultWeight: defaultWeight ?? null,
-      categoryId: category?.id || null,
-      tags: tags,
-      userId: null,
-    },
-  });
-  console.log(
-    `  + ${name} (Category: ${categoryName}, Tags: [${tags.join(", ")}])`,
-  );
-}
+const items = [
+  {
+    "id": "cmr1h6nku000f9e25q6o5nrit",
+    "name": "Small Packing Cube",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6nk100099e25hajmkad6",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nky000g9e25rp7u1us7",
+    "name": "Medium Packing Cube",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6nk100099e25hajmkad6",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nl0000h9e25fqv8p8la",
+    "name": "Large Packing Cube",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6nk100099e25hajmkad6",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nl3000i9e258i93nn17",
+    "name": "Dry Bag",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6nk100099e25hajmkad6",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nl9000j9e25baoj7cqr",
+    "name": "Zipper Bag",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6nk100099e25hajmkad6",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nlb000k9e25acq94sf0",
+    "name": "Pill Box",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6njl00049e25x11roweu",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nle000l9e25hwe4mwmc",
+    "name": "Underwear",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6niz00009e25qu6mw5kz",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nlk000m9e25yws3w46h",
+    "name": "Socks",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6niz00009e25qu6mw5kz",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nlo000n9e25hhdrk3hz",
+    "name": "T-Shirt",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6niz00009e25qu6mw5kz",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nlr000o9e25p4ia1p1s",
+    "name": "Gym Shirt",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6niz00009e25qu6mw5kz",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nlu000p9e253hnsi27g",
+    "name": "Sleep T-Shirt",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6niz00009e25qu6mw5kz",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nlw000q9e25nbi87l9w",
+    "name": "Dress Shirt",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6niz00009e25qu6mw5kz",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nlz000r9e251z7cf23v",
+    "name": "Button-Down Short Sleeve Shirt",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6niz00009e25qu6mw5kz",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nm1000s9e250ke41ovu",
+    "name": "Button-Down Long Sleeve Shirt",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6niz00009e25qu6mw5kz",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nm9000t9e25a7v8cfcu",
+    "name": "Undershirt",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6niz00009e25qu6mw5kz",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nmc000u9e251a61p9pw",
+    "name": "Shorts",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6niz00009e25qu6mw5kz",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nmf000v9e25cvyn8fwc",
+    "name": "Jeans",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6niz00009e25qu6mw5kz",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nmk000w9e25hpfagnsq",
+    "name": "Dress Pants",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6niz00009e25qu6mw5kz",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nmm000x9e25mgo4bs0z",
+    "name": "Sweatpants",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6niz00009e25qu6mw5kz",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nmp000y9e25kom0iwiz",
+    "name": "Sweater",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6niz00009e25qu6mw5kz",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nmr000z9e25ys3iwdbf",
+    "name": "Rain Jacket",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6niz00009e25qu6mw5kz",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nmv00109e253gqz2o2r",
+    "name": "Hoodie",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6niz00009e25qu6mw5kz",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nmy00119e25ygmql9vb",
+    "name": "Clothing Set",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6niz00009e25qu6mw5kz",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nn000129e25wqbdoj5v",
+    "name": "Gloves",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6niz00009e25qu6mw5kz",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nn300139e25c5j2854y",
+    "name": "Winter Hat",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6niz00009e25qu6mw5kz",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nn600149e25dz10u53i",
+    "name": "Baseball Cap",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6niz00009e25qu6mw5kz",
+    "tags": [
+      "Accessories"
+    ],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nna00159e25dc3zrmqe",
+    "name": "Shoes",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6niz00009e25qu6mw5kz",
+    "tags": [
+      "Footwear"
+    ],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nnc00169e25vpirkrvz",
+    "name": "Flip Flops",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6niz00009e25qu6mw5kz",
+    "tags": [
+      "Footwear"
+    ],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nne00179e25o3e6k7jf",
+    "name": "Clip Belt",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6niz00009e25qu6mw5kz",
+    "tags": [
+      "Accessories"
+    ],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nng00189e25qjgio877",
+    "name": "Sunglasses",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6niz00009e25qu6mw5kz",
+    "tags": [
+      "Accessories"
+    ],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nnj00199e25d8asfpqb",
+    "name": "Transition Glasses",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6niz00009e25qu6mw5kz",
+    "tags": [
+      "Accessories"
+    ],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nnl001a9e2570zh4pl5",
+    "name": "Glasses Case",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6njr00069e25b1bave62",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nno001b9e25d8obnxlx",
+    "name": "Cleaning Cloth",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6njr00069e25b1bave62",
+    "tags": [
+      "Electronics"
+    ],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nnq001c9e25s4h9dbjg",
+    "name": "MacBook",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6njc00029e256nlxkypb",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nnv001d9e25aef2kp8i",
+    "name": "iPad",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6njc00029e256nlxkypb",
+    "tags": [
+      "Entertainment"
+    ],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nnx001e9e25t18yx57m",
+    "name": "Apple Pencil",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6njc00029e256nlxkypb",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6no0001f9e25qs0p73hx",
+    "name": "Nintendo Switch",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6njc00029e256nlxkypb",
+    "tags": [
+      "Entertainment"
+    ],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6no3001g9e25ya2znhw7",
+    "name": "Nintendo Switch Charger",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6njc00029e256nlxkypb",
+    "tags": [
+      "Cables & Adapters"
+    ],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6no7001h9e25bwqgmw17",
+    "name": "Galaxy Watch",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6njc00029e256nlxkypb",
+    "tags": [
+      "Accessories"
+    ],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nob001i9e25dp8w56ay",
+    "name": "Galaxy Buds",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6njc00029e256nlxkypb",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nof001j9e2597fx20g6",
+    "name": "Wireless Earbuds",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6njc00029e256nlxkypb",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nok001k9e25fv8iav5u",
+    "name": "Wired Headphones",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6njc00029e256nlxkypb",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6non001l9e25aifzlzn7",
+    "name": "External SSD",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6njc00029e256nlxkypb",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nov001m9e25caelcs65",
+    "name": "100W USB-C Charging Brick",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6njc00029e256nlxkypb",
+    "tags": [
+      "Cables & Adapters"
+    ],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6noz001n9e25nvip1qwy",
+    "name": "Galaxy Watch Charger",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6njc00029e256nlxkypb",
+    "tags": [
+      "Cables & Adapters"
+    ],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6np2001o9e25bd3k32f7",
+    "name": "Portable Charger",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6njc00029e256nlxkypb",
+    "tags": [
+      "Cables & Adapters"
+    ],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6np5001p9e256y7vggc0",
+    "name": "Entertainment Pack",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6njc00029e256nlxkypb",
+    "tags": [
+      "Entertainment"
+    ],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6np7001q9e25oh5e86sr",
+    "name": "Earbud Tips",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6njc00029e256nlxkypb",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6np9001r9e25by1u0irm",
+    "name": "USB-C to USB-C Cable",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6njy00089e256c6c8ba7",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6npc001s9e25qtc69gjx",
+    "name": "USB-A to USB-C Cable",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6njy00089e256c6c8ba7",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6npe001t9e25x0ddjroe",
+    "name": "USB-C to Lightning Adapter",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6njy00089e256c6c8ba7",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nph001u9e25npynjets",
+    "name": "USB-C to USB-A Adapter",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6njy00089e256c6c8ba7",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6npj001v9e25ce16tsu6",
+    "name": "Micro USB Adapter",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6njy00089e256c6c8ba7",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6npm001w9e25ckunrjbo",
+    "name": "Beard Trimmer Charger",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6njy00089e256c6c8ba7",
+    "tags": [
+      "Toiletries"
+    ],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6npr001x9e2590n9u3wi",
+    "name": "Passport",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6njh00039e2503q5384q",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6npu001y9e25wxupcqlo",
+    "name": "Keys",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6njh00039e2503q5384q",
+    "tags": [
+      "Miscellaneous"
+    ],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6npy001z9e25xkwn9azh",
+    "name": "Phone",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6njc00029e256nlxkypb",
+    "tags": [
+      "Documents"
+    ],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nq000209e25v0vd1n1j",
+    "name": "Wallet",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6njh00039e2503q5384q",
+    "tags": [
+      "Accessories"
+    ],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nq300219e250syjm27z",
+    "name": "Probiotics",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6njl00049e25x11roweu",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nqa00229e258kcxu7rh",
+    "name": "Lactaid",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6njl00049e25x11roweu",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nqf00239e25rg5umw1v",
+    "name": "Pepto-Bismol",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6njl00049e25x11roweu",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nqh00249e25w9zpglq3",
+    "name": "Tylenol",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6njl00049e25x11roweu",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nqk00259e25neqwehxg",
+    "name": "Gas-X",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6njl00049e25x11roweu",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nqm00269e2542po26ii",
+    "name": "Mucinex",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6njl00049e25x11roweu",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nqp00279e25a5iufro6",
+    "name": "NyQuil",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6njl00049e25x11roweu",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nqr00289e25j8htqrai",
+    "name": "Prescription Medication",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6njl00049e25x11roweu",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nqv00299e25g74ib6en",
+    "name": "Vitamins",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6njl00049e25x11roweu",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nqx002a9e25eninlkno",
+    "name": "Band-Aids",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6njl00049e25x11roweu",
+    "tags": [
+      "Toiletries"
+    ],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nqz002b9e25n5z8kk6s",
+    "name": "Alcohol Wipes",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6njl00049e25x11roweu",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nr4002c9e25y73jgruv",
+    "name": "Nasal Spray",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6njl00049e25x11roweu",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nr6002d9e257lz52hvm",
+    "name": "Hand Sanitizer",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6njl00049e25x11roweu",
+    "tags": [
+      "Toiletries"
+    ],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nr8002e9e25pnl40pgp",
+    "name": "Nose Pads",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6njl00049e25x11roweu",
+    "tags": [
+      "Accessories"
+    ],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nrb002f9e25z80esb60",
+    "name": "Masks",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6njl00049e25x11roweu",
+    "tags": [
+      "Miscellaneous"
+    ],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nrd002g9e257xro3e5h",
+    "name": "Toothbrush",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6nj500019e25weepc3ke",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nrm002h9e259vq9u5df",
+    "name": "Replacement Toothbrush Head",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6nj500019e25weepc3ke",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nrr002i9e252mh8vhbo",
+    "name": "Dental Floss",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6nj500019e25weepc3ke",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nru002j9e25pic2eopd",
+    "name": "Deodorant",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6nj500019e25weepc3ke",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nry002k9e25vbelb81c",
+    "name": "Razor",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6nj500019e25weepc3ke",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6ns3002l9e256ejbvhuy",
+    "name": "Razor Blades",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6nj500019e25weepc3ke",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6ns7002m9e25s163xy71",
+    "name": "Nail Clippers",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6nj500019e25weepc3ke",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nsa002n9e25bih97e6d",
+    "name": "Tweezers",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6nj500019e25weepc3ke",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nsd002o9e250vgkkm8v",
+    "name": "Foot Cream",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6nj500019e25weepc3ke",
+    "tags": [
+      "Skincare"
+    ],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nsh002p9e25td8swd47",
+    "name": "Bar Soap",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6nj500019e25weepc3ke",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nsk002q9e256vs1g0tg",
+    "name": "Beard Trimmer",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6nj500019e25weepc3ke",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nsn002r9e252ocu7c9z",
+    "name": "Shampoo",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6nj500019e25weepc3ke",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nsr002s9e250su9gjch",
+    "name": "Chapstick",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6nj500019e25weepc3ke",
+    "tags": [
+      "Skincare"
+    ],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nsx002t9e258r6v3ajp",
+    "name": "Moisturizer",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": null,
+    "tags": [
+      "Toiletries"
+    ],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nt1002u9e25lyroe3zv",
+    "name": "Face Sunscreen",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": null,
+    "tags": [
+      "Toiletries"
+    ],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nt4002v9e25h7sck5js",
+    "name": "Aftershave",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": null,
+    "tags": [
+      "Toiletries"
+    ],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nt7002w9e25tjner791",
+    "name": "BHA Serum",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": null,
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nta002x9e25zs10ru6l",
+    "name": "Niacinamide Serum",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": null,
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6ntd002y9e25yigdv69s",
+    "name": "Sunscreen",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": null,
+    "tags": [
+      "Toiletries"
+    ],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6ntf002z9e2569a3p9ev",
+    "name": "Face Cleanser",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": null,
+    "tags": [
+      "Toiletries"
+    ],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nth00309e2506iebrcg",
+    "name": "Gum",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6njo00059e25c9wn63wh",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6ntk00319e25hquuvell",
+    "name": "Pen",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6njo00059e25c9wn63wh",
+    "tags": [],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  },
+  {
+    "id": "cmr1h6nto00329e25lck52ln5",
+    "name": "Portable Fan",
+    "defaultWeight": null,
+    "userId": null,
+    "categoryId": "cmr1h6njo00059e25c9wn63wh",
+    "tags": [
+      "Electronics"
+    ],
+    "defaultBagTypeId": null,
+    "defaultLocationId": null
+  }
+];
 
 // ---------------------------------------------------------------------------
 // Main
@@ -107,25 +1249,28 @@ async function main() {
       prisma.bagType.deleteMany(),
     ]);
   }
+
   // =========================================================================
   // CATEGORIES
   // =========================================================================
   console.log("📂  Categories");
-  const categories = [
-    // --- originals ---
-    { name: "Clothing", icon: "shirt", color: "#4f46e5" },
-    { name: "Toiletries", icon: "droplet", color: "#0ea5e9" },
-    { name: "Electronics", icon: "smartphone", color: "#eab308" },
-    { name: "Documents", icon: "file-text", color: "#ef4444" },
-    { name: "Health", icon: "activity", color: "#10b981" },
-    { name: "Miscellaneous", icon: "package", color: "#8b5cf6" },
-    { name: "Accessories", icon: "watch", color: "#f59e0b" },
-    { name: "Entertainment", icon: "gamepad-2", color: "#6366f1" },
-    { name: "Cables & Adapters", icon: "cable", color: "#64748b" },
-    { name: "Packing Organizers", icon: "box", color: "#4ade80" },
-  ];
   for (const cat of categories) {
-    await upsertCategory(cat);
+    await prisma.category.upsert({
+      where: { id: cat.id },
+      update: {
+        name: cat.name,
+        icon: cat.icon,
+        color: cat.color,
+        userId: cat.userId,
+      },
+      create: {
+        id: cat.id,
+        name: cat.name,
+        icon: cat.icon,
+        color: cat.color,
+        userId: cat.userId,
+      },
+    });
     console.log(`  ✓ ${cat.name}`);
   }
 
@@ -133,17 +1278,23 @@ async function main() {
   // BAG TYPES
   // =========================================================================
   console.log("\n🧳  Bag Types");
-  const bagTypes = [
-    // --- originals ---
-    { name: "Carry-on Backpack", icon: "briefcase", color: "#3b82f6" },
-    { name: "Checked Suitcase", icon: "luggage", color: "#f97316" },
-    { name: "Personal Item", icon: "shopping-bag", color: "#ec4899" },
-    // --- new ---
-    { name: "Toiletries Bag", icon: "droplets", color: "#06b6d4" },
-    { name: "On Person", icon: "user", color: "#8b5cf6" },
-  ];
   for (const bt of bagTypes) {
-    await upsertBagType(bt);
+    await prisma.bagType.upsert({
+      where: { id: bt.id },
+      update: {
+        name: bt.name,
+        icon: bt.icon,
+        color: bt.color,
+        userId: bt.userId,
+      },
+      create: {
+        id: bt.id,
+        name: bt.name,
+        icon: bt.icon,
+        color: bt.color,
+        userId: bt.userId,
+      },
+    });
     console.log(`  ✓ ${bt.name}`);
   }
 
@@ -151,137 +1302,31 @@ async function main() {
   // LIBRARY ITEMS
   // =========================================================================
   console.log("\n📦  Library Items");
-
-  // ── Packing Organizers ────────────────────────────────────────────────────
-  console.log("\n  [Packing Organizers]");
-  await seedItem("Small Packing Cube", "Packing Organizers");
-  await seedItem("Medium Packing Cube", "Packing Organizers");
-  await seedItem("Large Packing Cube", "Packing Organizers");
-  await seedItem("Dry Bag", "Packing Organizers");
-  await seedItem("Zipper Bag", "Packing Organizers");
-  await seedItem("Pill Box", "Health");
-
-  // ── Clothing ─────────────────────────────────────────────────────────────
-  console.log("\n  [Clothing]");
-  await seedItem("Underwear", "Clothing");
-  await seedItem("Socks", "Clothing");
-  await seedItem("T-Shirt", "Clothing");
-  await seedItem("Gym Shirt", "Clothing");
-  await seedItem("Sleep T-Shirt", "Clothing");
-  await seedItem("Dress Shirt", "Clothing");
-  await seedItem("Button-Down Short Sleeve Shirt", "Clothing");
-  await seedItem("Button-Down Long Sleeve Shirt", "Clothing");
-  await seedItem("Undershirt", "Clothing");
-  await seedItem("Shorts", "Clothing");
-  await seedItem("Jeans", "Clothing");
-  await seedItem("Dress Pants", "Clothing");
-  await seedItem("Sweatpants", "Clothing");
-  await seedItem("Sweater", "Clothing");
-  await seedItem("Rain Jacket", "Clothing");
-  await seedItem("Hoodie", "Clothing");
-  await seedItem("Clothing Set", "Clothing");
-  await seedItem("Gloves", "Clothing");
-  await seedItem("Winter Hat", "Clothing");
-  await seedItem("Baseball Cap", "Clothing", ["Accessories"]);
-  await seedItem("Shoes", "Clothing", ["Footwear"]);
-  await seedItem("Flip Flops", "Clothing", ["Footwear"]);
-  await seedItem("Clip Belt", "Clothing", ["Accessories"]);
-  await seedItem("Sunglasses", "Clothing", ["Accessories"]);
-
-  // ── Accessories ───────────────────────────────────────────────────────────
-  console.log("\n  [Accessories]");
-
-  await seedItem("Transition Glasses", "Clothing", ["Accessories"]);
-  await seedItem("Glasses Case", "Accessories");
-  await seedItem("Cleaning Cloth", "Accessories", ["Electronics"]);
-
-  // ── Electronics / Devices ────────────────────────────────────────────────
-  console.log("\n  [Electronics]");
-  await seedItem("MacBook", "Electronics");
-  await seedItem("iPad", "Electronics", ["Entertainment"]);
-  await seedItem("Apple Pencil", "Electronics");
-  await seedItem("Nintendo Switch", "Electronics", ["Entertainment"]);
-  await seedItem("Nintendo Switch Charger", "Electronics", [
-    "Cables & Adapters",
-  ]);
-  await seedItem("Galaxy Watch", "Electronics", ["Accessories"]);
-  await seedItem("Galaxy Buds", "Electronics");
-  await seedItem("Wireless Earbuds", "Electronics");
-  await seedItem("Wired Headphones", "Electronics");
-  await seedItem("External SSD", "Electronics");
-  await seedItem("100W USB-C Charging Brick", "Electronics", [
-    "Cables & Adapters",
-  ]);
-  await seedItem("Galaxy Watch Charger", "Electronics", ["Cables & Adapters"]);
-  await seedItem("Portable Charger", "Electronics", ["Cables & Adapters"]);
-  await seedItem("Entertainment Pack", "Electronics", ["Entertainment"]);
-  await seedItem("Earbud Tips", "Electronics");
-
-  // ── Cables & Adapters ────────────────────────────────────────────────────
-  console.log("\n  [Cables & Adapters]");
-  await seedItem("USB-C to USB-C Cable", "Cables & Adapters");
-  await seedItem("USB-A to USB-C Cable", "Cables & Adapters");
-  await seedItem("USB-C to Lightning Adapter", "Cables & Adapters");
-  await seedItem("USB-C to USB-A Adapter", "Cables & Adapters");
-  await seedItem("Micro USB Adapter", "Cables & Adapters");
-  await seedItem("Beard Trimmer Charger", "Cables & Adapters", ["Toiletries"]);
-
-  // ── Documents & Essentials ───────────────────────────────────────────────
-  console.log("\n  [Documents]");
-  await seedItem("Passport", "Documents");
-  await seedItem("Keys", "Documents", ["Miscellaneous"]);
-  await seedItem("Phone", "Electronics", ["Documents"]);
-  await seedItem("Wallet", "Documents", ["Accessories"]);
-
-  // ── Health & Medications ─────────────────────────────────────────────────
-  console.log("\n  [Health]");
-  await seedItem("Probiotics", "Health");
-  await seedItem("Lactaid", "Health");
-  await seedItem("Pepto-Bismol", "Health");
-  await seedItem("Tylenol", "Health");
-  await seedItem("Gas-X", "Health");
-  await seedItem("Mucinex", "Health");
-  await seedItem("NyQuil", "Health");
-  await seedItem("Prescription Medication", "Health");
-  await seedItem("Vitamins", "Health");
-  await seedItem("Band-Aids", "Health", ["Toiletries"]);
-  await seedItem("Alcohol Wipes", "Health");
-  await seedItem("Nasal Spray", "Health");
-  await seedItem("Hand Sanitizer", "Health", ["Toiletries"]);
-  await seedItem("Nose Pads", "Health", ["Accessories"]);
-  await seedItem("Masks", "Health", ["Miscellaneous"]);
-
-  // ── Toiletries ───────────────────────────────────────────────────────────
-  console.log("\n  [Toiletries]");
-  await seedItem("Toothbrush", "Toiletries");
-  await seedItem("Replacement Toothbrush Head", "Toiletries");
-  await seedItem("Dental Floss", "Toiletries");
-  await seedItem("Deodorant", "Toiletries");
-  await seedItem("Razor", "Toiletries");
-  await seedItem("Razor Blades", "Toiletries");
-  await seedItem("Nail Clippers", "Toiletries");
-  await seedItem("Tweezers", "Toiletries");
-  await seedItem("Foot Cream", "Toiletries", ["Skincare"]);
-  await seedItem("Bar Soap", "Toiletries");
-  await seedItem("Beard Trimmer", "Toiletries");
-  await seedItem("Shampoo", "Toiletries");
-  await seedItem("Chapstick", "Toiletries", ["Skincare"]);
-
-  // ── Skincare ─────────────────────────────────────────────────────────────
-  console.log("\n  [Skincare]");
-  await seedItem("Moisturizer", "Skincare", ["Toiletries"]);
-  await seedItem("Face Sunscreen", "Skincare", ["Toiletries"]);
-  await seedItem("Aftershave", "Skincare", ["Toiletries"]);
-  await seedItem("BHA Serum", "Skincare");
-  await seedItem("Niacinamide Serum", "Skincare");
-  await seedItem("Sunscreen", "Skincare", ["Toiletries"]);
-  await seedItem("Face Cleanser", "Skincare", ["Toiletries"]);
-
-  // ── Miscellaneous ────────────────────────────────────────────────────────
-  console.log("\n  [Miscellaneous]");
-  await seedItem("Gum", "Miscellaneous");
-  await seedItem("Pen", "Miscellaneous");
-  await seedItem("Portable Fan", "Miscellaneous", ["Electronics"]);
+  for (const item of items) {
+    await prisma.item.upsert({
+      where: { id: item.id },
+      update: {
+        name: item.name,
+        defaultWeight: item.defaultWeight,
+        userId: item.userId,
+        categoryId: item.categoryId,
+        tags: item.tags,
+        defaultBagTypeId: item.defaultBagTypeId,
+        defaultLocationId: item.defaultLocationId,
+      },
+      create: {
+        id: item.id,
+        name: item.name,
+        defaultWeight: item.defaultWeight,
+        userId: item.userId,
+        categoryId: item.categoryId,
+        tags: item.tags,
+        defaultBagTypeId: item.defaultBagTypeId,
+        defaultLocationId: item.defaultLocationId,
+      },
+    });
+    console.log(`  + ${item.name}`);
+  }
 
   console.log("\n✅  Seed complete!");
 }

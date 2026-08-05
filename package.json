@@ -24,6 +24,7 @@
     "seed": "npx tsx prisma/seed.ts"
   },
   "dependencies": {
+    "@ark-ui/react": "^5.38.0",
     "@prisma/adapter-pg": "^7.7.0",
     "@supabase/ssr": "^0.10.3",
     "@supabase/supabase-js": "^2.106.2",

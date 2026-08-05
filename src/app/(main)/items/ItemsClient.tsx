@@ -1,120 +1,253 @@
 "use client";
-
-import React, { useState } from "react";
-import { ItemRow } from "@/components/items/ItemRow";
-import { Modal } from "@/components/Modal/Modal";
-import { NewItemForm } from "@/components/forms/NewItemForm";
-import { EditItemForm } from "@/components/forms/EditItemForm";
-import styles from "@/components/items/Items.module.css";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { Item, Category } from "@/generated/prisma/browser";
+import { getCategoriesAction } from "@/features/category/category.actions";
+import { BottomCard } from "@/components/BottomCard";
+import {
+  InlineButtonsContainer,
+  ListContainer,
+  ListItemContainer,
+  PageContainer,
+  PageOverlay,
+} from "@/styles/layout.styles";
+import { PageHeader } from "@/components/PageHeader";
+import { Button } from "@/components/Button/Button";
+import { Pencil, Trash2 } from "lucide-react";
+import { MutedText } from "@/styles/text.styles";
+import { handleActionErrors } from "@/utils/handle-action-errors";
+import {
+  createItemAction,
+  deleteItemAction,
+  updateItemAction,
+} from "@/features/item/item.actions";
+import { createItemSchema } from "@/features/item/item.schemas";
+import z from "zod";
+import { CategoryLabel } from "@/components/CategoryLabel";
+
+type ItemWithCategory = Item & { category: Category | null };
 
 interface ItemsClientProps {
-  initialItems: any[];
-  categories: any[];
+  initialItems: ItemWithCategory[];
 }
 
-export default function ItemsClient({
-  initialItems,
-  categories,
-}: ItemsClientProps) {
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [editingItem, setEditingItem] = useState<any | null>(null);
+type ItemFormData = z.infer<typeof createItemSchema>;
+
+export default function ItemsClient({ initialItems }: ItemsClientProps) {
   const router = useRouter();
+  const [isNew, setIsNew] = useState<boolean>(false);
+  const [showBottomCard, setShowBottomCard] = useState(false);
+  const [currentItem, setCurrentItem] = useState<ItemWithCategory | undefined>(
+    undefined,
+  );
+  const [loading, setLoading] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState<
+    Record<string, string | boolean>
+  >({});
+  const [categories, setCategories] = useState<Category[]>([]);
+
+  useEffect(() => {
+    async function loadCategories() {
+      const result = await getCategoriesAction();
+      if (result?.data) {
+        setCategories(result.data as Category[]);
+      }
+    }
+    loadCategories();
+  }, []);
 
   const handleSuccess = () => {
-    setIsCreateModalOpen(false);
-    setEditingItem(null);
+    setShowBottomCard(false);
+    setIsNew(true);
+    setLoading(false);
+    setCurrentItem(undefined);
+    setFieldErrors({});
     router.refresh();
   };
 
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setLoading(true);
+    setFieldErrors({});
+
+    const form = e.currentTarget;
+    const nameInput = form.querySelector("#name") as HTMLInputElement;
+
+    if (!form.checkValidity()) {
+      setFieldErrors({
+        name: !nameInput?.validity.valid ? "Item name is required" : false,
+      });
+      setLoading(false);
+      return;
+    }
+
+    const formData = new FormData(form);
+    const categoryIdVal = formData.get("categoryId") as string;
+    const data: ItemFormData = {
+      name: formData.get("name") as string,
+      categoryId: categoryIdVal || null,
+    };
+
+    let result;
+    if (isNew) {
+      result = await createItemAction(data);
+    } else if (currentItem) {
+      result = await updateItemAction({ id: currentItem.id, ...data });
+    }
+
+    // // 3. Process action errors (if any) via helper
+    const serverError = handleActionErrors(result, (field, error) => {
+      setFieldErrors((prev) => ({ ...prev, [field]: error.message || true }));
+    });
+
+    if (serverError) {
+      setFieldErrors((prev) => ({ ...prev, server: serverError }));
+      setLoading(false);
+      return;
+    }
+
+    // 4. Handle Success
+    const responseData = result?.data as { success?: boolean } | undefined;
+    if (responseData?.success) {
+      handleSuccess();
+    } else {
+      setLoading(false);
+    }
+  }
+
+  async function handleDeleteItem(item: ItemWithCategory) {
+    setLoading(true);
+    try {
+      const result = await deleteItemAction({ id: item.id });
+
+      const serverError = handleActionErrors(result, (field, error) => {
+        setFieldErrors((prev) => ({ ...prev, [field]: error.message || true }));
+      });
+
+      if (serverError) {
+        console.error("Delete failed:", serverError);
+        return;
+      }
+
+      router.refresh();
+    } catch (error) {
+      console.error("Failed to delete item:", error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const itemInputs = [
+    {
+      id: "name",
+      label: "Name",
+      type: "text",
+      placeholder: "e.g. Phone",
+      required: true,
+      defaultValue: currentItem?.name || "",
+    },
+    // {
+    //   id: "categoryId",
+    //   label: "Category",
+    //   type: "select",
+    //   placeholder: "e.g. Electronics",
+    //   required: false,
+    //   option: categories,
+    //   defaultValue: currentItem?.categoryId || "",
+    // },
+    {
+      id: "categoryId",
+      label: "Category",
+      type: "custom-select",
+      placeholder: "e.g. Electronics",
+      required: false,
+      option: categories,
+      defaultValue: currentItem?.categoryId || "",
+    },
+  ];
+
   return (
-    <div className="dashboard-page" style={{ padding: "4rem" }}>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "flex-end",
-          marginBottom: "3rem",
-          borderBottom: "4px solid var(--border)",
-          paddingBottom: "1.5rem",
-        }}
-      >
-        <h1 style={{ marginBottom: 0 }}>Item Inventory</h1>
-        <button className="btn-sign" onClick={() => setIsCreateModalOpen(true)}>
-          Register New Cargo
-        </button>
-      </div>
-
-      <div className={styles.inventoryTable}>
-        <div className={styles.tableHeader}>
-          <span>ID</span>
-          <span>Description</span>
-          <span>Classification</span>
-          <span>Weight</span>
-          <span>Actions</span>
-        </div>
-
-        {initialItems.length === 0 ? (
-          <div
-            style={{ padding: "2rem", textAlign: "center", fontWeight: 800 }}
-          >
-            INVENTORY EMPTY. AUTHORIZATION REQUIRED.
-          </div>
-        ) : (
-          initialItems.map((item) => (
-            <ItemRow
-              key={item.id}
-              id={item.id}
-              name={item.name}
-              weight={item.defaultWeight || 0}
-              category={item.category}
-              onEdit={() => setEditingItem(item)}
-            />
-          ))
-        )}
-      </div>
-
-      <section
-        className="sign-panel sign-panel-accent"
-        style={{ marginTop: "4rem" }}
-      >
-        <h2>Inventory Control</h2>
-        <p style={{ fontWeight: 600 }}>
-          Items registered here can be allocated to any manifest. Ensure weight
-          specifications are accurate for total payload calculation.
-        </p>
-      </section>
-
-      {/* Create Modal */}
-      <Modal
-        isOpen={isCreateModalOpen}
-        onClose={() => setIsCreateModalOpen(false)}
-        title="REGISTER NEW CARGO"
-        gate="C-12"
-      >
-        <NewItemForm
-          categories={categories}
-          onSuccess={handleSuccess}
-          onCancel={() => setIsCreateModalOpen(false)}
+    <>
+      {showBottomCard && (
+        <BottomCard
+          heading={`${isNew ? "Create" : "Update"} Item`}
+          onClose={() => setShowBottomCard(false)}
+          inputs={itemInputs}
+          button={{
+            text: `${isNew ? "Create" : "Update"} Item`,
+            type: "submit",
+          }}
+          onSave={handleSubmit}
+          isLoading={loading}
+          fieldErrors={fieldErrors}
         />
-      </Modal>
-
-      {/* Edit Modal */}
-      <Modal
-        isOpen={!!editingItem}
-        onClose={() => setEditingItem(null)}
-        title="EDIT CARGO ITEM"
-        gate="C-12"
-      >
-        {editingItem && (
-          <EditItemForm
-            item={editingItem}
-            allCategories={categories}
-            onSuccess={handleSuccess}
-            onCancel={() => setEditingItem(null)}
-          />
-        )}
-      </Modal>
-    </div>
+      )}
+      <PageContainer>
+        {showBottomCard && <PageOverlay />}
+        <PageHeader
+          text="My Items"
+          button={{
+            text: "Create Item",
+            onClick: () => {
+              setCurrentItem(undefined);
+              setShowBottomCard(true);
+              setIsNew(true);
+            },
+          }}
+        />
+        <ListContainer>
+          {initialItems.length === 0 ? (
+            <MutedText>No Items. Create an Item to get started.</MutedText>
+          ) : (
+            initialItems.map((item: ItemWithCategory) => (
+              <ListItemContainer key={item.id}>
+                <div
+                  style={{
+                    flex: "1 1 40%",
+                    fontSize: "18px",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {item.name}
+                </div>
+                <div
+                  style={{
+                    flex: "1 1 50%",
+                  }}
+                >
+                  {item?.category ? (
+                    <CategoryLabel category={item.category} />
+                  ) : (
+                    "Unassigned"
+                  )}
+                </div>
+                <InlineButtonsContainer>
+                  <Button
+                    text="Edit"
+                    variant="secondary"
+                    size="small"
+                    width="fit"
+                    onClick={() => {
+                      setShowBottomCard(true);
+                      setIsNew(false);
+                      setCurrentItem(item);
+                    }}
+                    iconLeft={<Pencil size={16} />}
+                  />
+                  <Button
+                    text="Delete"
+                    variant="delete"
+                    size="small"
+                    width="fit"
+                    onClick={() => handleDeleteItem(item)}
+                    iconLeft={<Trash2 size={16} />}
+                  />
+                </InlineButtonsContainer>
+              </ListItemContainer>
+            ))
+          )}
+        </ListContainer>
+      </PageContainer>
+    </>
   );
 }

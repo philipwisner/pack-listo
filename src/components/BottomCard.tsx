@@ -4,6 +4,8 @@ import { token } from "@/styled-system/tokens";
 import { Button } from "@/components//Button/Button";
 import { InputLabel } from "@/components/InputLabel";
 import { Input } from "@/components/TextInput/TextInput";
+import { Select } from "@/components/Select/Select";
+import { CustomSelect } from "@/components/CustomSelect/CustomSelect";
 import { Error } from "@/components/Error";
 import { useClickOutside } from "@/hooks/useClickOutside";
 import { SecondaryHeading } from "@/styles/text.styles";
@@ -23,6 +25,11 @@ export interface BottomCardProps
     type: string;
     placeholder?: string;
     required?: boolean;
+    option?: any[];
+    options?: any[];
+    defaultValue?: any;
+    closeOnSelect?: boolean;
+    multiple?: boolean;
   }[];
   onClose?: () => void;
   onSave?: (e: React.FormEvent<HTMLFormElement>) => void;
@@ -100,21 +107,64 @@ export const BottomCard = ({
               return (
                 <div key={input.id} style={{ flex: 1, minWidth: "200px" }}>
                   <InputLabel htmlFor={input.id} label={input.label} />
-                  <Input
-                    {...input}
-                    id={input.id}
-                    name={input.id}
-                    type={input.type}
-                    required={input.required}
-                    placeholder={input.placeholder}
-                    aria-required={input.required}
-                    hasError={hasError}
-                    aria-invalid={hasError}
-                    aria-describedby={hasError ? errorId : undefined}
-                    data-1p-ignore
-                    data-bwignore
-                    data-lpignore="true"
-                  />
+                  {input.type === "custom-select" ? (
+                    <CustomSelect
+                      name={input.id}
+                      label={input.label}
+                      placeholder={input.placeholder}
+                      options={(input.option || input.options || []).map(
+                        (opt: any) => ({
+                          value: opt.id ?? opt.value ?? String(opt),
+                          label: opt.name ?? opt.label ?? String(opt),
+                        }),
+                      )}
+                      defaultValue={input.defaultValue || undefined}
+                      required={input.required}
+                      hasError={hasError}
+                      closeOnSelect={input.closeOnSelect ?? true}
+                      multiple={input.multiple ?? false}
+                    />
+                  ) : input.type === "select" ? (
+                    <Select
+                      id={input.id}
+                      name={input.id}
+                      required={input.required}
+                      defaultValue={input.defaultValue}
+                      hasError={hasError}
+                      aria-required={input.required}
+                      aria-invalid={hasError}
+                      aria-describedby={hasError ? errorId : undefined}
+                    >
+                      {input.placeholder && (
+                        <option value="">{input.placeholder}</option>
+                      )}
+                      {(input.option || input.options || []).map((opt: any) => {
+                        const value = opt.id ?? opt.value ?? opt;
+                        const label = opt.name ?? opt.label ?? opt;
+                        return (
+                          <option key={value} value={value}>
+                            {label}
+                          </option>
+                        );
+                      })}
+                    </Select>
+                  ) : (
+                    <Input
+                      id={input.id}
+                      name={input.id}
+                      type={input.type}
+                      required={input.required}
+                      placeholder={input.placeholder}
+                      defaultValue={input.defaultValue}
+                      aria-required={input.required}
+                      hasError={hasError}
+                      aria-invalid={hasError}
+                      aria-describedby={hasError ? errorId : undefined}
+                      data-1p-ignore
+                      data-bwignore
+                      data-lpignore="true"
+                    />
+                  )}
                   {hasError && (
                     <Error id={errorId} text={errorMessage} role="alert" />
                   )}

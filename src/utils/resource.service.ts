@@ -9,6 +9,7 @@ export const ResourceService = {
     delegate: any,
     hiddenDelegate: any,
     idKey: string,
+    options?: { include?: any },
   ): Promise<T[]> {
     // 1. Get hidden IDs
     const hidden = await hiddenDelegate.findMany({
@@ -27,6 +28,7 @@ export const ResourceService = {
         ],
       },
       orderBy: { name: "asc" },
+      ...options,
     });
   },
 };

@@ -47,13 +47,15 @@ export const ListItemContainer = styled("div", {
     padding: token("spacing.4"),
     borderRadius: token("radii.sm"),
     width: "100%",
+    flexWrap: "wrap",
   },
 });
 
 export const InlineButtonsContainer = styled("div", {
   base: {
-    flex: "1 1 10%",
+    flex: "1 1 200px",
     display: "flex",
+    justifyContent: "flex-end",
     gap: token("spacing.2"),
   },
 });

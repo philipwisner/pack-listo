@@ -24,6 +24,7 @@ import {
 import { createItemSchema } from "@/features/item/item.schemas";
 import z from "zod";
 import { CategoryLabel } from "@/components/CategoryLabel";
+import { token } from "@/styled-system/tokens";
 
 type ItemWithCategory = Item & { category: Category | null };
 
@@ -203,16 +204,16 @@ export default function ItemsClient({ initialItems }: ItemsClientProps) {
               <ListItemContainer key={item.id}>
                 <div
                   style={{
-                    flex: "1 1 40%",
-                    fontSize: "18px",
-                    fontWeight: "bold",
+                    flex: "2 1 150px",
+                    fontSize: token("fontSizes.lg"),
+                    fontWeight: token("fontWeights.bold"),
                   }}
                 >
                   {item.name}
                 </div>
                 <div
                   style={{
-                    flex: "1 1 50%",
+                    flex: "2.5 1 100px",
                   }}
                 >
                   {item?.category ? (

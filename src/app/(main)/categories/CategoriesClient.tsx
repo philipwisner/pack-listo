@@ -221,81 +221,133 @@ export default function CategoriesClient({
               No Categories. Create a Category to get started.
             </MutedText>
           ) : (
-            initialCategories.map((category: Category) => (
-              <ListItemContainer key={category.id}>
+            <>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  paddingInline: token("spacing.4"),
+                  paddingBlock: token("spacing.2"),
+                  width: "100%",
+                  fontWeight: token("fontWeights.bold"),
+                  justifyContent: "flex-start",
+                  alignContent: "center",
+                  padding: token("spacing.4"),
+                  flexWrap: "wrap",
+                }}
+              >
                 <div
                   style={{
-                    flex: "1 1 25%",
+                    flex: "2.5 1 150px",
                   }}
                 >
-                  <CategoryLabel category={category} />
+                  Category
                 </div>
                 <div
                   style={{
-                    flex: "1 1 25%",
-                    fontSize: "18px",
-                    fontWeight: "bold",
+                    flex: "2.5 1 150px",
                   }}
                 >
-                  {category.name}
+                  Name
                 </div>
                 <div
                   style={{
-                    flex: "1 1 20%",
-                    display: "flex",
+                    flex: "2 1 130px",
                   }}
                 >
-                  <IconLabelLink
-                    href={`https://lucide.dev/icons/?search=${category.icon}`}
-                    target="_blank"
-                  >
-                    <Icon
-                      value={category.icon}
-                      color={token("colors.text.main")}
-                      size={16}
-                    />
-                    {category.icon}
-                  </IconLabelLink>
+                  Icon
                 </div>
                 <div
                   style={{
-                    flex: "1 1 15%",
+                    flex: "2 1 100px",
                   }}
                 >
-                  <ColorTag
+                  Color
+                </div>
+                <div
+                  style={{
+                    flex: "1 1 200px",
+                  }}
+                />
+              </div>
+              {initialCategories.map((category: Category) => (
+                <ListItemContainer key={category.id}>
+                  <div
                     style={{
-                      background: category.color
-                        ? category.color
-                        : FALLBACK_CATEGORY_COLOR,
+                      flex: "2.5 1 150px",
                     }}
                   >
-                    {category.color ? category.color : FALLBACK_CATEGORY_COLOR}
-                  </ColorTag>
-                </div>
-                <InlineButtonsContainer>
-                  <Button
-                    text="Edit"
-                    variant="secondary"
-                    size="small"
-                    width="fit"
-                    onClick={() => {
-                      setShowBottomCard(true);
-                      setIsNew(false);
-                      setCurrentCategory(category);
+                    <CategoryLabel category={category} />
+                  </div>
+                  <div
+                    style={{
+                      flex: "2.5 1 150px",
+                      fontSize: token("fontSizes.lg"),
+                      fontWeight: token("fontWeights.bold"),
                     }}
-                    iconLeft={<Pencil size={16} />}
-                  />
-                  <Button
-                    text="Delete"
-                    variant="delete"
-                    size="small"
-                    width="fit"
-                    onClick={() => handleDeleteCategory(category)}
-                    iconLeft={<Trash2 size={16} />}
-                  />
-                </InlineButtonsContainer>
-              </ListItemContainer>
-            ))
+                  >
+                    {category.name}
+                  </div>
+                  <div
+                    style={{
+                      flex: "2 1 130px",
+                      display: "flex",
+                    }}
+                  >
+                    <IconLabelLink
+                      href={`https://lucide.dev/icons/?search=${category.icon}`}
+                      target="_blank"
+                    >
+                      <Icon
+                        value={category.icon}
+                        color={token("colors.text.main")}
+                        size={16}
+                      />
+                      {category.icon}
+                    </IconLabelLink>
+                  </div>
+                  <div
+                    style={{
+                      flex: "2 1 100px",
+                    }}
+                  >
+                    <ColorTag
+                      style={{
+                        background: category.color
+                          ? category.color
+                          : FALLBACK_CATEGORY_COLOR,
+                      }}
+                    >
+                      {category.color
+                        ? category.color
+                        : FALLBACK_CATEGORY_COLOR}
+                    </ColorTag>
+                  </div>
+                  <InlineButtonsContainer>
+                    <Button
+                      text="Edit"
+                      variant="secondary"
+                      size="small"
+                      width="fit"
+                      onClick={() => {
+                        setShowBottomCard(true);
+                        setIsNew(false);
+                        setCurrentCategory(category);
+                      }}
+                      iconLeft={<Pencil size={16} />}
+                    />
+                    <Button
+                      text="Delete"
+                      variant="delete"
+                      size="small"
+                      width="fit"
+                      onClick={() => handleDeleteCategory(category)}
+                      iconLeft={<Trash2 size={16} />}
+                    />
+                  </InlineButtonsContainer>
+                </ListItemContainer>
+              ))}
+            </>
           )}
         </ListContainer>
       </PageContainer>

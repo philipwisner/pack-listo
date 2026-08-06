@@ -230,7 +230,7 @@ export default function BagTypesClient({
                 </div>
                 <div
                   style={{
-                    flex: "1 1 25%",
+                    flex: "1 1 20%",
                     fontSize: "18px",
                     fontWeight: "bold",
                   }}
@@ -257,7 +257,7 @@ export default function BagTypesClient({
                 </div>
                 <div
                   style={{
-                    flex: "1 1 15%",
+                    flex: "1 1 18%",
                   }}
                 >
                   <ColorTag

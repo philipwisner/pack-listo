@@ -19,7 +19,10 @@ import { ListWithRelations } from "./page";
 import { Button } from "@/components/Button/Button";
 import { getItemsAction } from "@/features/item/item.actions";
 import ItemRow, { ItemWithCategory } from "../../items/ItemRow";
-import { addToListAction } from "@/features/list-item/list-item.actions";
+import {
+  addToListAction,
+  togglePackedAction,
+} from "@/features/list-item/list-item.actions";
 
 interface ListClientProps {
   initialList?: ListWithRelations;
@@ -43,6 +46,7 @@ const FloatingButton = styled("div", {
     justifyContent: "center",
     alignItems: "center",
     zIndex: 5,
+    pointerEvents: "none",
   },
 });
 
@@ -172,6 +176,8 @@ export default function ListClient({ initialList }: ListClientProps) {
     // }
   }
 
+  console.log("initialList", initialList);
+
   async function handleAdd(item: ItemWithCategory) {
     const result = await addToListAction({
       listId: initialList.id,
@@ -192,6 +198,19 @@ export default function ListClient({ initialList }: ListClientProps) {
     //     return i;
     //   }),
     // );
+  }
+
+  async function handlePack(item: ItemWithCategory) {
+    const result = await togglePackedAction({
+      listItemId: item.id,
+      isPacked: !item.isPacked,
+    });
+
+    if (result?.data?.success) {
+      handleSuccess();
+    } else {
+      setLoading(false);
+    }
   }
 
   return (
@@ -285,7 +304,13 @@ export default function ListClient({ initialList }: ListClientProps) {
         </ListDetails>
         <div>
           {initialList?.items?.map((item) => {
-            return <ItemRow key={item.id} item={item.item} />;
+            return (
+              <ItemRow
+                key={item.id}
+                item={{ ...item.item, ...item }}
+                handlePack={handlePack}
+              />
+            );
           })}
         </div>
         <FloatingButton>

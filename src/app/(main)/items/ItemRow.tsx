@@ -5,11 +5,14 @@ import {
   ListItemContainer,
 } from "@/styles/layout.styles";
 import { Button } from "@/components/Button/Button";
-import { Check, Pencil, PlusIcon, Trash2 } from "lucide-react";
+import { Check, Pencil, PlusIcon, Trash2, X } from "lucide-react";
 import { CategoryLabel } from "@/components/CategoryLabel";
 import { token } from "@/styled-system/tokens";
 
-export type ItemWithCategory = Item & { isSelected: boolean } & {
+export type ItemWithCategory = Item & {
+  isSelected: boolean;
+  isPacked: boolean;
+} & {
   category: Category | null;
 };
 
@@ -18,6 +21,7 @@ interface ItemsClientProps {
   handleEdit?: (item: ItemWithCategory) => void;
   handleDelete?: (item: ItemWithCategory) => void;
   handleAdd?: (item: ItemWithCategory) => void;
+  handlePack?: (item: ItemWithCategory) => void;
 }
 
 export default function ItemRow({
@@ -25,6 +29,7 @@ export default function ItemRow({
   handleEdit,
   handleDelete,
   handleAdd,
+  handlePack,
 }: ItemsClientProps) {
   return (
     <ListItemContainer>
@@ -57,8 +62,18 @@ export default function ItemRow({
             width="fit"
             onClick={() => handleAdd(item)}
             iconLeft={
-              item.isSelected ? <Check size={16} /> : <PlusIcon size={16} />
+              item.isSelected ? <X size={16} /> : <PlusIcon size={16} />
             }
+          />
+        )}
+        {handlePack && (
+          <Button
+            text={item.isPacked ? "Unpack" : "Pack"}
+            variant={item.isPacked ? "delete" : "secondary"}
+            size="small"
+            width="fit"
+            onClick={() => handlePack(item)}
+            iconLeft={item.isPacked ? <X size={16} /> : <PlusIcon size={16} />}
           />
         )}
         {handleEdit && (

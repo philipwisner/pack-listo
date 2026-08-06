@@ -47,6 +47,9 @@ const FloatingButton = styled("div", {
     alignItems: "center",
     zIndex: 5,
     pointerEvents: "none",
+    "& > *": {
+      pointerEvents: "auto", // Keeps the actual button clickable
+    },
   },
 });
 
@@ -302,7 +305,7 @@ export default function ListClient({ initialList }: ListClientProps) {
             </div>
           </div>
         </ListDetails>
-        <div>
+        <div style={{ paddingBottom: token("spacing.24") }}>
           {initialList?.items?.map((item) => {
             return (
               <ItemRow

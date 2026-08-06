@@ -182,17 +182,18 @@ export default function ListClient({ initialList }: ListClientProps) {
   console.log("initialList", initialList);
 
   async function handleAdd(item: ItemWithCategory) {
-    const result = await addToListAction({
-      listId: initialList.id,
-      itemId: item.id,
-    });
+    if (initialList) {
+      const result = await addToListAction({
+        listId: initialList.id,
+        itemId: item.id,
+      });
 
-    if (result?.data?.success) {
-      handleSuccess();
-    } else {
-      setLoading(false);
+      if (result?.data?.success) {
+        handleSuccess();
+      } else {
+        setLoading(false);
+      }
     }
-
     // setLibraryItems(
     //   libraryItems.map((i: ItemWithCategory) => {
     //     if (item.id === i.id) {

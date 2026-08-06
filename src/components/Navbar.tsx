@@ -7,6 +7,7 @@ import { Button } from "@/components/Button/Button";
 import { Logo } from "@/components/Logo";
 import { logoutAction } from "@/features/auth/auth.actions";
 import { AuthUser } from "@/lib/auth";
+import { Dropdown } from "@/components/Dropdown";
 
 export interface NavbarProps {
   user?: AuthUser | null;
@@ -45,9 +46,112 @@ export const Navbar = ({ user }: NavbarProps) => {
           <InternalLink text="Lists" url="/lists" />
           <InternalLink text="Items" url="/items" />
           <InternalLink text="Categories" url="/categories" />
-          <InternalLink text="Bags" url="/bags" />
+          <InternalLink text="Bags" url="/bags" />{" "}
           {user && user.isAdmin && <InternalLink text="Admin" url="/admin" />}
-          <p>{user?.name}</p>
+          <Dropdown
+            triggerLabel="Settings"
+            // items={[
+            //   { id: "user", label: user?.name ?? "Unknown" },
+            //   { id: "edit", label: "Edit Profile" },
+            // ]}
+            groups={[
+              {
+                id: "user",
+                label: user?.name ?? "Unknown",
+                items: [
+                  {
+                    id: "profile",
+                    label: "Edit Profile",
+                  },
+                ],
+              },
+              {
+                id: "configure",
+                label: "Configure",
+                items: [
+                  {
+                    id: "categories",
+                    label: "Categories",
+                    href: "/categories",
+                  },
+                  {
+                    id: "bags",
+                    label: "Bags",
+                    href: "/bags",
+                  },
+                ],
+              },
+              {
+                id: "settings",
+                label: "App Settings",
+                items: [
+                  {
+                    id: "theme",
+                    label: "Dark Mode",
+                  },
+                  {
+                    id: "measurement",
+                    label: "Measurements",
+                  },
+                ],
+              },
+              {
+                id: "actions",
+                label: "Actions",
+                items: [{ id: "logout", label: "Log Out", shortcut: "⇧⌘L" }],
+              },
+            ]}
+          />
+          <Dropdown
+            customTrigger={<p>{user?.name}</p>}
+            groups={[
+              {
+                id: "user",
+                label: user?.name ?? "Unknown",
+                items: [
+                  {
+                    id: "profile",
+                    label: "Edit Profile",
+                  },
+                ],
+              },
+              {
+                id: "configure",
+                label: "Configure",
+                items: [
+                  {
+                    id: "categories",
+                    label: "Categories",
+                    href: "/categories",
+                  },
+                  {
+                    id: "bags",
+                    label: "Bags",
+                    href: "/bags",
+                  },
+                ],
+              },
+              {
+                id: "settings",
+                label: "App Settings",
+                items: [
+                  {
+                    id: "theme",
+                    label: "Dark Mode",
+                  },
+                  {
+                    id: "measurement",
+                    label: "Measurements",
+                  },
+                ],
+              },
+              {
+                id: "actions",
+                label: "Actions",
+                items: [{ id: "logout", label: "Log Out", shortcut: "⇧⌘L" }],
+              },
+            ]}
+          />
           <form action={logoutAction}>
             <Button
               type="submit"

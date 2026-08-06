@@ -1,3 +1,4 @@
+import { menuRecipe } from "./src/styles/dropdown.recipes";
 import { defineConfig } from "@pandacss/dev";
 
 export default defineConfig({
@@ -530,6 +531,11 @@ export default defineConfig({
           lineHeight: "{lineHeights.snug}",
           fontWeight: "{fontWeights.semibold}",
         },
+      },
+    },
+    extend: {
+      slotRecipes: {
+        menu: menuRecipe,
       },
     },
   },

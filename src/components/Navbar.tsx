@@ -46,7 +46,7 @@ export const Navbar = ({ user }: NavbarProps) => {
           <InternalLink text="Lists" url="/lists" />
           <InternalLink text="Items" url="/items" />
           <InternalLink text="Categories" url="/categories" />
-          <InternalLink text="Bags" url="/bags" />{" "}
+          <InternalLink text="Bags" url="/bags" />
           {user && user.isAdmin && <InternalLink text="Admin" url="/admin" />}
           <Dropdown
             triggerLabel="Settings"

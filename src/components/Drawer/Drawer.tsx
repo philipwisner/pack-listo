@@ -13,6 +13,7 @@ export type SwipeDrawerProps = {
   defaultSnapPoint?: number;
   modal?: boolean;
   showClose?: boolean;
+  draggable?: boolean;
 };
 
 export const Drawer = ({
@@ -26,6 +27,7 @@ export const Drawer = ({
   modal = false,
   showClose = false,
   closeDrawer,
+  draggable = false,
 }: SwipeDrawerProps) => {
   return (
     <DrawerUI.Root
@@ -45,16 +47,16 @@ export const Drawer = ({
       ) : null}
       <DrawerUI.Backdrop className={styles.Backdrop} />
       <DrawerUI.Positioner className={styles.Positioner}>
-        <DrawerUI.Content className={styles.Content}>
+        <DrawerUI.Content className={styles.Content} draggable={draggable}>
           <DrawerUI.Grabber className={styles.Grabber}>
             <DrawerUI.GrabberIndicator className={styles.GrabberIndicator} />
           </DrawerUI.Grabber>
-          <div>{children}</div>
           {showClose && (
             <DrawerUI.CloseTrigger className={styles.CloseTrigger}>
               <XIcon />
             </DrawerUI.CloseTrigger>
           )}
+          <div className={styles.Scrollable}>{children}</div>
         </DrawerUI.Content>
       </DrawerUI.Positioner>
     </DrawerUI.Root>

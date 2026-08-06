@@ -1,10 +1,8 @@
-import React from "react";
 import { listService } from "@/features/list/list.service";
-import { itemService } from "@/features/item/item.service";
-import { notFound, redirect } from "next/navigation";
-import { createClient } from "@/utils/supabase/server";
-import { PageContainer } from "@/styles/layout.styles";
-import { PageHeader } from "@/components/PageHeader";
+import { getCurrentUser } from "@/lib/auth";
+import ListClient from "./ListClient";
+
+export type ListWithRelations = Awaited<ReturnType<typeof listService.getById>>;
 
 export default async function ListDetailPage({
   params,
@@ -12,41 +10,16 @@ export default async function ListDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+  const user = await getCurrentUser();
 
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    redirect("/auth/signin");
+  let list: Awaited<ReturnType<typeof listService.getById>> = null;
+  if (user) {
+    list = await listService.getById(id, user.id);
   }
-
-  const userId = user.id;
-
-  const list = await listService.getById(id, userId);
-
-  //Move this to the client component so it stops blocking loading
-  // const items = await itemService.getAll(userId);
 
   if (!list) {
-    notFound();
+    return <div>List not found</div>;
   }
 
-  // Transform data to match client component needs
-  const transformedItems = list?.items.map((li: any) => ({
-    id: li.id,
-    quantity: li.quantity,
-    isPacked: li.isPacked,
-    item: {
-      name: li.item.name,
-      category: li.category,
-    },
-  }));
-
-  return (
-    <PageContainer>
-      <PageHeader text={list.name} button={{ text: "Edit List" }} />
-    </PageContainer>
-  );
+  return <ListClient initialList={list} />;
 }

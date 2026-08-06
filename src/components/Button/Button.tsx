@@ -5,7 +5,9 @@ import { type ComponentProps, type ReactNode } from "react";
 export interface ButtonProps extends ComponentProps<typeof ButtonStyled> {
   variant?: "primary" | "secondary" | "delete" | "alternative";
   width?: "full" | "fit";
+  radius?: "rounded" | "round";
   size?: "small" | "base";
+  depth?: "flat" | "floating";
   primary?: boolean;
   text?: string;
   isLoading?: boolean;
@@ -23,7 +25,6 @@ export const ButtonStyled = styled("button", {
     gap: "2",
     py: "3",
     px: "4",
-    borderRadius: "md",
     fontWeight: "bold",
     fontSize: "base",
     cursor: "pointer",
@@ -126,7 +127,6 @@ export const ButtonStyled = styled("button", {
         },
       },
       alternative: {
-        borderRadius: "full",
         border: "1px dashed",
         borderColor: { base: "gray.300", _dark: "gray.500" },
         color: "text.muted",
@@ -139,14 +139,21 @@ export const ButtonStyled = styled("button", {
         },
       },
     },
-
-    // Width Sizing Rules
     width: {
       full: { width: "100%" },
       fit: { width: "fit-content", height: "fit-content" },
     },
-
-    // Button sizing rules
+    radius: {
+      rounded: { borderRadius: "{radii.md}" },
+      round: { borderRadius: "{radii.full}" },
+    },
+    depth: {
+      flat: { boxShadow: "" },
+      floating: {
+        shadow:
+          "0 12px 20px -4px rgba(161, 126, 4, 0.35), 0 4px 8px -2px rgba(161, 126, 4, 0.2)",
+      },
+    },
     size: {
       small: {
         py: "1",
@@ -166,6 +173,8 @@ export const ButtonStyled = styled("button", {
     variant: "primary",
     width: "fit",
     size: "base",
+    radius: "rounded",
+    depth: "flat",
   },
 });
 
@@ -178,6 +187,8 @@ export const Button = ({
   variant = "primary",
   width = "full",
   size = "base",
+  radius = "rounded",
+  depth = "flat",
   text = "",
   isLoading = false,
   loadingText = "",
@@ -191,6 +202,8 @@ export const Button = ({
       variant={variant}
       width={width}
       size={size}
+      radius={radius}
+      depth={depth}
       disabled={isLoading || disabled}
       data-loading={isLoading ? "true" : undefined}
       {...props}

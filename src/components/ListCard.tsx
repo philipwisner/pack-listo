@@ -25,7 +25,8 @@ const listCardBaseStyles = {
     _dark: "gray.900",
   },
   display: "flex",
-  padding: "{spacing.4}",
+  paddingInline: "{spacing.8}",
+  paddingBlock: "{spacing.6}",
   borderRadius: "{radii.sm}",
 };
 
@@ -37,17 +38,17 @@ export const ListCardSkeletonStyled = styled("div", {
   base: listCardBaseStyles,
 });
 
-const ItemCountContainer = styled("p", {
+export const ItemCountContainer = styled("p", {
   base: {
     color: {
       base: "gray.500",
       _dark: "gray.300",
     },
-    fontSize: "{fontSizes.sm}",
+    fontSize: "{fontSizes.base}",
   },
 });
 
-const ItemCount = styled("span", {
+export const ItemCount = styled("span", {
   base: {
     color: {
       base: "gray.700",
@@ -57,7 +58,7 @@ const ItemCount = styled("span", {
   },
 });
 
-const ProgressBarLabel = styled("p", {
+export const ProgressBarLabel = styled("p", {
   base: {
     flex: "1 0 auto",
     marginRight: "{spacing.3}",
@@ -66,7 +67,7 @@ const ProgressBarLabel = styled("p", {
   },
 });
 
-const ProgressBar = styled("div", {
+export const ProgressBar = styled("div", {
   base: {
     background: {
       base: "gray.200",
@@ -107,7 +108,15 @@ export function ListCard({ list }: { list: ListCardProps; loading?: boolean }) {
         </p>
         {date && <div>{date}</div>}
       </div>
-      <div style={{ textAlign: "right", flex: "1 1 auto" }}>
+      <div
+        style={{
+          flex: "1 1 auto",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          alignItems: "flex-end",
+        }}
+      >
         <ItemCountContainer>
           <ItemCount>{packedCount}</ItemCount> / {itemCount} items
         </ItemCountContainer>

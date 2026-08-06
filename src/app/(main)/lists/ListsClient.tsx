@@ -27,7 +27,7 @@ export default function ListsClient({ initialLists }: ListsClientProps) {
     router.refresh();
   };
 
-  const createListInputs = [
+  const listInputs = [
     {
       id: "name",
       label: "List Name",
@@ -102,7 +102,7 @@ export default function ListsClient({ initialLists }: ListsClientProps) {
         <DrawerContent
           heading="Create List"
           onClose={() => setShowBottomCard(false)}
-          inputs={createListInputs}
+          inputs={listInputs}
           button={{ text: "Create List", type: "submit" }}
           onSave={handleSubmit}
           isLoading={loading}

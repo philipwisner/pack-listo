@@ -1,4 +1,4 @@
-'use server';
+"use server";
 
 import { protectedActionClient } from "@/lib/safe-action";
 import prisma from "@/lib/prisma";
@@ -15,7 +15,7 @@ export const togglePackedAction = protectedActionClient
   .action(async ({ parsedInput }) => {
     const updated = await prisma.listItem.update({
       where: { id: parsedInput.listItemId },
-      data: { isPacked: parsedInput.isPacked }
+      data: { isPacked: parsedInput.isPacked },
     });
     revalidatePath(`/lists/${updated.listId}`);
     return { success: true };
@@ -29,7 +29,7 @@ export const addToListAction = protectedActionClient
         listId: parsedInput.listId,
         itemId: parsedInput.itemId,
         quantity: 1,
-      }
+      },
     });
     revalidatePath(`/lists/${parsedInput.listId}`);
     return { success: true, newItem };
@@ -39,7 +39,7 @@ export const removeFromListAction = protectedActionClient
   .schema(z.object({ listItemId: z.string() }))
   .action(async ({ parsedInput }) => {
     const deleted = await prisma.listItem.delete({
-      where: { id: parsedInput.listItemId }
+      where: { id: parsedInput.listItemId },
     });
     revalidatePath(`/lists/${deleted.listId}`);
     return { success: true };

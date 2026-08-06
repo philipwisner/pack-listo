@@ -225,12 +225,12 @@
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: var(--demo-neutral-muted);
+    background-color: var(--colors-drawer-grabber-background);
     border-radius: 3px;
   }
 
   &::-webkit-scrollbar-thumb:hover {
-    background-color: var(--demo-neutral-emphasized);
+    background-color: var(--colors-drawer-grabber-hover-background);
   }
 }
 

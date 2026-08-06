@@ -3,15 +3,8 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Item, Category } from "@/generated/prisma/browser";
 import { getCategoriesAction } from "@/features/category/category.actions";
-import {
-  InlineButtonsContainer,
-  ListContainer,
-  ListItemContainer,
-  PageContainer,
-} from "@/styles/layout.styles";
+import { ListContainer, PageContainer } from "@/styles/layout.styles";
 import { PageHeader } from "@/components/PageHeader";
-import { Button } from "@/components/Button/Button";
-import { Pencil, Trash2 } from "lucide-react";
 import { MutedText } from "@/styles/text.styles";
 import { handleActionErrors } from "@/utils/handle-action-errors";
 import {
@@ -21,10 +14,9 @@ import {
 } from "@/features/item/item.actions";
 import { createItemSchema } from "@/features/item/item.schemas";
 import z from "zod";
-import { CategoryLabel } from "@/components/CategoryLabel";
-import { token } from "@/styled-system/tokens";
 import { Drawer } from "@/components/Drawer/Drawer";
 import { DrawerContent } from "@/components/Drawer/DrawerContent";
+import ItemRow from "./ItemRow";
 
 type ItemWithCategory = Item & { category: Category | null };
 
@@ -138,6 +130,12 @@ export default function ItemsClient({ initialItems }: ItemsClientProps) {
     }
   }
 
+  const handleEdit = (item: ItemWithCategory) => {
+    setShowBottomCard(true);
+    setIsNew(false);
+    setCurrentItem(item);
+  };
+
   const itemInputs = [
     {
       id: "name",
@@ -205,50 +203,12 @@ export default function ItemsClient({ initialItems }: ItemsClientProps) {
             <MutedText>No Items. Create an Item to get started.</MutedText>
           ) : (
             initialItems.map((item: ItemWithCategory) => (
-              <ListItemContainer key={item.id}>
-                <div
-                  style={{
-                    flex: "2 1 150px",
-                    fontSize: token("fontSizes.lg"),
-                    fontWeight: token("fontWeights.bold"),
-                  }}
-                >
-                  {item.name}
-                </div>
-                <div
-                  style={{
-                    flex: "2.5 1 100px",
-                  }}
-                >
-                  {item?.category ? (
-                    <CategoryLabel category={item.category} />
-                  ) : (
-                    "Unassigned"
-                  )}
-                </div>
-                <InlineButtonsContainer>
-                  <Button
-                    text="Edit"
-                    variant="secondary"
-                    size="small"
-                    width="fit"
-                    onClick={() => {
-                      setShowBottomCard(true);
-                      setIsNew(false);
-                      setCurrentItem(item);
-                    }}
-                    iconLeft={<Pencil size={16} />}
-                  />
-                  <Button
-                    text="Delete"
-                    variant="delete"
-                    size="small"
-                    width="fit"
-                    onClick={() => handleDeleteItem(item)}
-                    iconLeft={<Trash2 size={16} />}
-                  />
-                </InlineButtonsContainer>
-              </ListItemContainer>
+              <ItemRow
+                key={item.id}
+                item={item}
+                handleEdit={handleEdit}
+                handleDelete={handleDeleteItem}
+              />
             ))
           )}
         </ListContainer>

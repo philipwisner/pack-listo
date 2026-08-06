@@ -94,7 +94,7 @@ export default function ListsClient({ initialLists }: ListsClientProps) {
   return (
     <>
       <Drawer
-        snapPoints={[0.25, 0.5]}
+        snapPoints={[0.25, 0.5, 1]}
         defaultSnapPoint={0.25}
         isOpen={showBottomCard}
         closeDrawer={() => setShowBottomCard(false)}

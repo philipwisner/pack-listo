@@ -59,7 +59,7 @@ export default function ListClient({ initialList }: ListClientProps) {
     defaultSnapPoint: 1,
   };
   const editDrawerSettings = {
-    snapPoints: [0.25, 0.5],
+    snapPoints: [0.25, 0.5, 0.75, 1],
     defaultSnapPoint: 0.25,
   };
   const router = useRouter();
@@ -217,6 +217,12 @@ export default function ListClient({ initialList }: ListClientProps) {
     }
   }
 
+  const editOnClick = () => {
+    setIsAddingItems(false);
+    setDrawerSettings(editDrawerSettings);
+    setShowBottomCard(true);
+  };
+
   return (
     <>
       <Drawer
@@ -227,6 +233,7 @@ export default function ListClient({ initialList }: ListClientProps) {
         closeDrawer={() => setShowBottomCard(false)}
       >
         <DrawerContent
+          key={isAddingItems ? "add-mode" : "edit-mode"}
           heading={isAddingItems ? "Add Items to List" : "Update List"}
           onClose={() => setShowBottomCard(false)}
           inputs={isAddingItems ? [] : listInputs}
@@ -235,15 +242,21 @@ export default function ListClient({ initialList }: ListClientProps) {
           isLoading={loading}
           fieldErrors={fieldErrors}
         >
-          <div style={{ marginTop: token("spacing.4") }}>
-            {loadingLibraryItems
-              ? "LOADING"
-              : libraryItems.map((item) => {
-                  return (
-                    <ItemRow key={item.id} item={item} handleAdd={handleAdd} />
-                  );
-                })}
-          </div>
+          {isAddingItems && (
+            <div style={{ marginTop: token("spacing.4") }}>
+              {loadingLibraryItems
+                ? "LOADING"
+                : libraryItems.map((item) => {
+                    return (
+                      <ItemRow
+                        key={item.id}
+                        item={item}
+                        handleAdd={handleAdd}
+                      />
+                    );
+                  })}
+            </div>
+          )}
         </DrawerContent>
       </Drawer>
       <PageContainer>
@@ -251,11 +264,7 @@ export default function ListClient({ initialList }: ListClientProps) {
           text={initialList?.name ?? "Unknown"}
           button={{
             text: "Edit List",
-            onClick: () => {
-              setShowBottomCard(true);
-              setIsAddingItems(false);
-              setDrawerSettings(editDrawerSettings);
-            },
+            onClick: editOnClick,
           }}
         />
         <ListDetails>

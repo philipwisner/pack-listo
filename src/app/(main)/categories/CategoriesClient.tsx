@@ -30,6 +30,8 @@ import {
   CATEGORY_COLORS,
   FALLBACK_CATEGORY_COLOR,
 } from "@/features/category/category.constants";
+import { Drawer } from "@/components/Drawer/Drawer";
+import { DrawerContent } from "@/components/Drawer/DrawerContent";
 
 type CategoryFormData = z.infer<typeof createCategorySchema>;
 
@@ -41,7 +43,7 @@ export default function CategoriesClient({
   initialCategories,
 }: CategoriesClientProps) {
   const router = useRouter();
-  const [isNew, setIsNew] = useState<boolean>(false);
+  const [isNew, setIsNew] = useState<boolean>(true);
   const [showBottomCard, setShowBottomCard] = useState(false);
   const [currentCategory, setCurrentCategory] = useState<Category | undefined>(
     undefined,
@@ -202,6 +204,25 @@ export default function CategoriesClient({
           fieldErrors={fieldErrors}
         />
       )}
+      <Drawer
+        triggerLabel="Open"
+        snapPoints={[0.25, 0.5, 1]}
+        defaultSnapPoint={0.25}
+        showClose={true}
+      >
+        <DrawerContent
+          heading={`${isNew ? "Create" : "Update"} Category`}
+          onClose={() => setShowBottomCard(false)}
+          inputs={categoryInputs}
+          button={{
+            text: `${isNew ? "Create" : "Update"} Category`,
+            type: "submit",
+          }}
+          onSave={handleSubmit}
+          isLoading={loading}
+          fieldErrors={fieldErrors}
+        />
+      </Drawer>
       <PageContainer>
         {showBottomCard && <PageOverlay />}
         <PageHeader
@@ -215,6 +236,7 @@ export default function CategoriesClient({
             },
           }}
         />
+
         <ListContainer>
           {initialCategories.length === 0 ? (
             <MutedText>

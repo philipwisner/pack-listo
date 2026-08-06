@@ -158,9 +158,6 @@ export default defineConfig({
         accent: {
           value: { base: "{colors.yellow.500}", _dark: "{colors.yellow.500}" },
         },
-        background: {
-          value: { base: "{colors.gray.50}", _dark: "{colors.gray.950}" },
-        },
         label: {
           value: { base: "{colors.gray.200}", _dark: "{colors.gray.700}" },
         },
@@ -189,6 +186,19 @@ export default defineConfig({
         logo: {
           text: {
             value: { base: "{colors.gray.950}", _dark: "{colors.gray.50}" },
+          },
+        },
+        drawer: {
+          background: {
+            value: { base: "{colors.gray.50}", _dark: "{colors.gray.900}" },
+          },
+          grabber: {
+            background: {
+              value: { base: "{colors.gray.300}", _dark: "{colors.gray.700}" },
+            },
+            hoverBackground: {
+              value: { base: "{colors.gray.400}", _dark: "{colors.gray.600}" },
+            },
           },
         },
         button: {

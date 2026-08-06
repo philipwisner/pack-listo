@@ -311,7 +311,7 @@ export default function ListClient({ initialList }: ListClientProps) {
             return (
               <ItemRow
                 key={item.id}
-                item={{ ...item.item, ...item, isSelected: false }}
+                item={{ ...item.item, ...item }}
                 handlePack={handlePack}
               />
             );

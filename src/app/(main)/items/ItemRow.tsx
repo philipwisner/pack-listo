@@ -10,8 +10,8 @@ import { CategoryLabel } from "@/components/CategoryLabel";
 import { token } from "@/styled-system/tokens";
 
 export type ItemWithCategory = Item & {
-  isSelected: boolean;
-  isPacked: boolean;
+  isSelected?: boolean;
+  isPacked?: boolean;
 } & {
   category: Category | null;
 };

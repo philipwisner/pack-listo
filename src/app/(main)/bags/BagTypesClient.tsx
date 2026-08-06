@@ -4,14 +4,12 @@ import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { BagType } from "@/generated/prisma/browser";
 import { createCategorySchema } from "@/features/category/category.schemas";
-import { BottomCard } from "@/components/BottomCard";
 import {
   ColorTag,
   InlineButtonsContainer,
   ListContainer,
   ListItemContainer,
   PageContainer,
-  PageOverlay,
 } from "@/styles/layout.styles";
 import { PageHeader } from "@/components/PageHeader";
 import { MutedText } from "@/styles/text.styles";
@@ -30,6 +28,8 @@ import {
   deleteBagTypeAction,
 } from "@/features/bag-type/bag-type.actions";
 import { CategoryLabel } from "@/components/CategoryLabel";
+import { Drawer } from "@/components/Drawer/Drawer";
+import { DrawerContent } from "@/components/Drawer/DrawerContent";
 
 type BagTypeFormData = z.infer<typeof createCategorySchema>;
 
@@ -188,8 +188,13 @@ export default function BagTypesClient({
 
   return (
     <>
-      {showBottomCard && (
-        <BottomCard
+      <Drawer
+        snapPoints={[0.25, 0.5]}
+        defaultSnapPoint={0.25}
+        isOpen={showBottomCard}
+        closeDrawer={() => setShowBottomCard(false)}
+      >
+        <DrawerContent
           heading={`${isNew ? "Create" : "Update"} Bag`}
           onClose={() => setShowBottomCard(false)}
           inputs={bagTypeInputs}
@@ -201,9 +206,8 @@ export default function BagTypesClient({
           isLoading={loading}
           fieldErrors={fieldErrors}
         />
-      )}
+      </Drawer>
       <PageContainer>
-        {showBottomCard && <PageOverlay />}
         <PageHeader
           text="My Bags"
           button={{

@@ -3,13 +3,11 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Item, Category } from "@/generated/prisma/browser";
 import { getCategoriesAction } from "@/features/category/category.actions";
-import { BottomCard } from "@/components/BottomCard";
 import {
   InlineButtonsContainer,
   ListContainer,
   ListItemContainer,
   PageContainer,
-  PageOverlay,
 } from "@/styles/layout.styles";
 import { PageHeader } from "@/components/PageHeader";
 import { Button } from "@/components/Button/Button";
@@ -25,6 +23,8 @@ import { createItemSchema } from "@/features/item/item.schemas";
 import z from "zod";
 import { CategoryLabel } from "@/components/CategoryLabel";
 import { token } from "@/styled-system/tokens";
+import { Drawer } from "@/components/Drawer/Drawer";
+import { DrawerContent } from "@/components/Drawer/DrawerContent";
 
 type ItemWithCategory = Item & { category: Category | null };
 
@@ -169,8 +169,13 @@ export default function ItemsClient({ initialItems }: ItemsClientProps) {
 
   return (
     <>
-      {showBottomCard && (
-        <BottomCard
+      <Drawer
+        snapPoints={[0.25, 0.5]}
+        defaultSnapPoint={0.25}
+        isOpen={showBottomCard}
+        closeDrawer={() => setShowBottomCard(false)}
+      >
+        <DrawerContent
           heading={`${isNew ? "Create" : "Update"} Item`}
           onClose={() => setShowBottomCard(false)}
           inputs={itemInputs}
@@ -182,9 +187,8 @@ export default function ItemsClient({ initialItems }: ItemsClientProps) {
           isLoading={loading}
           fieldErrors={fieldErrors}
         />
-      )}
+      </Drawer>
       <PageContainer>
-        {showBottomCard && <PageOverlay />}
         <PageHeader
           text="My Items"
           button={{

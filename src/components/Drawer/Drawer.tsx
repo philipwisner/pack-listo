@@ -6,9 +6,9 @@ export type SwipeDrawerProps = {
   triggerLabel?: React.ReactNode;
   customTrigger?: React.ReactElement;
   children: React.ReactNode;
-  open?: boolean;
+  isOpen?: boolean;
   defaultOpen?: boolean;
-  onOpenChange?: (details: { open: boolean }) => void;
+  closeDrawer?: () => void;
   snapPoints?: number[];
   defaultSnapPoint?: number;
   modal?: boolean;
@@ -19,19 +19,19 @@ export const Drawer = ({
   triggerLabel,
   customTrigger,
   children,
-  open,
+  isOpen,
   defaultOpen,
-  onOpenChange,
   snapPoints,
   defaultSnapPoint,
   modal = false,
   showClose = false,
+  closeDrawer,
 }: SwipeDrawerProps) => {
   return (
     <DrawerUI.Root
-      open={open}
+      open={isOpen}
       defaultOpen={defaultOpen}
-      onOpenChange={onOpenChange}
+      onOpenChange={closeDrawer}
       snapPoints={snapPoints}
       defaultSnapPoint={defaultSnapPoint}
       modal={modal}

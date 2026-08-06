@@ -3,11 +3,12 @@ import { useState } from "react";
 import { ListCard } from "@/components/ListCard";
 import { useRouter } from "next/navigation";
 import { PageHeader } from "@/components/PageHeader";
-import { PageContainer, PageOverlay } from "@/styles/layout.styles";
+import { PageContainer } from "@/styles/layout.styles";
 import { MutedText } from "@/styles/text.styles";
-import { BottomCard } from "@/components/BottomCard";
 import { createListAction } from "@/features/list/list.actions";
 import { List } from "@/generated/prisma/browser";
+import { Drawer } from "@/components/Drawer/Drawer";
+import { DrawerContent } from "@/components/Drawer/DrawerContent";
 
 interface ListsClientProps {
   initialLists: List[];
@@ -92,8 +93,13 @@ export default function ListsClient({ initialLists }: ListsClientProps) {
 
   return (
     <>
-      {showBottomCard && (
-        <BottomCard
+      <Drawer
+        snapPoints={[0.25, 0.5]}
+        defaultSnapPoint={0.25}
+        isOpen={showBottomCard}
+        closeDrawer={() => setShowBottomCard(false)}
+      >
+        <DrawerContent
           heading="Create List"
           onClose={() => setShowBottomCard(false)}
           inputs={createListInputs}
@@ -102,9 +108,8 @@ export default function ListsClient({ initialLists }: ListsClientProps) {
           isLoading={loading}
           fieldErrors={fieldErrors}
         />
-      )}
+      </Drawer>
       <PageContainer>
-        {showBottomCard && <PageOverlay />}
         <PageHeader
           text="My Lists"
           button={{

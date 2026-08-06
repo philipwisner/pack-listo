@@ -200,6 +200,14 @@ export default defineConfig({
               value: { base: "{colors.gray.400}", _dark: "{colors.gray.600}" },
             },
           },
+          close: {
+            hoverBackground: {
+              value: {
+                base: "{colors.gray.200}",
+                _dark: "{colors.gray.800}",
+              },
+            },
+          },
         },
         button: {
           primary: {

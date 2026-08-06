@@ -3,6 +3,7 @@
 .Backdrop {
   position: fixed;
   inset: 0;
+  z-index: 10;
   background-color: rgba(0, 0, 0, 0.5);
 
   &[data-state="open"] {
@@ -20,7 +21,7 @@
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  z-index: var(--demo-popover-z-index);
+  z-index: 100;
 
   &[data-swipe-direction="up"] {
     align-items: flex-start;
@@ -177,6 +178,7 @@
   cursor: pointer;
   &:hover {
     color: var(--colors-drawer-grabber-hover-background);
+    background: var(--colors-drawer-close-hover-background);
   }
 
   & svg {

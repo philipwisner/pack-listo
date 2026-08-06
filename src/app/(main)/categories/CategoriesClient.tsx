@@ -6,7 +6,6 @@ import { Category } from "@/generated/prisma/browser";
 import { token } from "@/styled-system/tokens";
 import { Pencil, Trash2 } from "lucide-react";
 import { PageHeader } from "@/components/PageHeader";
-import { BottomCard } from "@/components/BottomCard";
 import { FALLBACK_ICON, Icon, IconLabelLink } from "@/components/Icon";
 import { Button } from "@/components/Button/Button";
 import { createCategorySchema } from "@/features/category/category.schemas";
@@ -23,7 +22,6 @@ import {
   ListContainer,
   ListItemContainer,
   PageContainer,
-  PageOverlay,
 } from "@/styles/layout.styles";
 import { CategoryLabel } from "@/components/CategoryLabel";
 import {
@@ -190,25 +188,11 @@ export default function CategoriesClient({
 
   return (
     <>
-      {showBottomCard && (
-        <BottomCard
-          heading={`${isNew ? "Create" : "Update"} Category`}
-          onClose={() => setShowBottomCard(false)}
-          inputs={categoryInputs}
-          button={{
-            text: `${isNew ? "Create" : "Update"} Category`,
-            type: "submit",
-          }}
-          onSave={handleSubmit}
-          isLoading={loading}
-          fieldErrors={fieldErrors}
-        />
-      )}
       <Drawer
-        triggerLabel="Open"
-        snapPoints={[0.25, 0.5, 1]}
+        snapPoints={[0.25, 0.5]}
         defaultSnapPoint={0.25}
-        showClose={true}
+        isOpen={showBottomCard}
+        closeDrawer={() => setShowBottomCard(false)}
       >
         <DrawerContent
           heading={`${isNew ? "Create" : "Update"} Category`}
@@ -224,7 +208,6 @@ export default function CategoriesClient({
         />
       </Drawer>
       <PageContainer>
-        {showBottomCard && <PageOverlay />}
         <PageHeader
           text="My Categories"
           button={{

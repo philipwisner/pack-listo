@@ -1,4 +1,4 @@
-import { type ComponentProps, useRef } from "react";
+import { type ComponentProps } from "react";
 import { styled } from "@/styled-system/jsx";
 import { token } from "@/styled-system/tokens";
 import { Button } from "@/components//Button/Button";
@@ -7,7 +7,6 @@ import { Input } from "@/components/TextInput/TextInput";
 import { Select } from "@/components/Select";
 import { CustomSelect } from "@/components/CustomSelect";
 import { Error } from "@/components/Error";
-import { useClickOutside } from "@/hooks/useClickOutside";
 import { SecondaryHeading } from "@/styles/text.styles";
 
 export interface DrawerContentProps
@@ -33,7 +32,6 @@ export interface DrawerContentProps
   }[];
   onClose?: () => void;
   onSave?: (e: React.FormEvent<HTMLFormElement>) => void;
-  // Accepts a string message or a boolean flag per input ID
   fieldErrors?: Record<string, string | boolean | undefined>;
 }
 export const DrawerContentStyled = styled("div", {
@@ -51,14 +49,8 @@ export const DrawerContent = ({
   onSave,
   fieldErrors,
 }: DrawerContentProps) => {
-  const ref = useRef<HTMLDivElement>(null);
-
-  useClickOutside(ref, () => {
-    onClose?.();
-  });
-
   return (
-    <DrawerContentStyled ref={ref}>
+    <DrawerContentStyled>
       <div
         style={{
           maxWidth: token("sizes.pageContainer"),

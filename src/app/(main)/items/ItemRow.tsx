@@ -5,7 +5,7 @@ import {
   ListItemContainer,
 } from "@/styles/layout.styles";
 import { Button } from "@/components/Button/Button";
-import { Check, Pencil, PlusIcon, Trash2, X } from "lucide-react";
+import { Pencil, PlusIcon, Trash2, X } from "lucide-react";
 import { CategoryLabel } from "@/components/CategoryLabel";
 import { token } from "@/styled-system/tokens";
 

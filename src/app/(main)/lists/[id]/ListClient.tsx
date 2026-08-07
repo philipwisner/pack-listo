@@ -3,7 +3,10 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { PageHeader } from "@/components/PageHeader";
 import { PageContainer } from "@/styles/layout.styles";
-import { createListAction } from "@/features/list/list.actions";
+import {
+  createListAction,
+  updateListAction,
+} from "@/features/list/list.actions";
 import { Drawer } from "@/components/Drawer/Drawer";
 import { DrawerContent } from "@/components/Drawer/DrawerContent";
 import { token } from "@/styled-system/tokens";
@@ -23,6 +26,7 @@ import {
   addToListAction,
   togglePackedAction,
 } from "@/features/list-item/list-item.actions";
+import { CategoryLabel } from "@/components/CategoryLabel";
 
 interface ListClientProps {
   initialList?: ListWithRelations;
@@ -49,6 +53,22 @@ const FloatingButton = styled("div", {
     pointerEvents: "none",
     "& > *": {
       pointerEvents: "auto", // Keeps the actual button clickable
+    },
+  },
+});
+
+const RadioButton = styled("span", {
+  base: {
+    width: "20px",
+    height: "20px",
+    display: "inline-block",
+    borderRadius: token("radii.full"),
+    border: "1px solid",
+    borderColor: "input.border.default",
+    background: "input.background.default",
+    _hover: {
+      borderColor: "input.border.hover",
+      background: "input.background.hover",
     },
   },
 });
@@ -153,13 +173,15 @@ export default function ListClient({ initialList }: ListClientProps) {
       isTemplate: formData.get("isTemplate") === "on",
     };
 
-    const result = await createListAction(data);
+    if (initialList) {
+      const result = await updateListAction({ id: initialList.id, ...data });
 
-    if (result?.data?.success) {
-      handleSuccess();
-      router.refresh();
-    } else {
-      setLoading(false);
+      if (result?.data?.success) {
+        handleSuccess();
+        router.refresh();
+      } else {
+        setLoading(false);
+      }
     }
   }
 
@@ -315,6 +337,126 @@ export default function ListClient({ initialList }: ListClientProps) {
             </div>
           </div>
         </ListDetails>
+        <div
+          style={{
+            marginBottom: token("spacing.24"),
+            border: "1px solid",
+            borderColor: token("colors.gray.200"),
+            background: token("colors.white"),
+            borderRadius: token("radii.md"),
+            overflow: "hidden",
+          }}
+        >
+          <div
+            style={{
+              padding: "12px 20px",
+              display: "flex",
+              gap: "10px",
+              background: token("colors.gray.100"),
+              fontSize: token("fontSizes.md"),
+            }}
+          >
+            <p style={{ fontWeight: token("fontWeights.bold") }}>Items</p>
+          </div>
+
+          {initialList?.items?.map((item, index) => {
+            return (
+              <div
+                key={item.id}
+                style={{
+                  padding: "10px 20px 10px 20px",
+                  display: "flex",
+                  gap: "10px",
+                  alignItems: "center",
+                  fontSize: token("fontSizes.base"),
+                  borderBottom:
+                    index === initialList?.items?.length - 1
+                      ? ""
+                      : "thin solid",
+                  borderBottomColor: token("colors.gray.200"),
+                }}
+              >
+                <p
+                  style={{
+                    flex: "0 1 30px",
+                    textAlign: "center",
+                    display: "flex",
+                    justifyContent: "flex-start",
+                  }}
+                >
+                  <RadioButton />
+                </p>
+                <p
+                  style={{
+                    fontSize: token("fontSizes.md"),
+                    flex: "4 1 100px",
+                    textAlign: "left",
+                  }}
+                >
+                  {item.item.name}
+                </p>
+                {/* <p
+                  style={{
+                    flex: "1 1 50px",
+                    textAlign: "center",
+                  }}
+                >
+                  Importance
+                </p> */}
+                <div
+                  style={{
+                    flex: "1 1 80px",
+                    textAlign: "center",
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  {item?.item?.category ? (
+                    <CategoryLabel category={item.item.category} size="small" />
+                  ) : (
+                    "Unassigned"
+                  )}
+                </div>
+                <div
+                  style={{
+                    flex: "1 1 50px",
+                    textAlign: "center",
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  {item?.bagType?.name ? (
+                    <CategoryLabel category={item.bagType} size="small" />
+                  ) : (
+                    "No Bag"
+                  )}
+                </div>
+                {/* <p
+                  style={{
+                    flex: "1 1 50px",
+                  }}
+                >
+                  Location
+                </p>
+                <p
+                  style={{
+                    flex: "1 1 50px",
+                  }}
+                >
+                  Organizer
+                </p> */}
+                <p
+                  style={{
+                    flex: ".5 1 20px",
+                    textAlign: "center",
+                  }}
+                >
+                  - {item.quantity} +
+                </p>
+              </div>
+            );
+          })}
+        </div>
         <div style={{ paddingBottom: token("spacing.24") }}>
           {initialList?.items?.map((item) => {
             return (

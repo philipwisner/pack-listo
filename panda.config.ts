@@ -373,6 +373,9 @@ export default defineConfig({
             default: {
               value: { base: "{colors.white}", _dark: "{colors.gray.700}" },
             },
+            hover: {
+              value: { base: "{colors.gray.100}", _dark: "{colors.gray.700}" },
+            },
             disabled: {
               value: { base: "{colors.gray.100}", _dark: "{colors.gray.800}" },
             },

@@ -6,8 +6,9 @@ export interface ButtonProps extends ComponentProps<typeof ButtonStyled> {
   variant?: "primary" | "secondary" | "delete" | "alternative";
   width?: "full" | "fit";
   radius?: "rounded" | "round";
-  size?: "small" | "base";
+  size?: "small" | "base" | "smallIcon";
   depth?: "flat" | "floating";
+  content?: "default" | "iconOnly";
   primary?: boolean;
   text?: string;
   isLoading?: boolean;
@@ -22,7 +23,6 @@ export const ButtonStyled = styled("button", {
     display: "inline-flex",
     alignItems: "center",
     justifyContent: "center",
-    gap: "2",
     py: "3",
     px: "4",
     fontWeight: "bold",
@@ -139,6 +139,7 @@ export const ButtonStyled = styled("button", {
         },
       },
     },
+
     width: {
       full: { width: "100%" },
       fit: { width: "fit-content", height: "fit-content" },
@@ -160,17 +161,27 @@ export const ButtonStyled = styled("button", {
         px: "4",
         fontSize: "sm",
       },
+      smallIcon: {
+        py: "2",
+        px: "2",
+        fontSize: "sm",
+      },
       base: {
         py: "3",
         px: "4",
         fontSize: "base",
       },
     },
+    content: {
+      default: { gap: "2" },
+      iconOnly: { gap: "" },
+    },
   },
 
   // Fallback production safety defaults
   defaultVariants: {
     variant: "primary",
+    content: "default",
     width: "fit",
     size: "base",
     radius: "rounded",
@@ -189,6 +200,7 @@ export const Button = ({
   size = "base",
   radius = "rounded",
   depth = "flat",
+  content = "default",
   text = "",
   isLoading = false,
   loadingText = "",
@@ -204,6 +216,7 @@ export const Button = ({
       size={size}
       radius={radius}
       depth={depth}
+      content={content}
       disabled={isLoading || disabled}
       data-loading={isLoading ? "true" : undefined}
       {...props}

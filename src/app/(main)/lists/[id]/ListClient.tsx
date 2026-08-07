@@ -2,15 +2,12 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { PageHeader } from "@/components/PageHeader";
-import { PageContainer } from "@/styles/layout.styles";
-import {
-  createListAction,
-  updateListAction,
-} from "@/features/list/list.actions";
+import { InlineButtonsContainer, PageContainer } from "@/styles/layout.styles";
+import { updateListAction } from "@/features/list/list.actions";
 import { Drawer } from "@/components/Drawer/Drawer";
 import { DrawerContent } from "@/components/Drawer/DrawerContent";
 import { token } from "@/styled-system/tokens";
-import { MapPin, PlusIcon } from "lucide-react";
+import { MapPin, Pencil, PlusIcon, Trash2 } from "lucide-react";
 import { styled } from "@/styled-system/jsx";
 import {
   ItemCount,
@@ -25,8 +22,11 @@ import ItemRow, { ItemWithCategory } from "../../items/ItemRow";
 import {
   addToListAction,
   togglePackedAction,
+  removeFromListAction,
 } from "@/features/list-item/list-item.actions";
 import { CategoryLabel } from "@/components/CategoryLabel";
+import { handleActionErrors } from "@/utils/handle-action-errors";
+import { ListItem } from "@/generated/prisma/client";
 
 interface ListClientProps {
   initialList?: ListWithRelations;
@@ -226,7 +226,7 @@ export default function ListClient({ initialList }: ListClientProps) {
     // );
   }
 
-  async function handlePack(item: ItemWithCategory) {
+  async function handlePack(item: ListItem | ItemWithCategory) {
     const result = await togglePackedAction({
       listItemId: item.id,
       isPacked: !item.isPacked,
@@ -244,6 +244,21 @@ export default function ListClient({ initialList }: ListClientProps) {
     setDrawerSettings(editDrawerSettings);
     setShowBottomCard(true);
   };
+
+  async function handleDeleteItem(item: ListItem) {
+    setLoading(true);
+    const result = await removeFromListAction({ listItemId: item.id });
+
+    // const serverError = handleActionErrors(result, (field, error) => {
+    //   setFieldErrors((prev) => ({ ...prev, [field]: error.message || true }));
+    // });
+
+    if (result?.data?.success) {
+      handleSuccess();
+    } else {
+      setLoading(false);
+    }
+  }
 
   return (
     <>
@@ -384,13 +399,19 @@ export default function ListClient({ initialList }: ListClientProps) {
                     justifyContent: "flex-start",
                   }}
                 >
-                  <RadioButton />
+                  <RadioButton
+                    onClick={() => {
+                      handlePack(item);
+                    }}
+                  />
                 </p>
                 <p
                   style={{
                     fontSize: token("fontSizes.md"),
                     flex: "4 1 100px",
                     textAlign: "left",
+                    opacity: item.isPacked ? 0.3 : 1,
+                    fontStyle: item.isPacked ? "italic" : "",
                   }}
                 >
                   {item.item.name}
@@ -453,6 +474,24 @@ export default function ListClient({ initialList }: ListClientProps) {
                 >
                   - {item.quantity} +
                 </p>
+                <div style={{ display: "flex", gap: token("spacing.2") }}>
+                  <Button
+                    variant="secondary"
+                    size="smallIcon"
+                    width="fit"
+                    onClick={() => handleDeleteItem(item)}
+                    iconLeft={<Pencil size={16} />}
+                    content="iconOnly"
+                  />
+                  <Button
+                    variant="delete"
+                    size="smallIcon"
+                    width="fit"
+                    onClick={() => handleDeleteItem(item)}
+                    iconLeft={<Trash2 size={16} />}
+                    content="iconOnly"
+                  />
+                </div>
               </div>
             );
           })}
